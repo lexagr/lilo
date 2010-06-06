@@ -1,0 +1,180 @@
+Changes from version 22.7.3 to 22.8 (16-Feb-2007) John Coffman
+
+  Boot Installer
+  --------------
+    - Move configuration information (-X) to a separate procedure.  (lilo.c)
+    - Fix type decl problem in LVM _IOR/RW macros.  (geometry.c)
+    - Add  DEV_DISK_DIR  and edit source to use it.  (config.h, device.c,
+	    geometry.c)
+    - Change handling of 'device-mapper' depending upon DEVMAPPER option.
+	    (device.c, geometry.c)
+    - Modify 'scan_dir' to stay out of hidden directories.  (device.c)
+    - Add 'nodevcache' option to configuration file.  (cfg.c, lilo.c)
+    - Add sync() before boot sector write to compensate for 2.6 kernel bug
+	    in partition buffering code.  (bsect.c)
+    - Allow 'root="UUID=xyz"' syntax.  (bsect.c)
+
+  Boot Loader
+  -----------
+    - Add compilation switch 'NOVGA' to the Makefile.
+
+
+Changes from version 22.7.2 to 22.7.3 (11-Aug-2006) John Coffman
+
+  Boot Installer
+  --------------
+    - Make with changed compile-time options does not affect source
+      checksums. (Makefile)
+    - Remove device 253 from max_partitions[].  (device.c, 22.7.2.1)
+    - Install device-mapper patches. (geometry.c, Makefile)
+    - Correct setting of the VIRTUAL & NOKBD flags.  (bsect.c)
+
+
+Changes from version 22.7.1 to 22.7.2 (05-Jul-2006) John Coffman
+
+  Boot Installer
+  --------------
+    - Add "noraid" keyword to suppress automatic marking of members
+      of a full-disk RAID array as "inaccessible".
+    - Add '-H' switch to override abort on RAID1 install to a failed
+      array.  (raid.c, lilo.c, common.c, common.h)
+    - Add check for DM_RAID (aka ATA_RAID); warn about manual marking
+      of disk drives as "inaccessible".  (device.c)
+    - Add 'geo_query_dev' support for 31-partition devices.  (geometry.c)
+    - Add "Warning:'s" counter.  (common.c, common.h, & *.c)
+    - Disable 'nowarn' when verbose >= 3.   (lilo.c)
+    - Davide BIOS bug (sectors [1..63] -> [1..64])  (probe.c)
+    - Add keywords 'nokbdefault' & 'nokbdisable' on compilation switch
+      based upon input from Alberto Mardegan <mardy@users.sourceforge.net>.
+      (cfg.c, bsect.c, lilo.h)
+    - Add second stage flags:  VIRTUAL & NOKBD whenever any 'virtual' or
+      'nokeyboard' keyword is used.  (lilo.h, bsect.c)
+
+  Boot Loader
+  -----------
+    - Davide BIOS bug (sectors [1..63] -> [1..64])  (first.S, read.S)
+    - Implement 'nokbdefault' & 'nokbdisable' (second.S)
+    - Add cli/sti to keyboard detection code  (second.S)
+    - Fix timeout bug if 'ONE_SHOT' compile option is omitted.  (second.S)
+    - Add marker (space) between initrd/kernel loading dots.  (second.S)
+    - Observe second stage flags: VIRTUAL & NOKBD.  Do not touch hardware
+      unless corresponding flag is set.  (second.S)
+    - Allow DEBUG_NEW version to compile READONLY.  (read.S)
+    - Increase kernel command line to 512 bytes.  (bsect.c, probe.c, lilo.h,
+      second.S)
+
+  Utilities
+  ---------
+    - Add check of FS register to Diagnostic 2 (diagnose/test4.c)
+    - Change 'master' determination for --iso; log config file
+      with --debug  (mkrescue)
+    - Create 'checkit' script to check for versions of gcc, as86,
+      ld86, and bcc.  (checkit)
+    - Davide BIOS bug (sectors [1..63] -> [1..64])  (disk.S, test4.c)
+
+
+Changes from version 22.7 to 22.7.1 (17-Sep-2005) John Coffman
+
+  Boot Installer
+  --------------
+    - Add check that "vmdefault" image does exist.  (bsect.c, lilo.c)
+    - Use 512/4095 major devices (up from 255).  (geometry.c, device.c,
+      geometry.h)
+
+  Boot Loader
+  -----------
+    - Fix "vmdefault=" bug in MENU and BITMAP interfaces. (second.S)
+    - Allow any keyboard strike (not just Shift) to escape from
+      command line, or to display boot menu.  (second.S)
+
+  Utilities
+  ---------
+    - Apply security patch for temp files to  mkrescue & QuickInst
+    - Compensate for missing <msdos/stat.h> in BCC
+
+
+Changes from version 22.6.1 to 22.7 (12-Apr-2005) John Coffman
+
+  Boot Installer
+  --------------
+    - Fix reporting of NULL stored default boot command.  (lilo.c)
+    - Allow "unsafe" on partitions specified by "other=".  (boot.c)
+    - Handle RAID-1 arrays with a failed disk.  (raid.c, geometry.c)
+
+  Boot Loader
+  -----------
+    - Rearrange code in first.S to shorten by 3 (to 0x1B2).  (first.S)
+    - Fix "lock" bug on default image.  (second.S)
+    - Descriptor selection (find_image) based on partial command
+      line.  (second.S, crt.S, bitmap.S)
+    - Improve "unattended":  no selection on partial command; CR can't
+      stop timeout.  (second.S)
+
+  Utilities
+  ---------
+    - New DOS utility:  LILO.COM implements -q -R -V (-C -m) switches.
+
+
+Changes from version 22.6 to 22.6.1 (17-Nov-2004) John Coffman
+
+  Boot Installer
+  --------------
+    - Check command line options for CL_LENGTH max (256).  (bsect.c)
+    - Get '-I' switch to recognize 'addappend='.  (identify.c)
+    - Add 'R' flag to '-I' switch to get root.  (identify.c)
+
+  Boot Loader
+  -----------
+    - Enable read-ahead on EDD drives that support the function.
+      Now a Makefile switch (READAHEAD)  (volume.S, Makefile)
+    - Support BUG_SI_EBDA bugfix for SI controllers that don't properly
+      allocate the EBDA that they use.  (Makefile, second.S, chain.S)
+    - Correct El-Torito CD emulation termination to use HD/FD device
+      code.  (second.S)
+
+  Utilities
+  ---------
+    - Update diagnostic 2.2.4 to 2.3; check EDD fn 4Eh subfunctions.
+      (diagnose/test4.c)
+    - Update 'mkrescue' (2.5) to get root filesystem from /etc/fstab.
+    - Update 'mkrescue --iso --size HD' to create a bootable El Torito
+      format using hard disk emulation.  (mkrescue 3.0)
+    - Add --image option to mkrescue.  (mkrescue 3.0)
+
+
+Changes from version 22.5.9 to 22.6 (01-Sep-2004) John Coffman
+
+  Boot Installer
+  --------------
+    - Correct check of "append=" substring coincidence.  (bsect.c/
+      check_options)
+    - add keyword "unattended" to alter timeout operation. (cfg.c,
+      bsect.c, second.S)
+    - allow 'timeout' & 'delay' to be specified in 's', 'm', or 'h'.
+      (lilo.c, common.c)
+    - change #include <asm/unistd.h> to <linux/unistd.h> (partition.c)
+    - alter 'new_serial' to seed from time & /dev/urandom  (device.c)
+    - address compilation issues with 2.6 kernels (2.6.6) and glibc
+      versions 2.0 and 2.1++ (2.3.3).  (config.h, partition.h,
+      partition.c)
+    - fix "long" -> "int" for compilation on 64-bit systems. (*.h, *.c)
+    - use "mkloader" so compilation does not depend on NASM. (temp.c)
+    - add new block devices:  emd, sata, scsi9-15. (lilo.h, geometry.c)
+    - Check 'other=' for a file that is really an image.  (boot.c)
+    - Allow 'root = "LABEL=label"' in config file.  (bsect.c)
+    - Allow -P parameter to contain '='.  (lilo.c)
+    - Add 'addappend=' specification of local kernel parameters
+      to 'image=' sections.  (bsect.c, cfg.c)
+    - Automatically treat disks beyond the 16th as INACCESSIBLE.
+      (device.c)
+
+  Boot Loader
+  -----------
+    - Modify first-stage loader for BIOS that clobbers BX. (first.S)
+
+  Utilities
+  ---------
+    - Update diagnostic 2.2.4 to to check int 13, fn 8, for register
+      clobbers.  (diagnose/test4.c)
+    - Change regular expression in 'keytab-lilo.pl' (Debian patch)
+
