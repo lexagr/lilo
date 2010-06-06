@@ -25,7 +25,7 @@ vers_min() {
 	M=`echo $1 | cut -d . -f 1`
 	m=`echo $1 | cut -d . -f 2`
 	p=`echo $1 | cut -d . -f 3`
-	if [ -z $p ]; then p=0; fi
+	if [ -z "$p" ]; then p=0; fi
 #echo vers_min1 $M $m $p
 	N=`echo $2 | cut -d . -f 1`
 	n=`echo $2 | cut -d . -f 2`
@@ -36,7 +36,7 @@ vers_min() {
 	elif [ "$m" -lt "$n" ]; then rc=1
 	elif [ "$m" -gt "$n" ]; then rc=0
 	elif [ -z "$r" ]; then rc=0
-	elif [ $p -lt $r ]; then rc=1
+	elif [ "$p" -lt "$r" ]; then rc=1
 	fi
 #echo vers_min returns $rc
 	return $rc
@@ -45,9 +45,9 @@ vers_min() {
 #echo
 echo GCC version 2.91 or later is required
 gcc -v 1>foo1 2>foo2
-V=`cat foo1 foo2 | grep version | cut -d " " -f 3`
+V=`cat foo1 foo2 | cut -d' ' -f1-3 | grep version | cut -d' ' -f 3`
 rm -f foo1 foo2
-if [ -z $V ]; then
+if [ -z "$V" ]; then
 	echo gcc is not present
 	ret=1
 else
@@ -61,7 +61,7 @@ echo AS86 version $dev or later is required
 as86 -v 1>foo1 2>foo2
 A=`cat foo1 foo2 | grep version | cut -d " " -f 3`
 rm -f foo1 foo2
-if [ -z $A ]; then
+if [ -z "$A" ]; then
 	echo as86 is not present
 	ret=1
 else
@@ -75,7 +75,7 @@ echo LD86 version $dev or later is required
 ld86 -v 1>foo1 2>foo2
 L=`cat foo1 foo2 | grep version | cut -d " " -f 3`
 rm -f foo1 foo2
-if [ -z $L ]; then
+if [ -z "$L" ]; then
 	echo ld86 is not present
 	ret=1
 else
@@ -89,7 +89,7 @@ echo BCC version $dev or later is recommended
 bcc -v 1>foo1 2>foo2
 B=`cat foo1 foo2 | grep version | cut -d " " -f 3`
 rm -f foo1 foo2
-if [ -z $B ]; then
+if [ -z "$B" ]; then
 	echo bcc is not present
 	echo You will not be able to make floppy2, diag2.img, or lilo.com
 else
