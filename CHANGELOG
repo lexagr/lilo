@@ -1,17 +1,30 @@
+Changes for version 23.0 (unreleased) - Joachim Wiedorn
+
+  General
+  -------
+    - Remove link 'COPYRIGHT' to file COPYING.
+    - Move alle README files into new directory 'readme'.
+    - Move all source code files into new directory 'src'.
+    - Split file CHANGES into CHANGELOG and CHANGELOG_old.
+    - Better check for tool 'mkfs.msdos', for with you must be root.
+    - Fix error messages of script 'checkit'.
+
+
 Changes from version 22.7.3 to 22.8 (16-Feb-2007) John Coffman
 
   Boot Installer
   --------------
-    - Move configuration information (-X) to a separate procedure.  (lilo.c)
+    - Move configuration information (-X) to a separate procedure.  
+        (lilo.c)
     - Fix type decl problem in LVM _IOR/RW macros.  (geometry.c)
-    - Add  DEV_DISK_DIR  and edit source to use it.  (config.h, device.c,
-	    geometry.c)
-    - Change handling of 'device-mapper' depending upon DEVMAPPER option.
-	    (device.c, geometry.c)
+    - Add  DEV_DISK_DIR  and edit source to use it.  (config.h, 
+        device.c, geometry.c)
+    - Change handling of 'device-mapper' depending upon DEVMAPPER 
+        option.   (device.c, geometry.c)
     - Modify 'scan_dir' to stay out of hidden directories.  (device.c)
     - Add 'nodevcache' option to configuration file.  (cfg.c, lilo.c)
-    - Add sync() before boot sector write to compensate for 2.6 kernel bug
-	    in partition buffering code.  (bsect.c)
+    - Add sync() before boot sector write to compensate for 2.6 kernel
+        bug in partition buffering code.  (bsect.c)
     - Allow 'root="UUID=xyz"' syntax.  (bsect.c)
 
   Boot Loader
