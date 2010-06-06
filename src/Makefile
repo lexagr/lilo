@@ -165,10 +165,14 @@ help:
 #
 # everything needed to run, just short of installation
 #
-all:	lilo bootsect.b diag1.img # OBSOLETE:  $(BOOTS) edit dparam.com activate
+all:	lilo bootsect.b diag1.img
+	# You need header files which can be found in package 'elks-libc' (bin86)
+	# Therefore you need root permissions in some steps! Test with mkfs.msdos
 	if [ -x /usr/bin/bcc -o -x /usr/local/bin/bcc ]; then \
-		make diagnostic; \
-		make dosexe; fi
+		if [ `which mkfs.msdos | grep -c mkfs` -eq 1 ]; then \
+			make diagnostic; \
+			make dosexe; fi; \
+	fi
 
 #
 # everything above plus the statically linked version
