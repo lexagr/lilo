@@ -430,6 +430,8 @@ install:  all
 	cp manPages/lilo.conf.5 $$ROOT$(MAN_DIR)/man5
 	if [ -d $$ROOT$(DOS_DIR) -a -f lilo.com ]; then \
 	  cp lilo.com $$ROOT$(DOS_DIR); fi
+
+insobs:
 	@if [ -e $$ROOT/etc/lilo/install ]; then echo; \
 	  echo -n "$$ROOT/etc/lilo/install is obsolete. LILO is now ";\
 	  echo "re-installed "; \
@@ -456,13 +458,13 @@ tidy:
 		if [ -x lilo ]; then strip lilo; fi
 		if [ -x lilo.static ]; then strip lilo.static; fi
 
-clean:		tidy
+clean:  tidy
 		rm -f *.o *.s *.i *.img *.b tmp_make version
 		rm -f lilo lilo.static activate edit mkloader
 		make -C diagnose clean
 		make -C dos clean
 
-spotless:	clean
+distclean:
 		rm -f *~ */*~ *.b *.com lilo*tar.gz
 		make -C diagnose spotless
 		make -C dos spotless

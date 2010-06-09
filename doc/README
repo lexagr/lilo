@@ -22,7 +22,7 @@ LaTeX and FIG sources:
 
 The LaTeX translations of the FIG files are already included in the
 distribution, so you can print the documentation without fig2dev.
-WARNING: make spotless  removes those pre-built LaTeX files.
+WARNING: 'make distclean'  removes those pre-built LaTeX files.
 
 You can also omit all drawings by typing  make dummies . The drawings
 are only necessary when processing the technical overview document.

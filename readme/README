@@ -2364,7 +2364,7 @@ file. Example:
 After changing the build-time configuration, LILO has to be recompiled with 
 the following commands:
 
-make spotless
+make distclean
 make
 
 

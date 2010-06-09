@@ -1,5 +1,6 @@
+# -*- makefile -*-
 # Makefile for BCC tests
-#
+
 MODEL=s
 CC = bcc -M$(MODEL)
 CPP = gcc -E
@@ -98,6 +99,6 @@ tidy:
 clean:	tidy
 	rm -f *.o *.s *.img *.b *.com *.gz
 
-spotless:  clean
+distclean:  clean
 	rm -f *~
 

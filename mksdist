@@ -14,7 +14,7 @@ D1=$(pwd)
 echo VERSION = $VERSION
 echo VERSNUM = $VERSNUM
 
-make spotless
+make distclean
 
 pushd ..
 

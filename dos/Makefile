@@ -1,8 +1,10 @@
+# -*- makefile -*-
+
 # Makefile for BCC compilation of 'lilo.com'
 #
 # Known to work with BCC version 0.16.15
 # Known not to work with BCC version 0.16.10
-#
+
 MODEL=d
 CC = bcc -M$(MODEL)
 CPP = gcc -E
@@ -67,6 +69,6 @@ tidy:
 clean:	tidy
 	rm -f *.o *.s *.img *.b *.com *.gz
 
-spotless:  clean
+distclean:  clean
 	rm -f *~ *.c *.h
 

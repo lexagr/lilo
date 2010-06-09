@@ -1,3 +1,5 @@
+# -*- makefile -*-
+
 LATEX=latex
 RLATEX=./rlatex
 FIG2DEV=fig2dev
@@ -43,7 +45,7 @@ clean:		tidy
 		rm -f *.ps *.dvi
 		rm -Rf user tech
 
-spotless:	clean
+distclean:	clean
 #		rm -f *.dvi $(IMAGES)
 
 dummies:
