@@ -280,16 +280,15 @@ xxx.s:		chain.S lilo.h Makefile
 $(OBJS):	Makefile
 
 #
-# shorthand, if one knows that one has the 'bcc' compiler
+# shorthand install, if one knows that one has the 'bcc' compiler
 #
 ins:	diag install
 
 #
 #  normal install, but doesn't make the diagnostic binaries
 #
-install:  all
-	mkdir -p $$ROOT$(SBIN_DIR) $$ROOT$(CFG_DIR) $$ROOT$(BOOT_DIR) \
-	  $$ROOT$(USRSBIN_DIR) $$ROOT$(MAN_DIR)/man5 $$ROOT$(MAN_DIR)/man8
+install:
+	mkdir -p $$ROOT$(SBIN_DIR) $$ROOT$(CFG_DIR) $$ROOT$(BOOT_DIR) $$ROOT$(USRSBIN_DIR)
 	if [ -f diag1.img ]; then \
 	  cp -f diag1.img $$ROOT$(BOOT_DIR); fi
 	if [ -f diag2.img ]; then \
@@ -320,9 +319,6 @@ install:  all
 	cp lilo $$ROOT$(SBIN_DIR)
 	strip $$ROOT$(SBIN_DIR)/lilo
 	cp keytab-lilo.pl $$ROOT$(USRSBIN_DIR)
-	cp manPages/lilo.8 $$ROOT$(MAN_DIR)/man8
-	cp manPages/mkrescue.8 $$ROOT$(MAN_DIR)/man8
-	cp manPages/lilo.conf.5 $$ROOT$(MAN_DIR)/man5
 	if [ -d $$ROOT$(DOS_DIR) -a -f lilo.com ]; then \
 	  cp lilo.com $$ROOT$(DOS_DIR); fi
 
