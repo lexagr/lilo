@@ -67,13 +67,13 @@ test4.com:	test4.o bios_start.o cprintf.o
 test5.com:	test5.o bios_start.o cprintf.o
 
 sector.o:	sector.s
-test4.o:	test4.c ../bdata.h
-test5.o:	test5.c ../bdata.h
+test4.o:	test4.c ../src/bdata.h
+test5.o:	test5.c ../src/bdata.h
 cprintf.o:	cprintf.c
 bios_start.o:	bios.c
 	bcc -c -u -I$(CINCL) -DL_bios_start -D__AS386_16__ -D__STANDALONE__ -o bios_start.o bios.c -v
 
-test4d.o:	test4.c ../bdata.h
+test4d.o:	test4.c ../src/bdata.h
 	bcc -Md $(COPT) -o $@ $<
 
 test4d.com:	test4d.o

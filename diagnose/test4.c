@@ -8,7 +8,7 @@
 
 */
 #include <bios.h>
-#include "../bdata.h"
+#include "../src/bdata.h"
 
 #define DISK_VERSION "2.4"
 

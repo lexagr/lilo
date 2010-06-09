@@ -9,7 +9,7 @@
 */
 #include <bios.h>
 #include <time.h>
-#include "../bdata.h"
+#include "../src/bdata.h"
 
 #define DISK_VERSION "3.0"
 
