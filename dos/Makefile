@@ -62,6 +62,9 @@ map.o:		../map.c $(HFILES)
 	$(CC) $(COPT) -o $@  ../$*.c
 
 
+install:
+	if [ -d $$ROOT$(DOS_DIR) -a -f lilo.com ]; then \
+	  cp lilo.com $$ROOT$(DOS_DIR); fi
 
 tidy:
 	rm -f *.map *.lis core

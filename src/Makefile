@@ -319,8 +319,6 @@ install:
 	cp lilo $$ROOT$(SBIN_DIR)
 	strip $$ROOT$(SBIN_DIR)/lilo
 	cp keytab-lilo.pl $$ROOT$(USRSBIN_DIR)
-	if [ -d $$ROOT$(DOS_DIR) -a -f lilo.com ]; then \
-	  cp lilo.com $$ROOT$(DOS_DIR); fi
 
 insobs:
 	@if [ -e $$ROOT/etc/lilo/install ]; then echo; \
