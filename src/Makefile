@@ -51,7 +51,6 @@ CFILES=boot.c bsect.c cfg.c common.c device.c edit.c geometry.c \
 HFILES=bdata.h bitmap.h boot.h bsect.h cfg.h common.h config.h device.h \
   edit.h geometry.h identify.h lilo.h loader.h map.h md-int.h partition.h \
   probe.h raid.h shs2.h temp.h version.h vesainfo.h
-#BOOTS=boot-text.b boot-menu.b boot-bmp.b chain.b os2_d.b mbr.b mbr2.b
 
 .SUFFIXES:	.img .b .com .S .s
 
@@ -118,15 +117,8 @@ floppy2:	test.img disk.b
 diagnostic:	test.img diag2.img diag3.img
 dosexe:		test.img lilo.com
 
-#	if [ -x /usr/bin/bcc -o -x /usr/local/bin/bcc ]; then make diagnostic; \
-#	else echo "You don't seem to have the 'bcc' compiler from the 'dev86' package."; \
-#		exit 1; fi
-
 manpath:
 	echo $(MAN_DIR)
-
-#check-config:
-#		$(CPP) check-config.cpp $(PCONFIG) >/dev/null
 
 .c.o:
 		$(CC) -c $(CFLAGS) $*.c
@@ -149,13 +141,6 @@ edit:		$(EDIT)
 loader.i:	mkloader first.b second.b third.b bitmap.b mbr.b \
 			chain.b os2_d.b mbr2.b
 		./mkloader >loader.i
-
-#loader.o:	loader.s first.b second.b third.b bitmap.b mbr.b \
-#			chain.b os2_d.b mbr2.b
-#		$(NASM) -f elf -o loader.o -l loader.lis  loader.s
-
-#loader.s:	loader.S
-#		$(CPP) -traditional $(PCONFIG) -o loader.s  loader.S
 
 disk.com:	disk.b
 		cp disk.b disk.com
@@ -289,12 +274,6 @@ chain.s:	chain.S lilo.h version.h first.b Makefile
 os2_d.s:	chain.S lilo.h version.h first.b Makefile
 		$(CPP) $(PCONFIG) chain.S -DDOS_D -o os2_d.s
 
-#dos_d.s:	chain.S lilo.h version.h first.b
-#		$(CPP) $(PCONFIG) chain.S -DDOS_D -o dos_d.s
-
-#dump.s:		dump.S lilo.h version.h first.b
-#		$(CPP) $(PCONFIG) `./lilo -X` dump.S -DDOS_D -o dump.s
-
 xxx.s:		chain.S lilo.h Makefile
 		$(CPP) chain.S -DXXX -o xxx.s
 
@@ -349,8 +328,7 @@ install:  all
 
 insobs:
 	@if [ -e $$ROOT/etc/lilo/install ]; then echo; \
-	  echo -n "$$ROOT/etc/lilo/install is obsolete. LILO is now ";\
-	  echo "re-installed "; \
+	  echo "$$ROOT/etc/lilo/install is obsolete. LILO is now re-installed";\
 	  echo "by just invoking $(SBIN_DIR)/lilo"; echo; fi
 	@echo "$(SBIN_DIR)/lilo must now be run to complete the update."
 
