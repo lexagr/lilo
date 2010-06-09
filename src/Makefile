@@ -77,7 +77,7 @@ alles: all lilo.static
 #
 test:	test.img
 test.img:
-	./checkit
+	../checkit
 	echo Tested >test.img	
 #
 # make the bootable diagnostic floppies
@@ -318,7 +318,7 @@ install:
 	cp mkrescue $$ROOT$(SBIN_DIR)
 	cp lilo $$ROOT$(SBIN_DIR)
 	strip $$ROOT$(SBIN_DIR)/lilo
-	cp keytab-lilo.pl $$ROOT$(USRSBIN_DIR)
+	cp ../keytab-lilo.pl $$ROOT$(USRSBIN_DIR)
 
 insobs:
 	@if [ -e $$ROOT/etc/lilo/install ]; then echo; \
