@@ -337,26 +337,20 @@ version:	common.c lilo.h common.h
 mkloader:	temp.c
 		$(CC) $(CFLAGS) -DLILO_BINARY -o mkloader temp.c
 
+
 tidy:
 		rm -f core $(LIS) *.shs *.crc $(TMP)*
 		rm -rf sbin boot usr
-		make -C diagnose tidy
-		make -C dos tidy
-		make -C doc tidy
 		if [ -x lilo ]; then strip lilo; fi
 		if [ -x lilo.static ]; then strip lilo.static; fi
 
-clean:  tidy
+clean:
 		rm -f *.o *.s *.i *.img *.b tmp_make version
 		rm -f lilo lilo.static activate edit mkloader
-		make -C diagnose clean
-		make -C dos clean
 
 distclean:
 		rm -f *~ */*~ *.b *.com lilo*tar.gz
-		make -C diagnose spotless
-		make -C dos spotless
-		make -C doc clean
+
 
 ### Dependencies
 activate.o: activate.c
