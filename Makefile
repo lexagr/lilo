@@ -25,13 +25,13 @@ help:
 #
 # everything needed to run, just short of installation
 #
-all:
+all: test
 	make -C src all
 
 #
 # everything above plus the statically linked version
 #
-alles: 
+alles: test
 	make -C src alles
 
 #
@@ -49,15 +49,22 @@ it:	docs alles diagnostic dosexe
 #
 # make the bootable diagnostic floppies
 #
-floppy:
+floppy: test
 	make -C src floppy
 
-diagnostic:	
+diagnostic: test
 	make -C src diagnostic
-	
-dosexe:
+
+dosexe: test
 	make -C src dosexe
-	
+
+#
+# test for compilers & utilities
+#
+test: test.img
+test.img:
+	./checkit
+	echo Tested >test.img	
 
 #
 # shorthand install, if one knows that one has the 'bcc' compiler
@@ -81,6 +88,7 @@ tidy:
 	make -C doc tidy
 
 clean: tidy
+	rm -f test.img
 	make -C src clean
 	make -C diagnose clean
 	make -C dos clean

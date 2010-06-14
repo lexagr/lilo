@@ -56,13 +56,6 @@ all:	lilo bootsect.b diag1.img
 alles: all lilo.static
 
 #
-# test for compilers & utilities
-#
-test:	test.img
-test.img:
-	../checkit
-	echo Tested >test.img	
-#
 # make the bootable diagnostic floppies
 #
 floppy:
