@@ -88,9 +88,6 @@ manpath:
 .img.b:
 		dd if=$*.img of=$*.b bs=32 skip=1
 
-activate:	activate.c
-		$(CC) -Wall -s -O -o activate activate.c $(LDFLAGS)
-
 edit:		$(EDIT)
 		$(CC) -Wall -s -O -DSTANDALONE -o edit $(EDIT) $(LDFLAGS)
 
@@ -294,14 +291,13 @@ tidy:
 
 clean:
 		rm -f *.o *.s *.i *.img *.b tmp_make version
-		rm -f lilo lilo.static activate edit mkloader
+		rm -f lilo lilo.static edit mkloader
 
 distclean:
 		rm -f *~ */*~ *.b *.com lilo*tar.gz
 
 
 ### Dependencies
-activate.o: activate.c
 boot.o: boot.c config.h lilo.h version.h common.h geometry.h device.h \
   cfg.h map.h partition.h boot.h loader.h
 bsect.o: bsect.c config.h lilo.h version.h common.h raid.h cfg.h device.h \

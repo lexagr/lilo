@@ -337,13 +337,6 @@ EOF
     exit 1
 fi
 
-#if [ ! -x ./activate ]; then
-#    cat <<EOF
-#activate  is not in the current directory. Please cd to your LILO source
-#directory and run QuickInst again.
-#EOF
-#fi
-
 if [ -d $ROOT/etc/lilo -a ! -x $ROOT/etc/lilo/install ]; then
     ln -s $SBIN_DIR/lilo $ROOT/etc/lilo/install
 fi
