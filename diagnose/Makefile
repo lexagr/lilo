@@ -32,9 +32,19 @@ LOOP=/dev/loop5
 all:	check test4d.com test4.com bootdiagnostic.b.gz test5.com
 
 check:	
+	# You need the bcc compiler for some steps!
 	@if [ -x /usr/bin/bcc -o -x /usr/local/bin/bcc ]; then echo Okay; \
-	else echo; echo "You don't seem to have the 'bcc' compiler from the 'dev86' package."; \
-		echo; exit 1; fi
+	else echo "*** WARNING ***"; \
+		echo "You don't seem to have the 'bcc' compiler from the 'dev86' package. "; \
+		echo; exit 1; \
+	fi
+	# You need root permissions for some steps! (Test with mkfs.msdos)
+	@if [ `which mkfs.msdos | grep -c mkfs` -eq 1 ]; then echo Okay; \
+	else echo "*** WARNING ***"; \
+		echo -n "You don't seem to have the commands 'mkfs.msdos' and 'mount'. "; \
+		echo "Perhaps you are not ROOT ?"; \
+		echo; exit 1; \
+	fi
 
 floppy:	bootdiagnostic.b.gz
 	@echo
@@ -51,7 +61,6 @@ bootdiagnostic.b.gz:	sector.b test4.com test4d.com
 	dd if=sector.b bs=2 count=1 of=floppy.b
 	dd if=bootdiagnostic.b bs=2 skip=1 count=30 >>floppy.b
 	dd if=sector.b bs=2 skip=31 count=225 >>floppy.b
-#	umount $(MFILE) 2>/dev/null
 	mount -t msdos -o loop=$(LOOP) bootdiagnostic.b $(MFILE)
 	dd if=floppy.b of=$(LOOP) bs=512
 	chown 0.0 *.com
@@ -99,7 +108,7 @@ floppy.b:	sector.b
 tidy:
 	rm -f *.map *.lis core
 
-clean:	tidy
+clean:
 	rm -f *.o *.s *.img *.b *.com *.gz
 
 distclean:  clean
