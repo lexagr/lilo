@@ -91,7 +91,6 @@ floppy2:	test.img disk.b
 	@make -C diagnose check; make -C diagnose floppy
 
 diagnostic:	test.img diag2.img diag3.img
-dosexe:		test.img lilo.com
 
 manpath:
 	echo $(MAN_DIR)
@@ -182,13 +181,6 @@ diag2.img:	diagnose/test4.com pseudo.b
 
 diag3.img:	diagnose/test5.com pseudo3.b
 	cat pseudo3.b diagnose/test5.com >diag3.img
-
-dos/lilo.com:
-	make -C dos -e CFLAGS="$(PCONFIG)" lilo.com
-
-lilo.com:	dos/lilo.com
-	cp -uf $< $@
-
 
 flags.i:	test.img Makefile version $(CFILES) $(HFILES)
 	echo "#define CFLAGS \"" $(CFLAGS) "\"" >flags.i

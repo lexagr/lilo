@@ -20,7 +20,7 @@ CFLAGS = -DLCF_IGNORECASE -DLCF_DSECS=3 -DLCF_PASS160
 
 .SUFFIXES:	.com .S
 
-HFILES = ../lilo.h ../bitmap.h ../cfg.h ../config.h ../common.h ../map.h ../temp.h ../version.h
+HFILES = ../src/lilo.h ../src/bitmap.h ../src/cfg.h ../src/config.h ../src/common.h ../src/map.h ../src/temp.h ../src/version.h
 
 .c.o:
 	$(CC) $(COPT) -o $@ ../$*.c
@@ -45,23 +45,25 @@ check:
 	else echo; echo "You don't seem to have the 'bcc' compiler from the 'dev86' package."; \
 		echo; exit 1; fi
 
+lilo:
+	make -e CFLAGS="$(PCONFIG)" lilo.com
 
-lilo.com:	lilo.o common.o cfg.o map.o # cprintf.o
+lilo.com:	lilo.o common.o cfg.o map.o   # cprintf.o
 
-lilo.o:		../lilo.c $(HFILES)
-	$(CC) $(COPT) -o $@  ../$*.c
+lilo.o:		../src/lilo.c $(HFILES)
+	$(CC) $(COPT) -o $@  ../src/$*.c
 
-cfg.o:		../cfg.c $(HFILES)
-	$(CC) $(COPT) -o $@  ../$*.c
+cfg.o:		../src/cfg.c $(HFILES)
+	$(CC) $(COPT) -o $@  ../src/$*.c
 
-common.o:	../common.c $(HFILES)
-	$(CC) $(COPT) -o $@  ../$*.c
+common.o:	../src/common.c $(HFILES)
+	$(CC) $(COPT) -o $@  ../src/$*.c
 
-cprintf.o:	../cprintf.c $(HFILES)
-	$(CC) $(COPT) -o $@  ../$*.c
+cprintf.o:	../src/cprintf.c $(HFILES)
+	$(CC) $(COPT) -o $@  ../src/$*.c
 
-map.o:		../map.c $(HFILES)
-	$(CC) $(COPT) -o $@  ../$*.c
+map.o:		../src/map.c $(HFILES)
+	$(CC) $(COPT) -o $@  ../src/$*.c
 
 
 install:
