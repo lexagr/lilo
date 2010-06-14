@@ -1,6 +1,9 @@
 # -*- makefile -*-
 # Makefile for BCC tests
 
+# adding variables
+include ../make.vars
+
 MODEL=s
 CC = bcc -M$(MODEL)
 CPP = gcc -E

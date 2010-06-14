@@ -7,23 +7,6 @@ include ../make.vars
 #  Do not modify anything below this point
 #
 
-SBIN_DIR=/sbin
-CFG_DIR=/etc
-BOOT_DIR=/boot
-USRSBIN_DIR=/usr/sbin
-BUILTIN=1
-
-PCONFIG=$(KVER) $(HDM) $(LILO) `( if [ -r $$ROOT/etc/lilo.defines ]; then \
-  cat $$ROOT/etc/lilo.defines; else echo $(CONFIG); fi ) | \
-  sed 's/-D/-DLCF_/g'`
-LILO=-DLILO=0xbb920890
-KVER=`if [ -f /usr/include/linux/version.h ]; then echo -DHAS_VERSION_H; fi`
-HDM=`if [ -f /usr/include/libdevmapper.h ]; then echo -DHAS_LIBDEVMAPPER_H; fi`
-DEVMAPPER=`if [ -f /usr/include/libdevmapper.h ]; then echo "-ldevmapper"; fi`
-
-TMP=_TmP_
-
-
 SHELL=/bin/sh
 CC=gcc
 CPP=$(CC) -E

@@ -1,9 +1,11 @@
 # -*- makefile -*-
-
 # Makefile for BCC compilation of 'lilo.com'
 #
 # Known to work with BCC version 0.16.15
 # Known not to work with BCC version 0.16.10
+
+# adding variables
+include ../make.vars
 
 MODEL=d
 CC = bcc -M$(MODEL)
