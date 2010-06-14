@@ -58,25 +58,7 @@ alles: all lilo.static
 #
 # make the bootable diagnostic floppies
 #
-floppy:
-	@echo
-	@echo Make sure you have 2 blank, formatted, 1.44Mb floppies
-	@echo before you proceed from this point.
-	@echo "Press <Enter> to continue, <^C> to abort ..."
-	@read
-	@make floppy1
-	@echo Done.
-	@echo
-	@echo Remove the floppy from the drive.  Label it "\"1.6\""
-	@echo "Press <Enter> to continue, <^C> to abort ..."
-	@read
-	@make floppy2
-	@echo Done.
-	@echo
-	@echo Remove the floppy from the drive.  Label it "\"2.4\""
-	@echo
-
-floppy1:	test.img disk.com bootsect.b
+floppy1: disk.com bootsect.b
 	@echo
 	@echo Creating Diagnostic Floppy 1.6
 	@echo
@@ -85,7 +67,7 @@ floppy1:	test.img disk.com bootsect.b
 	@read
 	cat bootsect.b disk.com | dd of=/dev/fd0 bs=512
 
-floppy2:	test.img disk.b
+floppy2: disk.b
 	@echo
 	@echo Creating Diagnostic Floppy 2.4
 	@make -C diagnose check; make -C diagnose floppy

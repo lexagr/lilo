@@ -50,13 +50,28 @@ it:	docs alles diagnostic dosexe
 # make the bootable diagnostic floppies
 #
 floppy: test
-	make -C src floppy
+	@echo
+	@echo Make sure you have 2 blank, formatted, 1.44Mb floppies
+	@echo before you proceed from this point.
+	@echo "Press <Enter> to continue, <^C> to abort ..."
+	@read
+	@make -C src floppy1
+	@echo Done.
+	@echo
+	@echo Remove the floppy from the drive.  Label it "\"1.6\""
+	@echo "Press <Enter> to continue, <^C> to abort ..."
+	@read
+	@make -C src floppy2
+	@echo Done.
+	@echo
+	@echo Remove the floppy from the drive.  Label it "\"2.4\""
+	@echo
 
 diagnostic: test
 	make -C src diagnostic
 
 dosexe: test
-	make -C src dosexe
+	make -C dos lilo
 
 #
 # test for compilers & utilities
