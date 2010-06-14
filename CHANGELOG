@@ -8,6 +8,7 @@ Changes for version 23.0 (unreleased) - Joachim Wiedorn
     - Split file CHANGES into CHANGELOG and CHANGELOG_old.
     - Better check for tool 'mkfs.msdos', for with you must be root.
     - Fix error messages of script 'checkit'.
+
     - Create new main Makefile.
     - Move target 'spotless' to 'distclean' in concerned files.
     - Move src/Makefile header into extra file make.vars.
@@ -17,6 +18,14 @@ Changes for version 23.0 (unreleased) - Joachim Wiedorn
     - Delete displaced make commands in src/Makefile.
     - Update script paths in src/Makefile.
     - Update path to bdata.h in files of directoy diagnose.
+
+    - Move more variables into make.vars.
+    - Move target 'test' into main Makefile.
+    - Update paths in dos/Makefile.
+    - Displace floppy targets in main and src Makefiles.
+    - Update paths to files in directory diagnose.
+    - Better checks in diagnose/Makefile.
+    - Remove old program 'activate'.
 
 Changes from version 22.7.3 to 22.8 (16-Feb-2007) John Coffman
 
