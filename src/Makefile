@@ -70,9 +70,8 @@ floppy1: disk.com bootsect.b
 floppy2: disk.b
 	@echo
 	@echo Creating Diagnostic Floppy 2.4
-	@make -C diagnose check; make -C diagnose floppy
-
-diagnostic:	test.img diag2.img diag3.img
+	@make -C ../diagnose check
+	@make -C ../diagnose floppy
 
 manpath:
 	echo $(MAN_DIR)
@@ -116,55 +115,54 @@ mbr2.s:		mbr.S lilo.h Makefile
 		$(CPP) -traditional $(PCONFIG) -DMBX=0x93c00848 \
 			-o mbr2.s  mbr.S
 
-mbr2.b:		mbr2.img
-		dd if=$*.img of=$*.b bs=32 skip=49
+mbr2.b: mbr2.img
+	dd if=$*.img of=$*.b bs=32 skip=49
 
-bootsect.s:	bootsect.S disk.b
-		$(CPP) -traditional $(PCONFIG) \
-			-DSIZEDISKB=`wc -c <disk.b | sed "s/ //g"` \
-			-o bootsect.s  bootsect.S
+bootsect.s: bootsect.S disk.b
+	$(CPP) -traditional $(PCONFIG) \
+		-DSIZEDISKB=`wc -c <disk.b | sed "s/ //g"` \
+		-o bootsect.s  bootsect.S
 
-pseudo.s:	bootsect.S pseudo.S diagnose/test4.com
-		cat bootsect.S pseudo.S >$(TMP).S
-		$(CPP) -traditional $(PCONFIG) \
-			-DSIZEKRNL=`wc -c <diagnose/test4.com | sed "s/ //g"` \
-			-DSIZEDISKB=512 -o pseudo.s $(TMP).S
-		rm -f $(TMP).S
+pseudo.s: bootsect.S pseudo.S
+	make -C ../diagnose all
+	cat bootsect.S pseudo.S >$(TMP).S
+	$(CPP) -traditional $(PCONFIG) \
+		-DSIZEKRNL=`wc -c <diagnose/test4.com | sed "s/ //g"` \
+		-DSIZEDISKB=512 -o pseudo.s $(TMP).S
+	rm -f $(TMP).S
 
-pseudo1.s:	bootsect.S pseudo.S disk.com
-		cat bootsect.S pseudo.S >$(TMP).S
-		$(CPP) -traditional $(PCONFIG) \
-			-DSIZEKRNL=`wc -c <disk.com | sed "s/ //g"` \
-			-DSIZEDISKB=512 -o pseudo1.s $(TMP).S
-		rm -f $(TMP).S
+pseudo1.s: bootsect.S pseudo.S disk.com
+	cat bootsect.S pseudo.S >$(TMP).S
+	$(CPP) -traditional $(PCONFIG) \
+		-DSIZEKRNL=`wc -c <disk.com | sed "s/ //g"` \
+		-DSIZEDISKB=512 -o pseudo1.s $(TMP).S
+	rm -f $(TMP).S
 
-pseudo3.s:	bootsect.S pseudo.S diagnose/test5.com
-		cat bootsect.S pseudo.S >$(TMP).S
-		$(CPP) -traditional $(PCONFIG) \
-			-DSIZEKRNL=`wc -c <diagnose/test5.com | sed "s/ //g"` \
-			-DSIZEDISKB=512 -o pseudo3.s $(TMP).S
-		rm -f $(TMP).S
+pseudo3.s: bootsect.S pseudo.S
+	make -C ../diagnose all
+	cat bootsect.S pseudo.S >$(TMP).S
+	$(CPP) -traditional $(PCONFIG) \
+		-DSIZEKRNL=`wc -c <../diagnose/test5.com | sed "s/ //g"` \
+		-DSIZEDISKB=512 -o pseudo3.s $(TMP).S
+	rm -f $(TMP).S
 
 pseudo.b:	pseudo.s
 pseudo1.b:	pseudo1.s
 pseudo3.b:	pseudo3.s
 
-diagnose/test4.com: 	diagnose/test4.c
-	make -C diagnose all
-
-diagnose/test5.com:	diagnose/test5.c
-	make -C diagnose all
 
 diag1.img:	disk.com pseudo1.b
 	cat pseudo1.b disk.com >diag1.img
 
-diag2.img:	diagnose/test4.com pseudo.b
-	cat pseudo.b diagnose/test4.com >diag2.img
+diag2.img: pseudo.b
+	make -C ../diagnose all
+	cat pseudo.b ../diagnose/test4.com >diag2.img
 
-diag3.img:	diagnose/test5.com pseudo3.b
-	cat pseudo3.b diagnose/test5.com >diag3.img
+diag3.img: pseudo3.b
+	make -C ../diagnose all
+	cat pseudo3.b ../diagnose/test5.com >diag3.img
 
-flags.i:	test.img Makefile version $(CFILES) $(HFILES)
+flags.i:	../test.img Makefile version $(CFILES) $(HFILES)
 	echo "#define CFLAGS \"" $(CFLAGS) "\"" >flags.i
 	tail -$$((`wc -l <Makefile`-`sed /\#\#\#/q <Makefile | wc -l`)) \
 	  <Makefile | grep -v "0x" >$(TMP)

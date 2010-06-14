@@ -68,7 +68,8 @@ floppy: test
 	@echo
 
 diagnostic: test
-	make -C src diagnostic
+	make -C src diag2.img
+	make -C src diag3.img
 
 dosexe: test
 	make -C dos lilo
