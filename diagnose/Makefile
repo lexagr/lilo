@@ -18,7 +18,7 @@ FDSIZE = 1440
 MFILE=/tmp/liloboot
 LOOP=/dev/loop5
 
-.SUFFIXES:	.com .S
+.SUFFIXES:  .com .S
 
 .c.o:
 	$(CC) $(COPT) -o $@ $< -A-l -A$*.lis
@@ -29,31 +29,24 @@ LOOP=/dev/loop5
 .s.o:
 	$(AS) $(AOPT) -l $*.lis -o $@ $<
 
-all:	check test4d.com test4.com bootdiagnostic.b.gz test5.com
+all:  check test4d.com test4.com test5.com bootdiagnostic.b.gz
 
-check:	
+check:
 	# You need the bcc compiler for some steps!
 	@if [ -x /usr/bin/bcc -o -x /usr/local/bin/bcc ]; then echo Okay; \
 	else echo "*** WARNING ***"; \
 		echo "You don't seem to have the 'bcc' compiler from the 'dev86' package. "; \
-		echo; exit 1; \
-	fi
-	# You need root permissions for some steps! (Test with mkfs.msdos)
-	@if [ `which mkfs.msdos | grep -c mkfs` -eq 1 ]; then echo Okay; \
-	else echo "*** WARNING ***"; \
-		echo -n "You don't seem to have the commands 'mkfs.msdos' and 'mount'. "; \
-		echo "Perhaps you are not ROOT ?"; \
-		echo; exit 1; \
+		echo "***************"; exit 1; \
 	fi
 
-floppy:	bootdiagnostic.b.gz
+floppy:  bootdiagnostic.b.gz
 	@echo
 	@echo Insert a blank, formatted, floppy into drive 0
 	@echo "Press <Enter> to continue, <^C> to abort ..."
 	@read
 	gzip -d <bootdiagnostic.b.gz | dd of=/dev/fd0 bs=1024
 
-bootdiagnostic.b.gz:	sector.b test4.com test4d.com
+bootdiagnostic.b.gz:  check2 sector.b test4.com test4d.com
 	rm -rf $(MFILE) bootdiagnostic.b
 	mkdir $(MFILE)
 	dd if=/dev/zero of=bootdiagnostic.b bs=1024 count=$(FDSIZE)
@@ -73,6 +66,15 @@ bootdiagnostic.b.gz:	sector.b test4.com test4d.com
 	rm -rf $(MFILE)
 	gzip -9 <bootdiagnostic.b >bootdiagnostic.b.gz
 	rm -f bootdiagnostic.b
+
+check2:
+	# You need root permissions for some steps! (Test with mkfs.msdos)
+	@if [ `which mkfs.msdos | grep -c mkfs` -eq 1 ]; then echo Okay; \
+	else echo "*** WARNING ***"; \
+		echo -n "You don't seem to have the commands 'mkfs.msdos'. "; \
+		echo "Perhaps you are not ROOT ?"; \
+		echo "***************"; exit 1; \
+	fi
 
 test4.com:	test4.o bios_start.o cprintf.o
 
