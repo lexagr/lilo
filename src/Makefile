@@ -66,6 +66,8 @@ floppy2: disk.b
 	@make -C ../diagnose check
 	@make -C ../diagnose floppy
 
+diagnostic: ../test.img diag2.img diag3.img
+
 manpath:
 	echo $(MAN_DIR)
 
