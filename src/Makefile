@@ -260,9 +260,9 @@ install:
 	  ln -s boot-menu.b $$ROOT$(BOOT_DIR)/boot.b; fi
 	if [ $(BUILTIN) = 1 ]; then \
 	  rm -f $$ROOT$(BOOT_DIR)/boot.b; fi
-	cp mkrescue $$ROOT$(SBIN_DIR)
 	cp lilo $$ROOT$(SBIN_DIR)
 	strip $$ROOT$(SBIN_DIR)/lilo
+	cp ../mkrescue $$ROOT$(SBIN_DIR)
 	cp ../keytab-lilo.pl $$ROOT$(USRSBIN_DIR)
 
 insobs:
