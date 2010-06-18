@@ -6,7 +6,7 @@
 help:
 	@echo ""
 	@echo "Targets:"
-	@echo "  make all         # binaries"
+	@echo "  make all         # binaries (without dosexe, diag.)"
 	@echo "  make dosexe      # DOS lilo.com utility"
 	@echo "  make diagnostic  # standalone diagnostics"
 	@echo "  make alles       # all above + static binary"
