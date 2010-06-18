@@ -27,6 +27,12 @@ Changes for version 23.0 (unreleased) - Joachim Wiedorn
     - Better checks in diagnose/Makefile.
     - Remove old program 'activate'.
 
+    - Use correct path for script mkrescue.
+    - Target 'all' now without run of 'diagnostic' and 'dosexe'.
+    - Optimize warnings while running target 'diagnostic'.
+    - Renumber the pseudo targets.
+    - Move commands for target 'diagnostic' into src/Makefile.
+
 Changes from version 22.7.3 to 22.8 (16-Feb-2007) John Coffman
 
   Boot Installer
