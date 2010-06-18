@@ -28,7 +28,7 @@ LIS=chain.lis disk.lis dparam.lis os2_d.lis first.lis second.lis \
   bootsect.lis third.lis mbr.lis bitmap.lis pseudo.lis mbr2.lis \
   pseudo1.lis loader.lis pseudo3.lis
 BFILES=first.b second.b third.b bitmap.b chain.b mbr.b mbr2.b \
-  bootsect.b pseudo.b pseudo1.b pseudo3.b
+  bootsect.b pseudo1.b pseudo2.b pseudo3.b
 CFILES=boot.c bsect.c cfg.c common.c device.c edit.c geometry.c \
   identify.c lilo.c map.c partition.c probe.c raid.c shs2.c temp.c
 HFILES=bdata.h bitmap.h boot.h bsect.h cfg.h common.h config.h device.h \
@@ -113,19 +113,19 @@ bootsect.s: bootsect.S disk.b
 		-DSIZEDISKB=`wc -c <disk.b | sed "s/ //g"` \
 		-o bootsect.s  bootsect.S
 
-pseudo.s: bootsect.S pseudo.S
-	make -C ../diagnose all
-	cat bootsect.S pseudo.S >$(TMP).S
-	$(CPP) -traditional $(PCONFIG) \
-		-DSIZEKRNL=`wc -c <diagnose/test4.com | sed "s/ //g"` \
-		-DSIZEDISKB=512 -o pseudo.s $(TMP).S
-	rm -f $(TMP).S
-
 pseudo1.s: bootsect.S pseudo.S disk.com
 	cat bootsect.S pseudo.S >$(TMP).S
 	$(CPP) -traditional $(PCONFIG) \
 		-DSIZEKRNL=`wc -c <disk.com | sed "s/ //g"` \
 		-DSIZEDISKB=512 -o pseudo1.s $(TMP).S
+	rm -f $(TMP).S
+
+pseudo2.s: bootsect.S pseudo.S
+	make -C ../diagnose all
+	cat bootsect.S pseudo.S >$(TMP).S
+	$(CPP) -traditional $(PCONFIG) \
+		-DSIZEKRNL=`wc -c <../diagnose/test4.com | sed "s/ //g"` \
+		-DSIZEDISKB=512 -o pseudo2.s $(TMP).S
 	rm -f $(TMP).S
 
 pseudo3.s: bootsect.S pseudo.S
@@ -136,17 +136,17 @@ pseudo3.s: bootsect.S pseudo.S
 		-DSIZEDISKB=512 -o pseudo3.s $(TMP).S
 	rm -f $(TMP).S
 
-pseudo.b:	pseudo.s
 pseudo1.b:	pseudo1.s
+pseudo2.b:	pseudo2.s
 pseudo3.b:	pseudo3.s
 
 
 diag1.img:	disk.com pseudo1.b
 	cat pseudo1.b disk.com >diag1.img
 
-diag2.img: pseudo.b
+diag2.img: pseudo2.b
 	make -C ../diagnose all
-	cat pseudo.b ../diagnose/test4.com >diag2.img
+	cat pseudo2.b ../diagnose/test4.com >diag2.img
 
 diag3.img: pseudo3.b
 	make -C ../diagnose all
