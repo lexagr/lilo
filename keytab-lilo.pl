@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 $DEFAULT_MAP = "us";
-$DEFAULT_EXT = ".map";
+$DEFAULT_EXT = ".kmap";
 
 sub usage
 {
