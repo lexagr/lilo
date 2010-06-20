@@ -370,19 +370,16 @@ void do_disk(void)
     char *disk,*bios,*sectors,*heads,*cylinders,*maxpart;
     int major;
 
-    disk = cfg_get_strg(cf_options,"disk");
     cfg_init(cf_disk);
     (void) cfg_parse(cf_disk);
-    if (stat(disk,&st) < 0) {
-        if (cfg_get_flag(cf_disk,"inaccessible")) {
-            cfg_unset(cf_options,"disk");
-            return;
-        }
-        die("do_disk: stat %s: %s",disk,strerror(errno));
+    disk = cfg_get_strg(cf_options,"disk");
+    
+    if (!cfg_get_flag(cf_disk,"inaccessible")) {
+      if (stat(disk,&st) < 0) die("stat %s: %s",disk,strerror(errno));
+      if (!S_ISBLK(st.st_mode) || 
+               (has_partitions(st.st_rdev) && (MINOR(st.st_rdev) & P_MASK(st.st_rdev))))
+                       die(" '%s' is not a whole disk device",disk);
     }
-    if (!S_ISBLK(st.st_mode) || 
-    	(has_partitions(st.st_rdev) && (MINOR(st.st_rdev) & P_MASK(st.st_rdev))))
-		die(" '%s' is not a whole disk device",disk);
 
     entry = alloc_t(DT_ENTRY);
     entry->device = st.st_rdev;

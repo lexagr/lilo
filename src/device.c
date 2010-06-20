@@ -233,8 +233,13 @@ int dev_open(DEVICE *dev,int number,int flags)
 	stat(name, &st.st);
 #endif
     if (flags == O_BYPASS) dev->fd = -1;
-    else if ((dev->fd = open(name,flags)) < 0)
+    else if ((dev->fd = open(name,flags)) < 0) {
+            fprintf (errstd, "Cannot proceed. Maybe you need to add "
+                        "this to your lilo.conf:\n"
+                         "\tdisk=%s inaccessible\n"
+                        "(real error shown below)\n", name);
 	    die("open %s: %s",name,strerror(errno));
+    }
     dev->name = stralloc(name);
     return dev->fd;
 }
@@ -707,8 +712,13 @@ static int volid_get_set(int device, int vol_in, int option)
 	die("VolumeID set/get bad device %04X\n", device);
 	
     fd = dev_open(&dev, device, option ? O_RDWR : O_RDONLY);
-    if (read(fd, &buf, sizeof(buf)) != sizeof(buf))
+    if (read(fd, &buf, sizeof(buf)) != sizeof(buf)) {
+	fprintf (errstd, "Cannot proceed. Maybe you need to add "
+                        "this to your lilo.conf:\n"
+                         "\tdisk=%s inaccessible\n"
+                        "(real error shown below)\n", dev.name);
 	die("VolumeID read error: sector 0 of %s not readable", dev.name);
+    }
     if (option==ID_SET) {
 	make_backup(NULL, 0, &buf, device,
 					"master disk volume ID record");
