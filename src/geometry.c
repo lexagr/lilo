@@ -496,6 +496,12 @@ static int last_dev(int major,int increment)
  * only used to count IDE drives anyway, we try now only the first two devices
  * and forget about scan_last_dev.
  */
+    static int cached_major=-1, cached_increment=-1, cached_result=-1;
+    if(major == cached_major && increment == cached_increment)
+        return cached_result;
+    cached_major = major;
+    cached_increment = increment;
+
     DEVICE dev;
     int devs;
 
@@ -507,6 +513,7 @@ static int last_dev(int major,int increment)
 	    dev_close(&dev);
 	    break;
 	}
+    cached_result = devs;
     return devs;
 }
 
