@@ -957,15 +957,33 @@ static int dev_number(char *dev)
 
 static int get_image(char *name,char *label,IMAGE_DESCR *descr)
 {
-    char *here,*deflt;
-    int this_image,other;
+    char *here,*deflt,*tmp;
+    int this_image,other,label_is_name=0;
     unsigned char *uch;
 
     if (!label) {
-	here = strrchr(label = name,'/');
-	if (here) label = here+1;
+
+        here = strrchr(label = name,'/');
+        if (here)
+        {
+            label_is_name = 1;
+            label = here+1;
+        }
     }
-    if (strchr(label,' ')) die("Image name, label, or alias contains a blank character: '%s'", label);
+    if (label_is_name)
+    {
+        if (strchr(label,' ')) die("Image name, (which is actually the name) contains a blank character: '%s'", label);
+    }
+    if (!label_is_name)
+    {
+        tmp = label;
+        while (*tmp)
+        {
+            if (*tmp == ' ')
+                    *tmp = '_';
+            *tmp++;
+        }
+    } 
     if (strlen(label) > MAX_IMAGE_NAME) die("Image name, label, or alias is too long: '%s'",label);
     for (uch=(unsigned char*)label; *uch; uch++) {
 	if (*uch<' ')  die("Image name, label, or alias contains an illegal character: '%s'", label);
