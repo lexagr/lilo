@@ -211,6 +211,7 @@ void part_verify(int dev_nr,int type)
 
     Linux =   i == PART_LINUX_MINIX ||
 	      i == PART_LINUX_NATIVE ||
+	      i == PART_LINUX_LVM ||
 	      is_extd_part(i);
 
     i &= ~HIDDEN_OFF;

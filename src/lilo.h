@@ -225,6 +225,7 @@ source directory.
 #define PART_DOS_EXTD 	  5	/* DOS Extended partition */
 #define PART_WIN_EXTD_LBA 0xF	/* Win95/98 Extended partition */
 #define PART_LINUX_EXTD   0x85	/* Linux Extended partition */
+#define PART_LINUX_LVM    0x8E /* Linux LVM partition */
 #define PART_OS2_BOOTMGR  0xA	/* OS/2 Boot Manager */
 
 #define PART_DOS12	  1	/* DOS 12 bit FAT partition type */
