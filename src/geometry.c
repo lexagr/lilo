@@ -935,8 +935,9 @@ void geo_get(GEOMETRY *geo,int device,int user_device,int all)
 	    slash++;
 		else
 	    slash = dmdev;
-	    if (!dm_task_set_name(dmt, slash))
-		die("device-mapper: dm_task_set_name(\"%s\") failed",dmdev);
+	    if (!dm_task_set_major(dmt, MAJOR(device)) ||
+		!dm_task_set_minor(dmt, MINOR(device)))
+		die("device-mapper: dm_task_set_major() or dm_task_set_minor() failed");
 	    if (!dm_task_run(dmt))
 		die("device-mapper: dm_task_run(DM_DEVICE_TABLE) failed");
 
