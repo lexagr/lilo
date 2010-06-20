@@ -273,20 +273,20 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-if [ -z $image ]; then
+if [ -z "$image" ]; then
 #	image=`cat /proc/cmdline | sed "s/.*BOOT_IMAGE=//" | sed "s/ .*//"`
 	image=`$lilo -C $config -v0 -w -I " " D`
 fi
 
 if [ -z $kernel ]; then
-	kernel=`$lilo -C $config -v0 -w -I $image i`
+	kernel=`$lilo -C $config -v0 -w -I "$image" i`
 	if [ "$kernel" = "" ]; then exit 1;
 	elif [ $debug = "true" ]; then echo kernel = "$kernel";
 	fi
 fi
 
 if [ -z $root ]; then
-	root=`$lilo -C $config -v0 -w -I $image R`
+	root=`$lilo -C $config -v0 -w -I "$image" R`
 	if [ "$root" = "No root specified" ]; then
 		root=`grep </etc/fstab -v "^[ \t]*#" |
 			grep "[[:space:]]/[[:space:]]" | \
@@ -305,7 +305,7 @@ if [ -z $root ]; then
 fi
 
 if [ -z $initrd ]; then
-	initrd=`$lilo -C $config -v0 -w -I $image r`
+	initrd=`$lilo -C $config -v0 -w -I "$image" r`
 	if [ "$initrd" = "" ]; then exit 1;
 	elif [ $debug = "true" ]; then echo initrd = "$initrd";
 	fi
@@ -313,7 +313,7 @@ fi
 if [ "$initrd" = "No initial ramdisk specified" ]; then initrd= ; fi
 
 if [ -z $append ]; then
-	append=`$lilo -C $config -v0 -w -I $image a`
+	append=`$lilo -C $config -v0 -w -I "$image" a`
 	if [ "$append" = "" ]; then exit 1;
 	elif [ $debug = "true" ]; then echo append = \"$append\";
 	fi
@@ -321,7 +321,7 @@ fi
 if [ "$append" = "No append= was specified" ]; then append= ; fi
 
 if [ -z $keymap ]; then
-	keymap=`$lilo -C $config -v0 -w -I $image k`
+	keymap=`$lilo -C $config -v0 -w -I "$image" k`
 	if [ "$keymap" = "" ]; then exit 1;
 	elif [ $debug = "true" ]; then echo keymap = "$keymap";
 	fi
