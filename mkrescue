@@ -87,13 +87,20 @@ else
 	config=/etc/lilo.conf
 fi
 
+if [ ! -r "$config" ] ; then
+       echo "$0: Cannot read the configuration file $config (are you root?)"
+       exit 1
+fi
+
+
 compact=-c
 device=/dev/fd0
 fs=ext2
 tmpbase=${TMPDIR:-/tmp}/mkrescue_$$
-mount=$tmpbase/mkrescue-flp
-mfile=$tmpbase/mkrescue-emu
-mtemp=$tmpbase/mkrescue-tmp
+mount=`mktemp -d -t mkrescue-flp.XXXXXX` || { echo "$0: Cannot create temporary directory" >&2; exit 1; }
+mfile=`mktemp -t mkrescue-emu.XXXXXX` || { echo "$0: Cannot create temporary file" >&2; exit 1;  }
+mtemp=`mktemp -t mkrescue-tmp.XXXXXX` || { echo "$0: Cannot create temporary file" >&2; exit 1;  }
+trap " [ \"$debug\" != true ] && rm -f \"$mtemp\" ;  /bin/rm -rf -- \"$mount\" \"$mfile\" " 0 1 2 3 13 15
 loopback=loop0
 looppart=loop1
 install=text
@@ -115,7 +122,7 @@ boot=/boot
 diag=no
 master=
 
-VERSION=$($lilo -V | sed "/version/s/.*n //" | sed "/,/s/,.*//" )
+VERSION=$($lilo -V | awk '{print $3}' | sed -e "s/[^a-zA-Z0-9.]//g")
 
 NVERSION=$(echo $VERSION | sed "s/\\./ /g")
 
@@ -175,7 +182,9 @@ then
 fi
 
 umount $mount 2>/dev/null
-rm -rf $tmpbase 2>/dev/null
+rm -rf $mount/*
+> $mfile
+
 mkdir $tmpbase || {
     echo "Could not create temporary directory."
     exit 1
@@ -417,6 +426,14 @@ if [ ! -z $initrd ]; then
 fi
 
 if [ $isoimage != yes ]; then
+       # Calculate size
+        if [ -x /usr/bin/du ]; then
+                totalsize=`/usr/bin/du -Dc $kernel $initrd $keymap |tail -1 | awk '{ print $1 }'`
+                if [ "$totalsize" -gt "$size" ] ; then
+                        echo "Sorry, the ramdisk, kernel and keymap don't fit in the floppy disk."
+                        exit 1
+                fi
+        fi
 	echo ""
 	echo "Insert a blank floppy into $device"
 	echo "All information on this floppy will be destroyed"
@@ -426,8 +443,6 @@ fi
 
 if [ "$fast" = fast ]; then
 
-	rm -rf $mount $mfile
-	mkdir $mount
 	dd bs=1024 count=$size of=$mfile if=/dev/zero
 	bsize=$size
 	mpart=$mfile
@@ -492,8 +507,7 @@ else
 		echo ""
 	fi
 
-	rm -rf $mount
-	mkdir $mount
+	rm -rf $mount/*
 	mount -t $fs -o rw $device $mount
 
 	rm -rf $mount/*
@@ -650,7 +664,6 @@ echo ""
 umount $mount
 
 if [ $fast = error ]; then
-	rm -rf $mount
 	exit 1
 fi
 
@@ -686,10 +699,7 @@ elif [ "$fast" = fast ]; then
 	dd if=$mfile of=$device bs=1024
 fi
 
-if [ $debug != true ]; then 
-	rm -rf $tmpbase
-fi
-
 echo "All done."
 echo ""
 exit 0
+
