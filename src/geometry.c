@@ -213,12 +213,18 @@ void geo_init(char *name)
 
 
 #ifdef LCF_DEVMAPPER
+    /* Suppress error message if the device doesn't exist. It is ugly */
+    struct stat fs;
+
+    if (stat ("/dev/mapper/control", &fs))
+        return;
+
     if (!(dmt = dm_task_create(DM_DEVICE_VERSION)))
-	return;
+        return;
     if (!dm_task_run(dmt))
-	return;
+        return;
     if (!dm_task_get_driver_version(dmt, dm_version, sizeof dm_version))
-	return;
+        return;
 
     /*
      * to not confuse returned device number formats %02x:%02x and %d:%d
