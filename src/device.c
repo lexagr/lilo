@@ -91,31 +91,32 @@ static int scan_dir(ST_BUF *next,DEVICE *dev,char *parent,int number)
     if (verbose >= 5) printf("scan_dir: %s\n", parent);
     st.next = next;
     if ((dp = opendir(parent)) == NULL)
-	die("opendir %s: %s",parent,strerror(errno));
+    die("opendir %s: %s",parent,strerror(errno));
     *(start = strchr(parent,0)) = '/';
     while ((dir = readdir(dp))) {
-	strcpy(start+1,dir->d_name);
-	if (stat(parent,&st.st) >= 0) {
-	    dev->st = st.st;
-	    if (S_ISBLK(dev->st.st_mode) && dev->st.st_rdev == number) {
-		(void) closedir(dp);
-		return 1;
-	    }
+       strcpy(start+1,dir->d_name);
+       if (stat(parent,&st.st) >= 0) {
+          dev->st = st.st;
+          if (S_ISBLK(dev->st.st_mode) && dev->st.st_rdev == number) {
+              (void) closedir(dp);
+              return 1;
+              }
 #if 0
-	    if (S_ISDIR(dev->st.st_mode) && strcmp(dir->d_name,".") &&
-	      strcmp(dir->d_name,"..")) {
+          if (S_ISDIR(dev->st.st_mode) && strcmp(dir->d_name,".") &&
+            strcmp(dir->d_name,"..")) {
 #else
-    /* stay out of all hidden directories (good for 2.6 kernel) */
-	    if (S_ISDIR(dev->st.st_mode) && (dir->d_name)[0] != '.') {
+          /* stay out of all hidden directories (good for 2.6 kernel) */
+          if (S_ISDIR(dev->st.st_mode) && (dir->d_name)[0] != '.' &&
+            strcmp(dir->d_name, ".udev") && strcmp(dir->d_name, "fd")) {
 #endif
-		for (walk = next; walk; walk = walk->next)
-		    if (stat_equal(&walk->st,&st.st)) break;
-		if (!walk && scan_dir(&st,dev,parent,number)) {
-		    (void) closedir(dp);
-		    return 1;
-		}
-	    }
-	}
+          for (walk = next; walk; walk = walk->next)
+              if (stat_equal(&walk->st,&st.st)) break;
+          if (!walk && scan_dir(&st,dev,parent,number)) {
+              (void) closedir(dp);
+              return 1;
+              }
+          }
+       }
     }
     (void) closedir(dp);
     *start = 0;
