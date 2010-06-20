@@ -2927,7 +2927,8 @@ rd_setup:
 	xor	edx,edx			; flag nothing found
 	xor	esi,esi			; flag size==0
 	xor	ebx,ebx
-	jmp	e8go
+	;jmp	e8go			; circumvented due to BIOS problems
+	br	no_e801			; skip to backup plan
 e8go2:	or	ebx,ebx			; test for end
 	jz	e8go5
 e8go:	push	edx			; save best prospect
