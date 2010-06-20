@@ -1,5 +1,25 @@
 Changes for version 23.0 (unreleased) - Joachim Wiedorn
 
+  Patches
+  -------
+    - Allow spaces in boot menu.    (bsect.c)
+    - Workaround for buggy Bios.    (probe.c)
+    - Check for user root.          (script mkrescue)
+    - Use better temporary fifo's   (script mkrescue)
+    - Check for needed floppy space (script mkrescue)
+    - devmapper should use major/minor.  (geometry.c)
+    - Bios workarounds.             (second.S)
+    - Suppress error message if device does not exist. (geometry.c)
+    - Move very old file INCOMPAT into readme/.
+    - Change 'map' to 'kmap'.       (keytab-lilo.pl)
+    - Add warnings for inaccessible disk (device.c, geometry.c)
+    - Modify script mkrescue for use of spaces in files.
+    - Speedup for geometry          (geometry.c)
+    - Add 'define' for lvm partition (lilo.h, partition.c)
+    - Don't scan '.udev' directory  (device.c)
+    - Use default size 'hdsize'     (script mkrescue)
+    - Move macro 'S' into 'SA' (crt.S, lilo.c, lilo.h, probe.c, second.S)
+
   General
   -------
     - Remove link 'COPYRIGHT' to file COPYING.
