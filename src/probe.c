@@ -1039,7 +1039,11 @@ int bios_device(GEOMETRY *geo, int device)
 	    geo->sectors = bdata.n_sect;
 	    geo->heads = bdata.n_head;
 	    if (bdata.n_total_blocks > nblocks) nblocks = bdata.n_total_blocks;
-	    geo->cylinders = nblocks / (bdata.n_head*bdata.n_sect);
+	    /* If this is a buggy BIOS, make sure to avoid a division by zero */
+	    if (bdata.n_head*bdata.n_sect > 0) 
+		geo->cylinders = nblocks / (bdata.n_head*bdata.n_sect);
+	    else
+	    	geo->cylinders = nblocks;
 #endif
 	}
 	return (geo->device = bios1);
