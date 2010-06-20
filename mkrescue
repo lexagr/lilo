@@ -330,7 +330,7 @@ fi
 if [ $isoimage = yes ]; then
     fast=fast
     if [ $size = 0 ]; then
-	size=2880
+	size=$hdsize
     elif [ $size = HD -o $size = hd ]; then
 	size=$hdsize
     fi
