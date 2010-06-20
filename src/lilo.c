@@ -373,7 +373,7 @@ static char buffer[SECTOR_SIZE];
 #if __MSDOS__
 	    printf("%s\n", name
 #else /* !__MSDOS__ */
-	    printf("%s%-" S(MAX_IMAGE_NAME) "s %s%s%s",verbose > 0 ? "  " : "",name,
+	    printf("%s%-" SA(MAX_IMAGE_NAME) "s %s%s%s",verbose > 0 ? "  " : "",name,
 	      image ? "" : "*",
 #ifdef LCF_VIRTUAL
 	      descrs.d.descr[image].flags & FLAG_VMDEFAULT ? "@" :

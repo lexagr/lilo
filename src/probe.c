@@ -265,7 +265,7 @@ static int notice(int needed)
 		needed==4 ? "22.0" :
 		needed==5 ? "22.5.1" :
 		needed==6 ? "22.5.7" :
-		S(VERSION_MAJOR) "." S(VERSION_MINOR) VERSION_EDIT  );
+		SA(VERSION_MAJOR) "." SA(VERSION_MINOR) VERSION_EDIT  );
 	return 1;
     }
     return 0;

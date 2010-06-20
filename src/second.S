@@ -4013,9 +4013,9 @@ ospc:	.ascii	"O"
 #endif
 #ifdef LCF_VERSION
 	.ascii	" "	
-	.ascii	S(VERSION_MAJOR)
+	.ascii	SA(VERSION_MAJOR)
 	.ascii	"."
-	.ascii	S(VERSION_MINOR)
+	.ascii	SA(VERSION_MINOR)
 	.ascii	VERSION_EDIT
 #endif
 	.byte	32,0

@@ -73,7 +73,7 @@ source directory.
 
 #define nelem(a) (sizeof(a)/sizeof((a)[0]))
 #define S2(x) #x
-#define S(x) S2(x)
+#define SA(x) S2(x)
 
 #include "version.h"
 #define VERSION 256*VERSION_MINOR+VERSION_MAJOR
