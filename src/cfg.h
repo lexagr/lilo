@@ -1,14 +1,13 @@
-/* cfg.h  -  Configuration file parser */
-/*
-Copyright 1992-1998 Werner Almesberger.
-Copyright 1999-2004 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
-
+/* cfg.h  -  Configuration file parser
+ * 
+ * Copyright 1992-1998 Werner Almesberger
+ * Copyright 1999-2007 John Coffman
+ * Copyright 2009-2010 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 #ifndef CFG_H
 #define CFG_H

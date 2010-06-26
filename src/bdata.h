@@ -1,12 +1,12 @@
-/* bdata.h */
-/*
-Copyright 2000-2004 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
+/* bdata.h
+ * 
+ * Copyright 2000-2007 John Coffman
+ * Copyright 2009-2010 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 #ifndef _BDATA_H
 #define _BDATA_H

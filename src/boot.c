@@ -1,13 +1,14 @@
-/* boot.c  -  Boot image composition */
-/*
-Copyright 1992-1997 Werner Almesberger.
-Copyright 1999-2006 John Coffman.
-All rights reserved.
+/* boot.c  -  Boot image composition
+ * 
+ * Copyright 1992-1998 Werner Almesberger
+ * Copyright 1999-2007 John Coffman
+ * Copyright 2009-2010 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
 #define BIG_CHAIN 5
 
 #define _GNU_SOURCE

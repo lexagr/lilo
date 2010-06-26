@@ -1,13 +1,12 @@
-/* bitmap.h */
-/*
-Copyright 2001-2004 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
-
+/* bitmap.h
+ * 
+ * Copyright 2001-2007 John Coffman
+ * Copyright 2009-2010 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 #ifndef BITMAP_H
 #define BITMAP_H
