@@ -1,21 +1,25 @@
 #! /bin/sh
 #
-#  check:
-#	Test for correct versions of utilities
-#	(see the end of the file for bypassing these checks)
+#  checkit:    Test for correct versions of utilities
+#  (see the end of the file for bypassing these checks)
 #
-#  Copyright 2005-2006 John Coffman.
+#  Copyright 2005-2007 John Coffman
+#  Copyright 2009-2010 Joachim Wiedorn
 #  All rights reserved.
 #
-#  Licensed under the terms contained in the file 'COPYING' in the 
-#  source directory.
+#  Licensed under the terms contained in the file 'COPYING'
+#  in the source directory.
 #
-#
-#
+
 
 ret=0
 rc=0
-dev="0.16.10"
+
+# min. version of BCC, AD86, LD86
+bccmin="0.16.14"
+
+# min. version of GCC, CPP
+gccmin="3.3.5"
 
 vers_min() {
 	local M m p N n r
@@ -43,7 +47,7 @@ vers_min() {
 }
 
 #echo
-echo GCC version 2.91 or later is required
+echo GCC version $gccmin or later is required
 gcc -v 1>foo1 2>foo2
 V=`cat foo1 foo2 | cut -d' ' -f1-3 | grep version | cut -d' ' -f 3`
 rm -f foo1 foo2
@@ -51,13 +55,13 @@ if [ -z "$V" ]; then
 	echo gcc is not present
 	ret=1
 else
-	vers_min $V 2.91
+	vers_min $V $gccmin
 	echo gcc version $V
 	if [ $rc = 0 ]; then echo OKAY; else echo ERROR; ret=1; fi
 fi
 
 echo
-echo AS86 version $dev or later is required
+echo AS86 version $bccmin or later is required
 as86 -v 1>foo1 2>foo2
 A=`cat foo1 foo2 | grep version | cut -d " " -f 3`
 rm -f foo1 foo2
@@ -65,13 +69,13 @@ if [ -z "$A" ]; then
 	echo as86 is not present
 	ret=1
 else
-	vers_min $A $dev
+	vers_min $A $bccmin
 	echo as86 version $A
 	if [ $rc = 0 ]; then echo OKAY; else echo ERROR; ret=1; fi
 fi
 
 echo
-echo LD86 version $dev or later is required
+echo LD86 version $bccmin or later is required
 ld86 -v 1>foo1 2>foo2
 L=`cat foo1 foo2 | grep version | cut -d " " -f 3`
 rm -f foo1 foo2
@@ -79,13 +83,13 @@ if [ -z "$L" ]; then
 	echo ld86 is not present
 	ret=1
 else
-	vers_min $L $dev
+	vers_min $L $bccmin
 	echo ld86 version $L
 	if [ $rc = 0 ]; then echo OKAY; else echo ERROR; ret=1; fi
 fi
 
 echo
-echo BCC version $dev or later is recommended
+echo BCC version $bccmin or later is recommended
 bcc -v 1>foo1 2>foo2
 B=`cat foo1 foo2 | grep version | cut -d " " -f 3`
 rm -f foo1 foo2
@@ -93,7 +97,7 @@ if [ -z "$B" ]; then
 	echo bcc is not present
 	echo You will not be able to make floppy2, diag2.img, or lilo.com
 else
-	vers_min $B $dev
+	vers_min $B $bccmin
 	echo bcc version $B
 	if [ $rc = 0 ]; then echo OKAY; else echo ERROR; fi
 fi
