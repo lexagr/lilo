@@ -1282,18 +1282,26 @@ static void bsect_done(char *name,IMAGE_DESCR *descr)
 #ifdef LCF_VIRTUAL
 	if (descrs.d.descr[this_image].flags & FLAG_VMDEFAULT ||
 		(this>=0 && (descrs.d.descr[this].flags & FLAG_VMDEFAULT)) )
-	    printf(" @");
+	    printf("  @");
 #endif
 #ifdef LCF_NOKEYBOARD
 	if (descrs.d.descr[this_image].flags & FLAG_NOKBDEFAULT ||
 		(this>=0 && (descrs.d.descr[this].flags & FLAG_NOKBDEFAULT)) )
-	    printf(" &");
+	    printf("  &");
 #endif
-	if (descrs.d.descr[this_image].flags & FLAG_TOOBIG ||
-		(this>=0 && (descrs.d.descr[this].flags & FLAG_TOOBIG)) )
-	    printf(" ?");
+	if ( descrs.d.descr[this_image].flags & FLAG_TOOBIG ||
+		(this>=0 && (descrs.d.descr[this].flags & FLAG_TOOBIG)) ) {
+		/* show a question mark if small-memory is configured */
+#ifndef LCF_INITRDLOW
+		if (!cfg_get_flag(cf_options,"small-memory")) 
+			printf("  +");
+		else
+#endif
+		printf("  ?");
+	}
+	/* here the default boot image can be set */
 	if (this_image && this) putchar('\n');
-	else printf(" *\n");
+	else printf("  *\n");
     }
     if (verbose >= 3) {
 	printf("%4s<dev=0x%02x,hd=%d,cyl=%d,sct=%d>\n","",

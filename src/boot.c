@@ -124,7 +124,7 @@ void boot_image(char *spec,IMAGE_DESCR *descr)
 	if (cfg_get_flag(cf_options,"large-memory")
 			&& !cfg_get_flag(cf_options,"small-memory")) {
 		/* CASE 10 = large & not small */
-		if (verbose>=1)
+		if (verbose>=2)
 		printf("The initial RAM disk will be loaded in the high memory above 16M.\n");
 	} else if (hi_sectors + sectors > HIGH_SECTORS) {
 		descr->flags |= FLAG_TOOBIG;
@@ -140,7 +140,7 @@ void boot_image(char *spec,IMAGE_DESCR *descr)
 		}
 	} else {
 		/* CASE 01 or 10 or 11 */
-		if (verbose>=1)
+		if (verbose>=2)
 		printf("The initial RAM disk will be loaded in the low memory below 15M.\n");
 	}
 #endif	
