@@ -113,29 +113,38 @@ void boot_image(char *spec,IMAGE_DESCR *descr)
 	map_add(&geo,0,(st.st_size+SECTOR_SIZE-1)/SECTOR_SIZE);
 	sectors = map_end_section(&descr->initrd,0);
 	if (verbose > 1)
-	    printf("RAM disk: %d sector%s.\n",sectors,sectors == 1 ?  "" :
-	      "s");
-	if (hi_sectors + sectors > HIGH_SECTORS
-#ifndef LCF_INITRDLOW
-	    && !cfg_get_flag(cf_options,"large-memory")
-#endif
-	    ) {
+		printf("RAM disk: %d sector%s.\n",sectors,sectors == 1 ?  "" : "s");
+
+#ifdef LCF_INITRDLOW
+	if (hi_sectors + sectors > HIGH_SECTORS) {
 		descr->flags |= FLAG_TOOBIG;
-		warn("The initial RAM disk is too big to fit between %s and\n"
-				"   the 15M-16M memory hole."
-#ifndef LCF_INITRDLOW
-# if 0
-							"  If your BIOS supports memory moves above 16M,\n"
-				"   then you may specify \"large-memory\" in the configuration file\n"
-				"   (/etc/lilo.conf)."
-# else
-							"  It will be loaded in the highest memory as\n"
-				"   though the configuration file specified \"large-memory\" and it will\n"
-				"   be assumed that the BIOS supports memory moves above 16M."
-# endif
-#endif
-				, hi_sectors ? "the kernel" : "1M");
+		warn("The initial RAM disk is TOO BIG to fit in the memory below 15M.");
 	}
+#else
+	if (cfg_get_flag(cf_options,"large-memory")
+			&& !cfg_get_flag(cf_options,"small-memory")) {
+		/* CASE 10 = large & not small */
+		if (verbose>=1)
+		printf("The initial RAM disk will be loaded in the high memory above 16M.\n");
+	} else if (hi_sectors + sectors > HIGH_SECTORS) {
+		descr->flags |= FLAG_TOOBIG;
+		if (cfg_get_flag(cf_options,"small-memory")) {
+			/* CASE 01 or 11 = small */
+			warn("The initial RAM disk is TOO BIG to fit in the memory below 15M.\n"
+				"  It will be loaded in the high memory it will be \n"
+				"  assumed that the BIOS supports memory moves above 16M.");
+		} else {
+			/* CASE 00 = !large & !small */
+			if (verbose>=1)
+			printf("The initial RAM disk will be loaded in the high memory above 16M.\n");
+		}
+	} else {
+		/* CASE 01 or 10 or 11 */
+		if (verbose>=1)
+		printf("The initial RAM disk will be loaded in the low memory below 15M.\n");
+	}
+#endif	
+
 	geo_close(&geo);
     }
 }

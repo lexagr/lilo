@@ -843,24 +843,29 @@ printf("MAX_IMAGES = %d\n", MAX_IMAGES);
     }
     if (!fetch() && (bios_map &
 #if VERSION_MINOR>=50
-    			bios_boot &	/* if 'boot=/dev/fd0', force write */
+			bios_boot &	  /* if 'boot=/dev/fd0', force write */
 #endif
-    				0x80)) {
-	bsect.par_1.prompt |= FLAG_BD_OKAY;
-	if (verbose>=2) printf("BIOS data check was okay on the last boot\n");
-    }
-    else {
-	if (verbose>=2) printf("BIOS data check will include auto-suppress check\n");
-    }
-    if (cfg_get_flag(cf_options,"large-memory")) {
+			0x80)) {
+		bsect.par_1.prompt |= FLAG_BD_OKAY;
+		if (verbose>=2)
+			printf("BIOS data check was okay on the last boot\n");
+	}
+	else {
+		if (verbose>=2)
+			printf("BIOS data check will include auto-suppress check\n");
+	}
+	/* set to LARGEMEM only if 'large-memory' ist set AND 'small-memory is not set */
+    if (cfg_get_flag(cf_options,"large-memory")
+			&& !cfg_get_flag(cf_options,"small-memory")) {
 #ifndef LCF_INITRDLOW
-	bsect.par_1.prompt |= FLAG_LARGEMEM;
+		bsect.par_1.prompt |= FLAG_LARGEMEM;
 #else
-	warn("This LILO compiled with INITRDLOW option, 'large-memory' ignored.");
+		warn("This LILO is compiled with INITRDLOW option, 'large-memory' ignored.");
 #endif
     }
-    bsect.par_1.prompt |= raid_flags;
-    bsect.par_1.raid_offset = raid_offset;  /* to be modified in bsect_raid_update */
+	bsect.par_1.prompt |= raid_flags;
+	bsect.par_1.raid_offset = raid_offset;  /* to be modified in bsect_raid_update */
+
 /* convert timeout in tenths of a second to clock ticks    */
 /* tick interval is 54.925 ms  */
 /*   54.925 * 40 -> 2197       */
