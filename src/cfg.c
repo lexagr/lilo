@@ -114,6 +114,7 @@ CONFIG cf_options[] = {
   { cft_strg, "root",		NULL,		NULL,NULL },
   { cft_strg, "serial",		NULL,		NULL,NULL },
   { cft_flag, "single-key",	NULL,		NULL,NULL },
+  { cft_flag, "small-memory",	NULL,		NULL,NULL },
   { cft_flag, "static-bios-codes",	NULL,		NULL,NULL },
   { cft_flag, "suppress-boot-time-BIOS-data",	NULL,	NULL,NULL },
   { cft_strg, "timeout",	NULL,		NULL,NULL },

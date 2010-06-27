@@ -32,9 +32,12 @@
 #include "boot.h"
 #include "loader.h"
 
-/* the number of sectors between the 15M memory hole and 1M
-   this is the max. for a bzImage kernel + initrd unless "large-memory"
-   or "mem=XXX" raises the limit  			*/
+/*
+ * The number of sectors between the 15M memory hole and 1M
+ * is the largest size for a bzImage kernel + initrd = 14M 
+ * if "small-memory" is set. To use larger kernel + initrd 
+ * use option "large-memory" or "mem=XXX" raises the limit
+ */
 #define HIGH_SECTORS	((15-1)*1024*1024/SECTOR_SIZE) 
 #define HIGH_4M		(3*1024*1024/SECTOR_SIZE)
 

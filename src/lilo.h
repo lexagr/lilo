@@ -272,7 +272,7 @@ source directory.
 /*
  *	FLAG	Description
  *
- *   	0x00	 pure geometric addressing (C:H:S)
+ *	0x00	 pure geometric addressing (C:H:S)
  *	0x40	 Linear address (24-bits) converted to CHS at boot-time
  *	0x60	 LBA32 address (32-bits), count=1, sets the high nibble!!
  *	0x20	 LBA32 address (24-bits) + (8-bit) high nibble (implied)
@@ -323,7 +323,7 @@ source directory.
 #define FLAG_LOCK	4	/* lock on target */
 #define FLAG_MODKRN	8	/* modern kernel with high memory support */
 #define FLAG_KERNEL	16	/* image is a kernel */
-#define FLAG_TOOBIG	32	/* initrd so big, kernel may overwrite */
+#define FLAG_TOOBIG	32	/* initrd so big that kernel could be overwritten */
 #define FLAG_FALLBACK	64	/* fallback command line exists */
 #define FLAG_PASSWORD	128	/* this image requires a password */
 #define FLAG_LOADHI	256	/* this kernel loads high (>=1Mb) */
