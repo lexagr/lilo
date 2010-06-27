@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# too old script - need update
+exit 0
+
 <<@
 
 LILO QUICK INSTALLATION	                      Version 22.5 of 15-Dec-2003

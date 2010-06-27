@@ -228,41 +228,41 @@ ins:	diag install
 #  normal install, but doesn't make the diagnostic binaries
 #
 install:
-	mkdir -p $$ROOT$(SBIN_DIR) $$ROOT$(CFG_DIR) $$ROOT$(BOOT_DIR) $$ROOT$(USRSBIN_DIR)
+	mkdir -p $$DESTDIR$(SBIN_DIR) $$DESTDIR$(CFG_DIR) $$DESTDIR$(BOOT_DIR) $$DESTDIR$(USRSBIN_DIR)
 	if [ -f diag1.img ]; then \
-	  cp -f diag1.img $$ROOT$(BOOT_DIR); fi
+	  cp -f diag1.img $$DESTDIR$(BOOT_DIR); fi
 	if [ -f diag2.img ]; then \
-	  cp -f diag2.img $$ROOT$(BOOT_DIR); fi
-	if [ ! -L $$ROOT$(BOOT_DIR)/boot.b -a -f $$ROOT$(BOOT_DIR)/boot.b ]; then \
-	  mv $$ROOT$(BOOT_DIR)/boot.b $$ROOT$(BOOT_DIR)/boot.old; fi
-	if [ -f $$ROOT$(BOOT_DIR)/boot-bmp.b ]; then \
-	  mv $$ROOT$(BOOT_DIR)/boot-bmp.b $$ROOT$(BOOT_DIR)/boot-bmp.old; fi
-	if [ -f $$ROOT$(BOOT_DIR)/boot-menu.b ]; then \
-	  mv $$ROOT$(BOOT_DIR)/boot-menu.b $$ROOT$(BOOT_DIR)/boot-menu.old; fi
-	if [ -f $$ROOT$(BOOT_DIR)/boot-text.b ]; then \
-	  mv $$ROOT$(BOOT_DIR)/boot-text.b $$ROOT$(BOOT_DIR)/boot-text.old; fi
-	if [ -f $$ROOT$(BOOT_DIR)/chain.b ]; then \
-	  mv $$ROOT$(BOOT_DIR)/chain.b $$ROOT$(BOOT_DIR)/chain.old; fi
-	if [ -f $$ROOT$(BOOT_DIR)/os2_d.b ]; then \
-	  mv $$ROOT$(BOOT_DIR)/os2_d.b $$ROOT$(BOOT_DIR)/os2_d.old; fi
-	if [ -f $$ROOT$(BOOT_DIR)/mbr.b ]; then \
-	  mv $$ROOT$(BOOT_DIR)/mbr.b $$ROOT$(BOOT_DIR)/mbr.old; fi
+	  cp -f diag2.img $$DESTDIR$(BOOT_DIR); fi
+	if [ ! -L $$DESTDIR$(BOOT_DIR)/boot.b -a -f $$DESTDIR$(BOOT_DIR)/boot.b ]; then \
+	  mv $$DESTDIR$(BOOT_DIR)/boot.b $$DESTDIR$(BOOT_DIR)/boot.old; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/boot-bmp.b ]; then \
+	  mv $$DESTDIR$(BOOT_DIR)/boot-bmp.b $$DESTDIR$(BOOT_DIR)/boot-bmp.old; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/boot-menu.b ]; then \
+	  mv $$DESTDIR$(BOOT_DIR)/boot-menu.b $$DESTDIR$(BOOT_DIR)/boot-menu.old; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/boot-text.b ]; then \
+	  mv $$DESTDIR$(BOOT_DIR)/boot-text.b $$DESTDIR$(BOOT_DIR)/boot-text.old; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/chain.b ]; then \
+	  mv $$DESTDIR$(BOOT_DIR)/chain.b $$DESTDIR$(BOOT_DIR)/chain.old; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/os2_d.b ]; then \
+	  mv $$DESTDIR$(BOOT_DIR)/os2_d.b $$DESTDIR$(BOOT_DIR)/os2_d.old; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/mbr.b ]; then \
+	  mv $$DESTDIR$(BOOT_DIR)/mbr.b $$DESTDIR$(BOOT_DIR)/mbr.old; fi
 	if [ -f os2_d.b  -a  $(BUILTIN) = 0 ]; then \
-	  cp os2_d.b $$ROOT$(BOOT_DIR); fi
+	  cp os2_d.b $$DESTDIR$(BOOT_DIR); fi
 	if [ $(BUILTIN) = 0 ]; then \
-	  cp boot-text.b boot-menu.b boot-bmp.b chain.b mbr.b $$ROOT$(BOOT_DIR); fi
-	if [ ! -L $$ROOT$(BOOT_DIR)/boot.b  -a  $(BUILTIN) = 0 ]; then \
-	  ln -s boot-menu.b $$ROOT$(BOOT_DIR)/boot.b; fi
+	  cp boot-text.b boot-menu.b boot-bmp.b chain.b mbr.b $$DESTDIR$(BOOT_DIR); fi
+	if [ ! -L $$DESTDIR$(BOOT_DIR)/boot.b  -a  $(BUILTIN) = 0 ]; then \
+	  ln -s boot-menu.b $$DESTDIR$(BOOT_DIR)/boot.b; fi
 	if [ $(BUILTIN) = 1 ]; then \
-	  rm -f $$ROOT$(BOOT_DIR)/boot.b; fi
-	cp lilo $$ROOT$(SBIN_DIR)/lilo
-	strip $$ROOT$(SBIN_DIR)/lilo
-	cp ../mkrescue $$ROOT$(USRSBIN_DIR)/mkrescue
-	cp ../keytab-lilo.pl $$ROOT$(USRSBIN_DIR)/keytab-lilo
+	  rm -f $$DESTDIR$(BOOT_DIR)/boot.b; fi
+	cp lilo $$DESTDIR$(SBIN_DIR)/lilo
+	strip $$DESTDIR$(SBIN_DIR)/lilo
+	cp ../mkrescue $$DESTDIR$(USRSBIN_DIR)/mkrescue
+	cp ../keytab-lilo.pl $$DESTDIR$(USRSBIN_DIR)/keytab-lilo
 
 insobs:
-	@if [ -e $$ROOT/etc/lilo/install ]; then echo; \
-	  echo "$$ROOT/etc/lilo/install is obsolete. LILO is now re-installed";\
+	@if [ -e $$DESTDIR/etc/lilo/install ]; then echo; \
+	  echo "$$DESTDIR/etc/lilo/install is obsolete. LILO is now re-installed";\
 	  echo "by just invoking $(SBIN_DIR)/lilo"; echo; fi
 	@echo "$(SBIN_DIR)/lilo must now be run to complete the update."
 

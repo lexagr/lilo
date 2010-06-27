@@ -67,8 +67,8 @@ map.o:		../src/map.c $(HFILES)
 
 
 install:
-	if [ -d $$ROOT$(DOS_DIR) -a -f lilo.com ]; then \
-	  cp lilo.com $$ROOT$(DOS_DIR); fi
+	if [ -d $$DESTDIR$(DOS_DIR) -a -f lilo.com ]; then \
+	  cp lilo.com $$DESTDIR$(DOS_DIR); fi
 
 tidy:
 	rm -f *.map *.lis core

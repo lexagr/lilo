@@ -27,13 +27,13 @@ No option 'large-memory' or 'small-memory':
 Installation into a subdirectory:
 
   If you want to install all lilo files into a specific directory which 
-  is not the root directory "/", then use the shell variable ROOT to set
-  an absolut path for installation:
+  is not the root directory "/", then use the shell variable DESTDIR to
+  set an absolut path for installation:
 
-      make install ROOT=/home/myself/test/lilo/
+      make install DESTDIR=/home/myself/test/lilo/
   or
-      make install ROOT=`pwd`/test/
+      make install DESTDIR=`pwd`/test/
 
   WARNING: You always need an absolute path! This behaviour have changed 
-  since version 22.x.
+  since version 22.x. The old variable ROOT is obsolete for installing.
 
