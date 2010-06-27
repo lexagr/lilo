@@ -255,10 +255,10 @@ install:
 	  ln -s boot-menu.b $$ROOT$(BOOT_DIR)/boot.b; fi
 	if [ $(BUILTIN) = 1 ]; then \
 	  rm -f $$ROOT$(BOOT_DIR)/boot.b; fi
-	cp lilo $$ROOT$(SBIN_DIR)
+	cp lilo $$ROOT$(SBIN_DIR)/lilo
 	strip $$ROOT$(SBIN_DIR)/lilo
-	cp ../mkrescue $$ROOT$(SBIN_DIR)
-	cp ../keytab-lilo.pl $$ROOT$(USRSBIN_DIR)
+	cp ../mkrescue $$ROOT$(USRSBIN_DIR)/mkrescue
+	cp ../keytab-lilo.pl $$ROOT$(USRSBIN_DIR)/keytab-lilo
 
 insobs:
 	@if [ -e $$ROOT/etc/lilo/install ]; then echo; \
