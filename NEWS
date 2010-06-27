@@ -1,0 +1,9 @@
+NEWS about project LILO
+=======================
+
+* new option 'small-memory'
+
+* modified option 'large-memory'
+
+* absolute path for installation path ROOT
+

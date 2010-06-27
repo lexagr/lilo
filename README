@@ -1,0 +1,39 @@
+README for project LILO
+=======================
+
+Versoin 23.0 (release) -- Joachim Wiedorn <ad_debian@joonet.de>
+---------------------------------------------------------------
+
+Option 'small-memory':
+
+  New option to define, that kernel+initrd should always set into the
+  low memory under 15M. But if this is impossible, lilo try to use the
+  high memory above 16M for initrd and give you a warning.
+
+Option 'large-memory':
+
+  This option enables using memory above 16Mb for the initrd (up to a
+  kernel imposed limit of around 768Mb) which is usable on nearly all
+  newer systems with post-2000 BIOSes. Details can be found in manpage
+  lilo.conf(5).
+
+No option 'large-memory' or 'small-memory':
+
+  If no option is set in the configuration, then lilo will check the
+  needed memory space and give you some informations about the result
+  and its decision in verbose mode.
+  If you need the old behaviour, please use the option 'small-memory'.
+
+Installation into a subdirectory:
+
+  If you want to install all lilo files into a specific directory which 
+  is not the root directory "/", then use the shell variable ROOT to set
+  an absolut path for installation:
+
+      make install ROOT=/home/myself/test/lilo/
+  or
+      make install ROOT=`pwd`/test/
+
+  WARNING: You always need an absolute path! This behaviour have changed 
+  since version 22.x.
+

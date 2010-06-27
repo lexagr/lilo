@@ -1,0 +1,15 @@
+TODO for project LILO
+=====================
+
+* update manpages with new option 'small-memory' and changed
+  behaviour of 'large-memory'.
+
+* patching sources because of some warnings while compiling
+  with gcc 4.3.x
+
+* Rewrite old scripts 'QuickInst', 'mkbdist', 'mksdist', 'mkrescue'
+
+* Upgrade of all manpages.
+
+* Upgrade of all documentations.
+
