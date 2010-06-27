@@ -1,7 +1,14 @@
 Changes for version 23.0 (unreleased) - Joachim Wiedorn
 
+  Documentations
+  --------------
+    - Update file COPYING with copyrights and license.
+    - Update copyrights in some file headers.
+    - Add new files README, TODO, NEWS.
+
   Patches
   -------
+    - Fix error messages.           (script checkit)
     - Allow spaces in boot menu.    (bsect.c)
     - Workaround for buggy Bios.    (probe.c)
     - Check for user root.          (script mkrescue)
@@ -19,6 +26,10 @@ Changes for version 23.0 (unreleased) - Joachim Wiedorn
     - Don't scan '.udev' directory  (device.c)
     - Use default size 'hdsize'     (script mkrescue)
     - Move macro 'S' into 'SA' (crt.S, lilo.c, lilo.h, probe.c, second.S)
+    - Update min. versions of bcc and gcc.  (script checkit)
+    - Add new option 'small-memory' (cfg.c)
+    - Differentiate small-memory/large-memory (bsect.c, boot.c)
+    - Optimize standard logging     (bsect.c)
 
   General
   -------
@@ -27,7 +38,6 @@ Changes for version 23.0 (unreleased) - Joachim Wiedorn
     - Move all source code files into new directory 'src'.
     - Split file CHANGES into CHANGELOG and CHANGELOG_old.
     - Better check for tool 'mkfs.msdos', for with you must be root.
-    - Fix error messages of script 'checkit'.
 
     - Create new main Makefile.
     - Move target 'spotless' to 'distclean' in concerned files.
