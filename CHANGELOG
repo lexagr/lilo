@@ -62,6 +62,8 @@ Changes for version 23.0 (unreleased) - Joachim Wiedorn
     - Optimize warnings while running target 'diagnostic'.
     - Renumber the pseudo targets.
     - Move commands for target 'diagnostic' into src/Makefile.
+    - Update install paths and names for some binaries.
+    - Move the environment variable ROOT to DESTDIR.
 
 Changes from version 22.7.3 to 22.8 (16-Feb-2007) John Coffman
 
