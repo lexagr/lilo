@@ -6,6 +6,13 @@ Changes for version 23.0 (unreleased) - Joachim Wiedorn
     - Update file COPYING with copyrights and license.
     - Update copyrights in some file headers.
     - Add new files README, TODO, NEWS.
+    - Fix for some typos in manpages.
+    - Update some old files in readme/ and docs/.
+    - Move to creating pdf instead of ps in /docs.
+    - Add found old manpage man/keytab-lilo.pl.
+    - Update additional informations  (lilo.lsm, sample/README).
+    - Set static manpage path to /usr/share/man (make.vars).
+    - Update of the program command logging header.
 
   Sources
   -------
@@ -32,7 +39,7 @@ Changes for version 23.0 (unreleased) - Joachim Wiedorn
     - Optimize standard logging     (bsect.c)
     - Update install paths and names for some binaries. (src/Makefile)
     - Move the environment variable ROOT to DESTDIR.    (src/Makefile)
-    - Deactivate very old scripts (mkbdist, mksdist, QuickInst)
+    - Deactivate very old scripts   (mkbdist, mksdist, QuickInst)
 
   General
   -------
