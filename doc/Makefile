@@ -1,6 +1,7 @@
 # -*- makefile -*-
 
 LATEX=latex
+PDFLATEX=pdflatex
 RLATEX=./rlatex
 FIG2DEV=fig2dev
 SHELL=/bin/sh
@@ -15,7 +16,7 @@ IMAGES=bootloader.tex map.tex image.tex parameter.tex other.tex
 .tex.dvi:
 		$(RLATEX) $*
 
-all:		user.dvi tech.dvi user.ps tech.ps
+all:		user.dvi tech.dvi user.pdf tech.pdf
 
 user.ps:	user.dvi
 		dvips -o user.ps user.dvi
@@ -27,16 +28,24 @@ user.dvi:	user.tex
 
 tech.dvi:	tech.tex $(IMAGES)
 
-../README:	user.tex
-		perl t2a.pl <user.tex >../README || { rm -f ../README; exit 1; }
+user.pdf:	user.dvi
+		$(PDFLATEX) user
+		$(PDFLATEX) user
+
+tech.pdf:	tech.dvi
+		$(PDFLATEX) tech
+		$(PDFLATEX) tech
+
+../doc/README:	user.tex
+		perl t2a.pl <user.tex >../doc/README || { rm -f ../doc/README; exit 1; }
 
 html:		user.ps tech.ps
 		latex2html -split 2 -link 2 -toc_depth 2 user
 		latex2html -split 1 -link 1 -toc_depth 1 tech
 
 again:
-		$(LATEX) user
-		$(LATEX) tech
+		$(PDFLATEX) user
+		$(PDFLATEX) tech
 
 tidy:
 		rm -f *~ *.toc *.aux *.log
@@ -46,7 +55,7 @@ clean:		tidy
 		rm -Rf user tech
 
 distclean:	clean
-#		rm -f *.dvi $(IMAGES)
+
 
 dummies:
 		for n in $(IMAGES); do echo '(omitted)' >$$n; done

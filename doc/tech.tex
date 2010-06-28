@@ -5,7 +5,23 @@
 % See file COPYING for details.
 %
 
-\documentstyle[fullpage]{article}
+% PDFLaTeX stuff
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+  \pdffalse
+\else
+  \pdfoutput=1
+  \pdftrue
+\fi
+
+\documentclass[fullpage]{article}
+\usepackage{ae}
+\usepackage[bookmarks,%
+        pdftitle={Linux Loader (LILO) technical overview},%
+        pdfsubject={Booting on iA32 architecture},%
+        pdfkeywords={lilo, boot},%
+        pdfauthor={Werner Almesberger <Werner.Almesberger@epfl.ch>}]%
+        {hyperref}
 
 \parindent=0pt
 \parskip=4pt
