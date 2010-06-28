@@ -111,7 +111,7 @@ This option overrides the use of the default configuration file,
 Specifies the delay time in tenths of a second (20 = 2 sec) before
 automatically booting the first image.  Gives you time to interrupt the
 automatic boot process with Shift, Alt, Ctrl, ScrollLock, or CapsLock.  If
-interrupted, the `boot:' prompt is displayed.  This switch is overriden by
+interrupted, the `boot:' prompt is displayed.  This switch is overridden by
 the appearance of
 .I prompt
 in the configuration file.
@@ -419,7 +419,7 @@ loads the multi-sector second stage loader, but is very space limited.  When
 the first stage loader gets control, it types the letter "L"; when it is
 ready to transfer control to the second stage loader it types the letter
 "I".  If any error occurs, like a disk read error, it will put out a
-hexadecimil error code, and then it will re-try the operation.  All hex
+hexadecimal error code, and then it will re-try the operation.  All hex
 error codes are BIOS return values, except for the lilo-generated 40, 99 and 9A.
 A partial list of error codes follows:
 .br
@@ -468,7 +468,7 @@ pinpoint, more or less successfully, the point of failure.
 is known to have problems with the
 .I reiserfs
 introduced with the 2.2.x kernels, unless the file system is
-mounted with the 'notail' option.  This incompatibilty has been
+mounted with the 'notail' option.  This incompatibility has been
 resolved with reiserfs 3.6.18 and lilo 21.6.
 .I reiser4
 introduced with the 2.5.x kernels requires lilo 22.5.2 or later.
@@ -481,7 +481,7 @@ achieved using the `-x mbr-only' switch.
 .SH BUGS
 Configuration file options `backup' and `force-backup'
 should specify a backup directory or backup file pathname template on
-all RAID installations. Use of an explicit filename may not allow mulitple
+all RAID installations. Use of an explicit filename may not allow multiple
 backup files to be created correctly. It is best to use the default mechanism,
 as it works correctly in all cases.
 .SH "SEE ALSO"

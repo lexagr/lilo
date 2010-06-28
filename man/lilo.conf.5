@@ -173,7 +173,7 @@ Optional specification of the 'timeout='
 countdown timer.  <x>,<y> 
 specifies the character (or pixel) coordinate of the location of the timer
 the same as 'bmp-table='
-above; and the color triple specifes the character color attributes
+above; and the color triple specifies the character color attributes
 the same as 'bmp-colors=' above, with the exception that the background color
 .I must
 be specified.  If used to override the timer specification in a bitmap file,
@@ -294,7 +294,7 @@ on the device.  This is in addition to making all of the necessary
 entries for the device in the "/dev" directory (with 'mknod').  The
 maximum number of partitions must be one of 63 (like an IDE disk), 31 (uncommon), 15
 (like SCSI disks -- most common value), or 7 (like one array controller).
-An example specifictaion would be:
+An example specification would be:
 .sp
 .nf
      disk=/dev/userd0
@@ -302,7 +302,7 @@ An example specifictaion would be:
 .fi
 .sp
 In cases where there is no
-kernel paritition information available, such as on loopback devices,
+kernel partition information available, such as on loopback devices,
 the 'disk=' specification may include paritition start information;
 viz.,
 .sp
@@ -364,7 +364,7 @@ tells lilo to ignore corrupt partition tables.
 Selects the user interface which will be seen at boot time.  One of the
 following three options may be specified:  \fBtext\fP, \fBmenu\fP, or
 \fBbmp\fP. The traditional LILO interface is `text'; but `menu' is now the
-default, unless the configurtion file contains the `bitmap='
+default, unless the configuration file contains the `bitmap='
 specification.  The \fItext\fP interface is strictly a command-line
 interface as though the console were a dumb terminal.  The \fImenu\fP
 interface is a text-based screen of the boot choices, with the option to
@@ -383,7 +383,7 @@ memory above 15Mb (up to a kernel imposed limit, around 768Mb) for
 passing the initrd to the kernel.  The presence of this option merely
 indicates that your system does not have the old BIOS limitation.
 
-This switch (or its abscence) is not passed to the kernel, and does not
+This switch (or its absence) is not passed to the kernel, and does not
 in any way affect the
 amount of physical memory which it will use.  (See the
 kernel documentation for the kernel command line parameter
@@ -539,14 +539,14 @@ or a comma-separated list of devices; e.g., "/dev/hda,/dev/hdc6".  Starting
 with LILO version 22.0, the boot record is normally written to the first
 sector of the RAID1 partition.  On PARALLEL raid sets, no other boot records
 are needed.  The
-default action is \fIauto\fP, meaning, automatically generate auxilary boot
+default action is \fIauto\fP, meaning, automatically generate auxiliary boot
 records as needed on SKEWED raid sets.  \fInone\fP means
 suppress generation of all auxiliary boot records.
 \fImbr-only\fP suppresses generation of a boot record on the raid device,
 and forces compatibility with versions of LILO earlier than version 22.0
 by writing boot records to all Master Boot Records (MBRs) of all disks which
 have partitions in the raid set. \fImbr\fP is like \fImbr-only\fP except the
-boot record on the RAID parition is not suppressed.
+boot record on the RAID partition is not suppressed.
 Use of an explicit list of devices, forces writing of auxiliary boot records
 only on those devices enumerated, in addition to the boot record on the RAID1
 device. Since the version 22 RAID1 codes will never automatically write a boot
@@ -703,7 +703,7 @@ specification (see below).
 The string must be enclosed within double quotes.  Usually, the previous
 .B "append="
 will specify parameters common to all kernels by appearing in the top,
-or global, section of the configuratin file and
+or global, section of the configuration file and
 .B "addappend="
 will be used to add local parameter(s) to an individual image.
 Addappend= may be used only once per "image=" section.
@@ -832,7 +832,7 @@ FAT32, or OS/2 on FAT16 or HPFS.
 The alternate chain loader,
 .I os2_d
 passes partition and drive information unconditionally, and uses a format
-suitalble for OS/2 and DOS (see 
+suitable for OS/2 and DOS (see 
 .I table=<letter>
 below).
 .TP
@@ -887,7 +887,7 @@ be set hidden, and deactivated.  In addition, partition 2, will be set
 normal, and activated.  Activation sets the boot-flag in the partition
 table.  The 
 .I automatic
-keyword may confict with default change rules, so the
+keyword may conflict with default change rules, so the
 .I set=
 lines above may be redundant.
 .TP
@@ -905,7 +905,7 @@ time, not install time.  This is advantageous on systems where the BIOS
 presents a boot menu of devices, and will map disks to devices in different
 ways, depending upon the BIOS boot selection.
 .sp
-This option may by specified as a global option, in which case it applies to
+This option may be specified as a global option, in which case it applies to
 all "other=" sections unless overridden with a specific "master-boot" option.
 If one of "boot-as=" or "master-boot" is specified as a global option, it is
 better to specify "master-boot" as the global option, as it will not
@@ -928,7 +928,7 @@ dynamically at boot-time, not at boot install-time, as with "map-drive=".
 It is slightly more powerful than "boot-as=", in that the device code which
 is assigned, 0 or 0x80, is determined dynamically.
 .sp
-This option may by specified as a global option, in which case it applies to
+This option may be specified as a global option, in which case it applies to
 all "other=" sections unless overridden with a specific "boot-as=" option.
 .TP
 .BI "map-drive=" <num>
@@ -979,7 +979,7 @@ A second name for the same entry can be used by specifying an alias.
 The bitmap graphic (install=bmp) is retained when control is passed to the
 loaded kernel image, or other= bootloader; i.e., the screen is not
 blanked to alphanumeric mode before starting the kernel.  This feature is
-conisdered EXPERIMENTAL, for those users working with startup splash
+considered EXPERIMENTAL, for those users working with startup splash
 screens.
 .TP
 .BI "fallback=" <command-line>
