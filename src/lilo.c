@@ -1,14 +1,13 @@
-/* lilo.c  -  LILO command-line parameter processing */
-/*
-Copyright 1992-1998 Werner Almesberger.
-Copyright 1999-2006 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
-
+/* lilo.c  -  LILO command-line parameter processing
+ * 
+ * Copyright 1992-1998 Werner Almesberger
+ * Copyright 1999-2007 John Coffman
+ * Copyright 2009-2010 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 #define _GNU_SOURCE
 #include <stdlib.h>
@@ -823,8 +822,12 @@ fprintf(errstd,"REBOOT=\"%s\"\n", reboot_arg);
 	    printf("\n");
 	    return 0;
 	}
-	printf(", Copyright (C) 1992-1998 Werner Almesberger\n"
-	       "Development beyond version 21 Copyright (C) 1999-2006 John Coffman\n"
+	printf("\n * Copyright (C) 1992-1998 Werner Almesberger  (until v20)\n"
+			" * Copyright (C) 1999-2007 John Coffman  (until v22)\n"
+			" * Copyright (C) 2009-2010 Joachim Wiedorn  (since v23)\n"
+			"This program comes with ABSOLUTELY NO WARRANTY. This is free software \n"
+			"distributed under the BSD License (3-clause). Details can be found in \n"
+			"the file COPYING, which is distributed with this software.\n"
 	       );
         if (verbose>0) {
 #if !__MSDOS__
