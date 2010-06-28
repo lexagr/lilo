@@ -1,28 +1,20 @@
 Begin4
-Title:		LILO
-Version:	22.8
-Entered-date:	2007-02-19
-Description:	Generic boot loader for Linux. Distribution includes full
-		source, documentation and support files.  Pre-compiled
-		binaries depend on glibc 2.1.
-Keywords:	Linux, boot loader, LILO
-Author:		Werner Almesberger <wa@almesberger.net>
-		John Coffman <johninsd@san.rr.com> (beyond v.21)
-Maintained-by:	John Coffman <johninsd@san.rr.com>
-Primary-site:	http://www.ibiblio.org/pub/Linux/system/boot/lilo
-		  2kB lilo-22.8.announce.txt
-		433kB lilo-22.8.src.tar.gz
-		  1kB lilo-22.8.src.tar.gz.sig
-		134kB lilo-22.8.bin.tar.gz
-		  1kB lilo-22.8.bin.tar.gz.sig
-		312kB lilo-22.8.bin.static.tar.gz
-		  1kB lilo-22.8.bin.static.tar.gz.sig
-Alternate-site:	http://lilo.go.dyndns.org/pub/linux/lilo  (developer's site)
-Original-site:  http://lilo.go.dyndns.org/pub/linux/lilo
-Platforms:	Linux 0.99pl12 or newer, gcc (2.91-4.1.0), and as86 (v.16)
-		needed to compile.
-		bcc (0.16.11) needed to compile diagnostic disk 2 & DOS *.com.
+Title:			LILO
+Version:		23.0
+Entered-date:	2010-06-28
+Description:	Generic boot loader for Linux. Distribution 
+		includes full source, documentation and support files.  
+Keywords:		Linux, boot loader, LILO
+Author:			Joachim Wiedorn
+Maintained-by:	Joachim Wiedorn <ad_debian@joonet.de>
+Primary-site:	http://lilo.alioth.debian.org/
+Original-site:  http://lilo.alioth.debian.org/
+Alternate-site:	http://alioth.debian.org/projects/lilo/  (developer's site)
+Files:			438kB  lilo-23.0.tar.gz
+Platforms:		Linux (>= 2.4.0), 
+		gcc (>= 3.3.5), as86 (>= 0.16.14) needed to compile.
+		bcc (0.16.14) needed to compile diagnostic disk 2 & DOS *.com.
 		LaTeX and (optionally) Perl and Transfig needed to print the
 		documentation.
-Copying-policy:	BSD
+Copying-policy:	BSD-License
 End

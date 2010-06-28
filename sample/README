@@ -1,7 +1,7 @@
+README for project LILO / samples
+=================================
 
-More sample bitmaps may be found at:
-
-   http://lilo.go.dyndns.org/pub/linux/lilo/sample
+Picture files for boot menu must be rl-coded bmp files.
 
 Files as distributed have been edited through 'lilo -E XXXX.bmp' to specify
 useful boot table layouts, colors, and timer positions. The companion *.dat
@@ -26,8 +26,20 @@ The video adapter type, and the video modes supported by its BIOS, will be
 displayed; i.e., those graphic modes of interest to the LILO bitmap
 interface.
 
+Example for syntax and colors
+-----------------------------
 
---John Coffman
+  color palette: 0 black,    3 magenta, 
+                 7 pink,     8 middle grey,
+                10 bright grey, 13 white
+ 
+  bmp-colors = <fg>,<bg>,<sh>,<high-fg>,<high-bg>,<high-sh>
+  if <bg> or <high-bg> not defined, than it is transparent
+  if <sh> or <high-sh> not defined, than it is no color
+ 
+  bmp-table = <x>,<y>,<ncol>,<nrow>,<xsep>,<spill>
+  if <ncol> = 1 then there are only one menu column
+                and <spill> will not be defined
+ 
+  bmp-timer = <x>,<y>,<fg>,<bg>,<sh>
 
-2003-02-26
-(end)
