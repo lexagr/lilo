@@ -1,0 +1,102 @@
+.\" '\" t
+.\" This page is based on the lilo docs/source, which carry the following
+.\" COPYING condition:
+.\" 
+.\" LILO program code, documentation and auxiliary programs are
+.\" Copyright 1992-1994 Werner Almesberger.
+.\" All rights reserved.
+.\" 
+.\" Redistribution and use in source and binary forms of parts of or the
+.\" whole original or derived work are permitted provided that the
+.\" original work is properly attributed to the author. The name of the
+.\" author may not be used to endorse or promote products derived from
+.\" this software without specific prior written permission. This work
+.\" is provided "as is" and without any express or implied warranties.
+.\" 
+.\" Original version of this manpage: 
+.\" Peter Maydell (pmaydell@chiark.greenend.org.uk), 03/1998
+.\" 
+.TH "KEYTAB-LILO.PL" "8" "April 1998" "" ""
+.SH "NAME"
+keytab\-lilo \- compile keytables files for use with LILO
+.SH "SYNOPSIS"
+.B /usr/sbin/keytab\-lilo
+.RB [ \-p
+.I R old_code = new_code ]
+.RB ...
+.RI [ default_layout ] " kbd_layout"
+.SH "DESCRIPTION"
+.LP 
+.B keytab\-lilo
+is a program which compiles keytable definitions (in the format
+specified in 
+.BR keytables(5) ) 
+into a format which can be used by 
+.B lilo(8)
+to set the keyboard type when booting
+[using the 
+.B keytable
+parameter in
+.BR /etc/lilo.conf ].
+
+.I kbd_layout
+should be the name of a map file which specifies the desired 
+keyboard layout. This file may be a 
+.B gzip(1) 
+compressed map. If no file extension is given,
+.B .map.gz
+is assumed. If the full pathname is not specified,
+.B /usr/share/keymaps/
+is assumed.
+
+Since 
+.B lilo 
+essentially needs to know the differences between
+the BIOS keyboard mapping and the one you require, the
+.I default_layout
+file should contain a 
+.B keytables(5) 
+file for the BIOS default mapping. If no 
+.I default_layout
+file is specified,
+.B us.map.gz
+is used.
+
+.B keytab\-lilo
+writes the output translation table as a binary string to standard
+output, so you should redirect it to a suitable file. 
+.B lilo
+has no particular restrictions on the name of keyboard translation
+files, but the suggested naming convention and location is
+.BI /boot/ mapping .ktl
+(where
+.B .ktl
+stands for "Keyboard Table for Lilo").
+.SH "OPTIONS"
+.TP 
+.B \-p
+.I R old_code = new_code
+.br 
+Specifies corrections ("patches") to the mapping obtained from the 
+translation table files. E.g. if pressing the upper case "A" should 
+yield an at sign, \-p 65=64 would be used. The  \-p  option can be 
+repeated any number of times. The codes can also be given as 
+hexadecimal or as octal numbers if they are prefixed with 0x or 0, 
+respectively. 
+
+.SH "EXAMPLES"
+.TP 
+.B keytab\-lilo dvorak >/boot/dvorak.ktl
+
+This is the most common form of invocation; it simply compiles the
+given map file (in this case dvorak) and puts the result in
+.BR /boot/dvorak.ktl .
+
+.SH "AUTHOR"
+Werner Almesberger (almesber@bernina.ethz.ch).
+.br 
+Peter Maydell (pmaydell@chiark.greenend.org.uk) wrote this manual page.
+.SH "SEE ALSO"
+.BR lilo (8),
+.BR keytables (5),
+.BR gzip (1)
