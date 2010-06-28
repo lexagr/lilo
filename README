@@ -37,3 +37,23 @@ Installation into a subdirectory:
   WARNING: You always need an absolute path! This behaviour have changed 
   since version 22.x. The old variable ROOT is obsolete for installing.
 
+Using UUIDs for partitions:
+
+  In the configuration file of lilo all lines with 'root=' can be used
+  together with UUIDs. To extract your UUIDs let run the program blkid.
+  Here an example:
+
+      #OLD#root = /dev/hda6 = /dev/sda6
+      root  = "UUID=5472fd8e-9089-4256-bcaa-ceab4f01a439"
+
+  But then you should also use a similar expression for the 'boot=' line.
+  Unfortunately you cannot use UUIDs because devices haven't any UUIDs.
+  The solution is using the udev device names which can be found in 
+  /dev/disks/by-id/ i. e. for a PATA disk:
+  
+      boot = /dev/disk/by-id/ata-SAMSUNG_SV1604N_S01FJ10X999999
+
+  or i. e. for a SATA disk :
+
+      boot = /dev/disk/by-id/ata-SAMSUNG_HD502HI_S1VZJ90S999999
+
