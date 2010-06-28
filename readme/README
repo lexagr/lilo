@@ -1406,7 +1406,7 @@ The following syntax rules apply:
 Example:
 
 boot = $FD
-install = $MNT/boot.b
+install = menu 
 map = $MNT/map
 compact
 read-only
@@ -1470,7 +1470,7 @@ The following global options are recognized:
     the boot sector even on partitions that appear to be unsuitable for 
     that. 
   INSTALL=<boot_sector>  Install the specified file as the new boot sector. 
-    If INSTALL is omitted, /boot/boot.b is used as the default. 
+    If INSTALL is omitted, install=text is used as the default. 
   KEYTABLE=<table_file>  Re-map the keyboard as specified in this file. See 
     section "Keyboard translation" for details. 
   LBA32  Generate 32-bit Logical Block Addresses instead of 

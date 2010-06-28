@@ -1831,7 +1831,7 @@ The following syntax rules apply:
 Example:
 \begin{verbatim}
 boot = $FD
-install = $MNT/boot.b
+install = menu
 map = $MNT/map
 compact
 read-only
@@ -1903,7 +1903,7 @@ The following global options are recognized:
     to put the boot sector even on partitions that appear to be unsuitable for
     that.
   \item[\craw{install=}\meta{boot\_sector}] Install the specified file as the
-    new boot sector. If \craw{install} is omitted, \path{/boot/boot.b} is used
+    new boot sector. If \craw{install} is omitted, \path{install=text} is used
     as the default.
   \item[\craw{keytable=}\meta{table\_file}] Re-map the keyboard as specified
     in this file. See section \ref{keytab} for details.

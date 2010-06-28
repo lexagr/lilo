@@ -89,8 +89,8 @@ Four keywords are added to 'lilo.conf' to allow the usage of bitmap screens:
 	bmp-timer  =		#specifies the position and color attributes
 				#of the timeout timer
 
-	install = /boot/boot-bmp.b	#specify the boot loader with bitmap
-					#graphics capability
+	install = bmp		#specify the boot loader with bitmap
+				#graphics capability
 
 'bitmap=' specifies the graphic file to be used as a background screen.  It
 must be 640 x 480 x 16 colors, and may be saved as an uncompressed bitmap
@@ -98,12 +98,6 @@ file (153718 bytes), run-length encoded (compressed) bitmap file, or an OS2
 bitmap file (153674 bytes).  It is suggested that you use the smallest,
 which will probably be the RLE (compressed) file.  When a 'bitmap=' file is
 in use, 'message=' may not be used, and vice versa.
-
-In order to display the graphic file, you will also have to specify a boot
-loader with graphic capabilities.  The LILO Makefile will make the new boot
-loader, "boot-bmp.b", and the shell command "make install" will install it
-to the default directory '/boot'.  'lilo.conf' will require the 'install='
-line above to make use to this boot loader.
 
 'bmp-table=<list>' specifies the position and table layout of the boot 
 selection menu.  The list is a series of up to 5 decimal values, separated
