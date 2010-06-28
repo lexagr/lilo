@@ -1,9 +1,56 @@
 NEWS about project LILO
 =======================
+(For details see file 'CHANGELOG' in the source directory)
 
-* new option 'small-memory'
 
-* modified option 'large-memory'
+Version 23.0  (major and bugfix update of 22.8)
 
-* absolute path for installation path ROOT
+ o Major code reorganisation and code cleaning.
+ o Add new option 'small-memory' and modify option 'large-memory'.
+ o Configuration without memory option set to auto-memory, which
+   mean a automatic decision: small initrd will be load <15M, 
+   large initrd will be load >16M.
+ o Now need an absolute path for the installation path DESTDIR,
+   in the past named as ROOT.
+ o Many bugfixes and sensible updates (most from Debian).
+ o Remove obsolete program 'activate'. Instead use 'lilo -A'.
+
+
+Version 22.8  (minor update of 22.7.3)
+
+ o Compile with DEVMAPPER (device-mapper or LVM2) if library is present.
+ o Add 'nodevcache' configuration file keyword.
+ o Allow root device specification with UUID in addition to LABEL.
+
+
+Version 22.7.3  (bugfix update of 22.7.2)
+
+ o Correct table entry for experimental major device 253.
+ o Correct PC/AT keyboard check when NOKEYBOARD compile option is used.
+
+
+Version 22.7.2  (minor update of 22.7.1)
+
+ o Keywords "noraid", "nokbdefault", "nokbdisable" are added.
+ o Compensate for common BIOS bug (sectors==0) on USB disk drives.  
+ o Increase kernel command line to 512 bytes.
+
+
+Version 22.7.1  (minor update of 22.7)
+
+ o Expand device major/minor numbers to more than 8 bits.
+ o Apply security updates to 'mkrescue' & 'QuickInst'.
+ o Allow any keystrike (not just Shift) to display 'boot:' menu, or to 
+   escape from stored command line.
+
+
+Version 22.7  (minor update of 22.6.1)
+
+ o Add the DOS/Windows utility 'lilo.com' which implements the -q -R -V 
+   (-C -m) switches. This utility may be used to set the boot command 
+   line if the sector map file is on a DOS/Windows partition.
+ o Add bulletproofing for "unattended" so that a spurious <CR> character 
+   can be ignored.
+ o Select boot descriptors based upon partially typed names in all 
+   situations except "unattended".
 
