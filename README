@@ -1,6 +1,20 @@
 README for project LILO
 =======================
 
+
+Versoin 23.1 (release) -- Joachim Wiedorn <ad_debian@joonet.de>
+---------------------------------------------------------------
+
+Option 'inaccessible':
+
+The patch in 23.0 for better support for inaccessible disks based
+on problems with usb sticks. But this option 'inaccessible' is only 
+usable, if hard disks can not be accessed by the BIOS, but always 
+by linux. This option does not concern usb sticks, which will always
+bring failures if they are named in the lilo.conf. So I have removed
+this patch from the new version.
+
+
 Versoin 23.0 (release) -- Joachim Wiedorn <ad_debian@joonet.de>
 ---------------------------------------------------------------
 

@@ -10,6 +10,8 @@ Changes for version 23.1 (unreleased) - Joachim Wiedorn
     - Optimize and update menue header line.  (src/crt.S)
     - Fix some typos in sources.  (src/bsect.c, src/raid.c)
     - LVM volume as root device.  (src/bsect.c)
+    - Remove patch for inaccessible disks (src/geometry.c)
+      and add remarks in README file.
 
   General
   -------
