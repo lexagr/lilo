@@ -88,7 +88,7 @@ void boot_image(char *spec,IMAGE_DESCR *descr)
 			die("Can't load kernel at mis-aligned address 0x%08lx\n",hdr.start);
 		descr->flags |= FLAG_LOADHI;	/* load kernel high */
 		hi_sectors = sectors - setup;	/* number of sectors loaded high */
-		hi_sectors *= 3;            	/* account for decompression */
+		hi_sectors *= 6;            	/* account for decompression */
 		if (hi_sectors < HIGH_4M) hi_sectors = HIGH_4M;    
     }
     geo_close(&geo);

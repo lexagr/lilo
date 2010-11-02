@@ -14,6 +14,13 @@ by linux. This option does not concern usb sticks, which will always
 bring failures if they are named in the lilo.conf. So I have removed
 this patch from the new version.
 
+Computing vmlinux size:
+
+From the compressed kernel vmlinuz the size of the uncompressed
+file must be compute to decide whether the initrd can be copied
+in the memory <15M. But with the newer 64bit kernels this factor
+changed from nearly "3" to nearly "6". "6" is now default.
+
 
 Versoin 23.0 (release) -- Joachim Wiedorn <ad_debian@joonet.de>
 ---------------------------------------------------------------
