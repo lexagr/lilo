@@ -825,7 +825,7 @@ printf("MAX_IMAGES = %d\n", MAX_IMAGES);
 		    if (serial[1]=='7')	param2.ser_param &= 0xFE;
 		    else param2.ser_param |= 0x01;
 		    
-		    if (serial[2]) die("Synax error in SERIAL");
+		    if (serial[2]) die("Syntax error in SERIAL");
 		}
 	    }
 	    if (verbose>=4) printf("Serial Param = 0x%02X\n", 

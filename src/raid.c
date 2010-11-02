@@ -560,7 +560,7 @@ void raid_final(void)
 	    	index = lowest;
 	    }
 
-	    if (verbose>=3) printf("Specifed partition:  %s  raid offset = %08X\n",
+	    if (verbose>=3) printf("Specified partition:  %s  raid offset = %08X\n",
 					raid_list[pass], raid_offset[index]);
 
 	    if (!test)
