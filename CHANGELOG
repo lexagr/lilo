@@ -2,6 +2,7 @@ Changes for version 23.1 (unreleased) - Joachim Wiedorn
 
   Documentations
   --------------
+    - 'make clean' delete all created documentation files.
 
   Sources
   -------

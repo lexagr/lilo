@@ -48,10 +48,10 @@ again:
 		$(PDFLATEX) tech
 
 tidy:
-		rm -f *~ *.toc *.aux *.log
+		rm -f *~ *.toc *.aux *.log *.out
 
 clean:		tidy
-		rm -f *.ps *.dvi
+		rm -f *.ps *.dvi *.pdf
 		rm -Rf user tech
 
 distclean:	clean
