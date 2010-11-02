@@ -14,7 +14,7 @@
 mkrescue \- make rescue floppy
 .SH SYNOPSIS
 .LP
-.B "/sbin/mkrescue"
+.B "/usr/sbin/mkrescue"
 \- make a bootable rescue floppy or CD using the default kernel specified
 in \fIlilo.conf\fP.
 .SH DESCRIPTION
@@ -49,7 +49,7 @@ regard to the drive on which it is created.
 .TP
 .BI "--fast"
 Use a faster method of creating the boot floppy.  This involves first
-creating a file of "--size" 1k blocks (default is 1440)
+creating a file of "\-\-size" 1k blocks (default is 1440)
 mounted using a loopback device, creating the bootable floppy,
 then copying the entire file to the disk.
 .TP
@@ -92,14 +92,14 @@ option is allowed.
 .BI "--nocompact"
 For faster kernel loading from a floppy, LILO map compaction is normally
 enabled. This option will disable map compaction by omitting the
-lilo "-c" switch.
+lilo "\-c" switch.
 .TP
 .BI "--noformat"
 Suppresses creation of a new filesystem on the boot floppy. This option may
 be used
 .B only
 when you know that the floppy you will be writing upon is formatted with the
-same filesystem as specified by "--fs XXX" (default is ext2).
+same filesystem as specified by "\-\-fs XXX" (default is ext2).
 .TP
 .BI "--root <device>"
 Specify the root filesystem for the kernel on the boot floppy. The currently

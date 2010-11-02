@@ -90,12 +90,12 @@ may be booted from an extended partition.
 .TP
 .BI "\-\^b " bootdev
 Specify the boot device; i.e., where the boot loader will be installed.
-"-b /dev/hda" specifies the Master Boot Record; "-b /dev/sdb5" specifies
+"\-b /dev/hda" specifies the Master Boot Record; "\-b /dev/sdb5" specifies
 the first extended partition on the second SCSI disk.
 .TP
 .BI "\-\^B " bitmap-file
 Specify a bitmap file for the boot-time graphics screen, preferably one
-already pre-processed with the 'lilo -E' command.
+already pre-processed with the 'lilo \-E' command.
 .TP
 .B "\-\^c"
 Enable map compaction. This will merge read requests from adjacent
@@ -144,7 +144,7 @@ Override boot sector check for filesystems (e.g., swap, XFS, ...) which might be
 destroyed by the installation of the LILO boot sector on the first sector of
 the partition.  These filesystems use the first sector as a superblock.
 
-Compare with "-P ignore", which bypasses certain partition table checks.
+Compare with "\-P ignore", which bypasses certain partition table checks.
 .TP
 .BI "\-\^g"
 Generate cylinder/head/sector (geometric) disk addresses.  Limited to
@@ -218,21 +218,21 @@ on the disk.
 is also used to bypass the partition table check for partition types within
 the partition table which
 might not allow the installation of a LILO boot sector.  Compare with the
-"-F" flag, which overrides the check of the actual boot sector.
+"\-F" flag, which overrides the check of the actual boot sector.
 
 .I "-P <global-option>"
 allows the passing of any global option which may appear in the global
 section (top) of the configuration file (/etc/lilo.conf).  For instance,
 .I -P nowarn
 will pass the "nowarn" option, just as though "nowarn" appeared in the
-configuration file (same as the "-w" switch).  Similarly,
+configuration file (same as the "\-w" switch).  Similarly,
 .I -P timeout=50
 will add or override the "timeout=" line in the configuration file.  Note
 that the general
 .I -P
 switch actually duplicates a number of command line option switches. 
 However, it is not strictly the same as some switches whick cause an
-override of other options; e.g., "-g" (-P geometric), "-L" (-P lba32).
+override of other options; e.g., "\-g" (\-P geometric), "\-L" (\-P lba32).
 .TP
 .B \-\^q
 List the currently mapped files.
@@ -256,7 +256,7 @@ directory. It may also need an
 This option sets the default command for the boot loader the next
 time it executes. The boot loader will then erase this line: this
 is a once-only command. It is typically used in reboot scripts,
-just before calling `shutdown -r'.  Used without any arguments, it will
+just before calling `shutdown \-r'.  Used without any arguments, it will
 cancel a \fIlock\fP-ed or \fIfallback\fP command line.
 .TP
 .BI "\-\^s " save-file
@@ -310,7 +310,7 @@ may be any one of the following:
 .TP
 .BI "\-\^u " [device-name]
 Uninstall \fIlilo\fP by copying the saved boot sector back.
-The '-s' and '-C' switches may be used with this option.
+The '\-s' and '\-C' switches may be used with this option.
 The \fIdevice-name\fP is optional.  A time-stamp is checked.
 .TP
 .BI "\-\^U " [device-name]
@@ -344,18 +344,18 @@ output for different LILO versions. The line beginning "CFLAGS="
 will contain the compiler options used to generate this version of LILO.
 .TP
 .B "\-\^z"
-When used with the -M switch, clears the Volume-ID.  Usually used
+When used with the `\-M' switch, clears the Volume-ID.  Usually used
 in the following sequence to generate a new Volume-ID:
 .nf
-     lilo -z -M /dev/hda
-     lilo -M /dev/hda
+     lilo \-z \-M /dev/hda
+     lilo \-M /dev/hda
 .fi
 .br
 .TP
 .BI "\-\^Z " option
 Tells the boot installer whether special precautions need to be taken
-because the BIOS fails to pass the correct device code in DL (-Z0). Or may
-specify that the BIOS always gets DL right (-Z1). Corresponds to, and
+because the BIOS fails to pass the correct device code in DL (\-Z0). Or may
+specify that the BIOS always gets DL right (\-Z1). Corresponds to, and
 overrides, the configuration file option 'bios-passes-dl='.
 .LP
 The above command line options correspond to the key words
@@ -363,25 +363,25 @@ in the config file indicated below.
 .IP
 .TS
 l l.
--b bootdev	boot=bootdev
--B file.bmp	bitmap=file.bmp
--c	compact
--d dsec	delay=dsec
--D label	default=label
--i boot-loader	install=boot-loader
--f file	disktab=file
--g	geometric
--l	linear
--L	lba32
--m mapfile	map=mapfile
--P fix	fix-table
--P ignore	ignore-table
--s file	backup=file
--S file	force-backup=file
--v [N]	verbose=N
--w	nowarn
--x option	raid-extra-boot=option
--Z option	bios-passes-dl=option
+\-b bootdev	boot=bootdev
+\-B file.bmp	bitmap=file.bmp
+\-c	compact
+\-d dsec	delay=dsec
+\-D label	default=label
+\-i boot-loader	install=boot-loader
+\-f file	disktab=file
+\-g	geometric
+\-l	linear
+\-L	lba32
+\-m mapfile	map=mapfile
+\-P fix	fix-table
+\-P ignore	ignore-table
+\-s file	backup=file
+\-S file	force-backup=file
+\-v [N]	verbose=N
+\-w	nowarn
+\-x option	raid-extra-boot=option
+\-Z option	bios-passes-dl=option
 .TE
 .SH "BOOT OPTIONS"
 The options described here may be specified at boot time on
@@ -448,16 +448,16 @@ FF  sense operation failed
 Error code 40 is generated by the BIOS, or by LILO during the conversion of
 a linear (24-bit) disk address to a geometric (C:H:S) address.  On older
 systems which do not support lba32 (32-bit) addressing, this error may also
-be generated.  Errors 99 and 9A usually mean the map file (-m or map=) is
+be generated.  Errors 99 and 9A usually mean the map file (\-m or map=) is
 not readable, likely because LILO was not re-run after some system change,
-or there is a geometry mis-match between what LILO used (lilo -v3 to
+or there is a geometry mis-match between what LILO used (lilo \-v3 to
 display) and what is actually being used by the BIOS (one of the lilo
 diagnostic disks, available in the source distribution, may be needed to
 diagnose this problem).
 
 When the second stage loader has received control from the first stage, it
 prints the letter "L", and when it has initialized itself, including
-verifying the "Descriptor Table" - the list of kernels/others to boot - it
+verifying the "Descriptor Table" \- the list of kernels/others to boot \- it
 will print the letter "O", to form the full word "LILO", in uppercase.
 
 All second stage loader error messages are English text, and try to
@@ -477,7 +477,7 @@ Beginning with version 22.0, RAID installations write the boot record to
 the RAID partition. Conditional writing of MBRs may occur to aid in making
 the RAID set bootable in a recovery situation, but all default actions may
 be overridden. Action similar to previous versions is
-achieved using the `-x mbr-only' switch.
+achieved using the `\-x mbr-only' switch.
 .SH BUGS
 Configuration file options `backup' and `force-backup'
 should specify a backup directory or backup file pathname template on
