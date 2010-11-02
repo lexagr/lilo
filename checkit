@@ -49,7 +49,7 @@ vers_min() {
 #echo
 echo GCC version $gccmin or later is required
 gcc -v 1>foo1 2>foo2
-V=`cat foo1 foo2 | cut -d' ' -f1-3 | grep version | cut -d' ' -f 3`
+V=`cat foo1 foo2 | cut -d' ' -f1-3 | grep -i version | tr '-' ' ' | cut -d' ' -f 3`
 rm -f foo1 foo2
 if [ -z "$V" ]; then
 	echo gcc is not present
@@ -101,6 +101,7 @@ else
 	echo bcc version $B
 	if [ $rc = 0 ]; then echo OKAY; else echo ERROR; fi
 fi
+echo
 
 #
 # Uncomment the line below to bypass all the checks

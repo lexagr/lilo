@@ -10,6 +10,7 @@ Changes for version 23.1 (unreleased) - Joachim Wiedorn
 
   General
   -------
+    - Use better 'checkit' for newer gcc.  (checkit)
 
 
 Changes for version 23.0 (28-June-2010) - Joachim Wiedorn
@@ -86,6 +87,7 @@ Changes for version 23.0 (28-June-2010) - Joachim Wiedorn
     - Optimize warnings while running target 'diagnostic'.
     - Renumber the pseudo targets.
     - Move commands for target 'diagnostic' into src/Makefile.
+
 
 Changes from version 22.7.3 to 22.8 (16-Feb-2007) John Coffman
 
