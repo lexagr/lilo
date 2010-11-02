@@ -54,44 +54,45 @@ static void check_size(char *name,int setup_secs,int sectors)
 
 void boot_image(char *spec,IMAGE_DESCR *descr)
 {
-    BOOT_SECTOR buff;
-    SETUP_HDR hdr;
-    char *initrd;
-    int setup,fd,sectors,hi_sectors=MAX_KERNEL_SECS*4;
-    int modern_kernel;
+	BOOT_SECTOR buff;
+	SETUP_HDR hdr;
+	char *initrd;
+	int setup,fd,sectors,hi_sectors=MAX_KERNEL_SECS*4;
+	int modern_kernel;
 
-    if (verbose > 0) {
-	printf("Boot image: %s",spec);
-	show_link(spec);	/* in common.c */
-	printf("\n");
+	if (verbose > 0) {
+		printf("Boot image: %s",spec);
+		show_link(spec);	/* in common.c */
+		printf("\n");
     }
-    fd = geo_open(&geo,spec,O_RDONLY);
-    if (fstat(fd,&st) < 0) die("fstat %s: %s",spec,strerror(errno));
-    if (read(fd,(char *) &buff,SECTOR_SIZE) != SECTOR_SIZE)
-	die("read %s: %s",spec,strerror(errno));
-    setup = buff.sector[VSS_NUM] ? buff.sector[VSS_NUM] : SETUPSECS;
-    if (read(fd,(char *) &hdr,sizeof(hdr)) != sizeof(hdr))
-	die("read %s: %s",spec,strerror(errno));
-    modern_kernel = !strncmp(hdr.signature,NEW_HDR_SIG,4) && hdr.version >=
-      NEW_HDR_VERSION;
-    if (modern_kernel) descr->flags |= FLAG_MODKRN;
-    if (verbose > 1)
-	printf("Setup length is %d sector%s.\n",setup,setup == 1 ? "" : "s");
-    if (setup > MAX_SETUPSECS)
-	die("Setup length exceeds %d maximum; kernel setup will overwrite boot loader", MAX_SETUPSECS);
-    map_add(&geo,0,(st.st_size+SECTOR_SIZE-1)/SECTOR_SIZE);
-    sectors = map_end_section(&descr->start,setup+SPECIAL_SECTORS+SPECIAL_BOOTSECT);
-    if (!modern_kernel || !(hdr.flags & LFLAG_HIGH))
-	check_size(spec,setup,sectors);
-    else {
-	if (hdr.start % PAGE_SIZE)
-	    die("Can't load kernel at mis-aligned address 0x%08lx\n",hdr.start);
-	descr->flags |= FLAG_LOADHI;	/* load kernel high */
-	hi_sectors = sectors - setup;	/* number of sectors loaded high */
-	hi_sectors *= 3;		/* account for decompression */
-	if (hi_sectors < HIGH_4M) hi_sectors = HIGH_4M;
+	fd = geo_open(&geo,spec,O_RDONLY);
+	if (fstat(fd,&st) < 0)  die("fstat %s: %s",spec,strerror(errno));
+	if (read(fd,(char *) &buff,SECTOR_SIZE) != SECTOR_SIZE)
+		die("read %s: %s",spec,strerror(errno));
+	setup = buff.sector[VSS_NUM] ? buff.sector[VSS_NUM] : SETUPSECS;
+	if (read(fd,(char *) &hdr,sizeof(hdr)) != sizeof(hdr))
+		die("read %s: %s",spec,strerror(errno));
+    modern_kernel = !strncmp(hdr.signature,NEW_HDR_SIG,4) && hdr.version >= 
+		NEW_HDR_VERSION;
+	if (modern_kernel) descr->flags |= FLAG_MODKRN;
+	if (verbose > 1)
+		printf("Setup length is %d sector%s.\n",setup,setup == 1 ? "" : "s");
+	if (setup > MAX_SETUPSECS)
+		die("Setup length exceeds %d maximum; kernel setup will overwrite boot loader", MAX_SETUPSECS);
+	map_add(&geo,0,(st.st_size+SECTOR_SIZE-1)/SECTOR_SIZE);
+	sectors = map_end_section(&descr->start,setup+SPECIAL_SECTORS+SPECIAL_BOOTSECT);
+	if (!modern_kernel || !(hdr.flags & LFLAG_HIGH))
+		check_size(spec,setup,sectors);
+	else {
+		if (hdr.start % PAGE_SIZE)
+			die("Can't load kernel at mis-aligned address 0x%08lx\n",hdr.start);
+		descr->flags |= FLAG_LOADHI;	/* load kernel high */
+		hi_sectors = sectors - setup;	/* number of sectors loaded high */
+		hi_sectors *= 3;            	/* account for decompression */
+		if (hi_sectors < HIGH_4M) hi_sectors = HIGH_4M;    
     }
     geo_close(&geo);
+
     if (verbose > 1)
 	printf("Mapped %d sector%s.\n",sectors,sectors == 1 ? "" : "s");
     if ((initrd = cfg_get_strg(cf_kernel,"initrd")) || (initrd = cfg_get_strg(
