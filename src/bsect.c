@@ -1089,11 +1089,14 @@ if (image) { /* long section specific to 'image=' */
 	    if (stat("/",&st) < 0) pdie("stat /");
 	    sprintf(strchr(options,0),"root=%x ",(unsigned int) st.st_dev);
 	}
+	else if (strlen(root)>12 && !strncmp(root,"/dev/mapper/",12)) {
+	    sprintf(strchr(options,0),"root=%s ", root);
+	}
 	else if (strlen(root)>6 && !strncmp(root,"LABEL=",6)) {
 	    sprintf(strchr(options,0),"root=%s ", root);
 	}
-        else if (strlen(root)>5 && !strncmp(root,"UUID=",5)) {
-            sprintf(strchr(options,0),"root=%s ", root);
+	else if (strlen(root)>5 && !strncmp(root,"UUID=",5)) {
+	    sprintf(strchr(options,0),"root=%s ", root);
         }
 	else {
 	    sprintf(strchr(options,0),"root=%x ",dev_number(root));
