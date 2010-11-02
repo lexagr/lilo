@@ -694,15 +694,13 @@ timer_dx: dw	0	; timer location
 
 
 str_title:
-	.ascii	"LILO"
+	.ascii	"GNU/Linux - "
+	.ascii	"LILO "
 #ifdef LCF_VERSION
-	.ascii	" "	
 	.ascii	SA(VERSION_MAJOR)
-	.ascii	"."
-	.ascii	SA(VERSION_MINOR)
-	.ascii	VERSION_EDIT
+	.ascii	" - "	
 #endif
-	.ascii	"  Boot Menu"
+	.ascii	"Boot Menu"
 	.byte	0
 	.org	str_title+MAX_MENU_TITLE+1
 

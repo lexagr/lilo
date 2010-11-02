@@ -6,6 +6,7 @@ Changes for version 23.1 (unreleased) - Joachim Wiedorn
 
   Sources
   -------
+    - Optimize and update menue header line.  (src/crt.S)
 
   General
   -------
