@@ -24,6 +24,7 @@ Changes for version 23.1 (unreleased) - Joachim Wiedorn
     - Use better 'checkit' for newer gcc.  (checkit)
     - Remove very old scripts.      (mkbdist, mksdist,QuickInst)
     - Create new makefile-based script QuickInst.
+    - Create new hook scripts for kernel and initramfs.
 
 
 Changes for version 23.0 (28-June-2010) - Joachim Wiedorn

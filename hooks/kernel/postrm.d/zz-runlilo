@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+#  zz-runlilo - postrm script for modern kernel management
+#
+#  Copyright 2010 Joachim Wiedorn
+#  All rights reserved.
+#
+#  Licensed under the terms contained in the file 'COPYING'
+#  in the source directory.
+#
+
+set -e
+PAR=all
+
+# check for maintainer param
+[ -n "${DEB_MAINT_PARAMS}" ] && PAR="${DEB_MAINT_PARAMS}"
+
+# check for configure|upgrade|remove|purge
+case "$PAR" in
+
+  all|remove*)
+    # Run the boot loader installer
+    if [ -f /sbin/lilo ]; then
+      if [ -f /etc/lilo.conf ]; then
+        # Do not abort kernel removal in case of error
+        lilo  </dev/null  >&2  || true
+      fi
+    fi
+    ;;
+
+esac
+
+# end of file

@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+#  runlilo - postupdate script for modern initrd management
+#
+#  Copyright 2010 Joachim Wiedorn
+#  All rights reserved.
+#
+#  Licensed under the terms contained in the file 'COPYING'
+#  in the source directory.
+#
+
+set -e
+PAR=all
+
+# check for maintainer param
+[ ! -z "${DPKG_MAINTSCRIPT_PACKAGE}" ] && \
+  PAR="${DPKG_MAINTSCRIPT_PACKAGE}"
+
+case "$PAR" in
+
+  linux-image-*)
+    # lilo will be updated later by the kernel postinst hook.
+    # no need to update it now.
+    true
+    ;;
+
+  *)
+    # Run the boot loader installer
+    if [ -f /sbin/lilo ];then
+      if [ -f /etc/lilo.conf ];then
+        lilo  </dev/null  >&2
+      else
+        echo "Warning: Not updating LILO; /etc/lilo.conf not found!" >&2
+      fi
+    fi
+    ;;
+
+esac
+
+# end of file

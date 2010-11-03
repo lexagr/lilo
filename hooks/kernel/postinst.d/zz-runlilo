@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+#  zz-runlilo - postinst script for modern kernel management
+#
+#  Copyright 2010 Joachim Wiedorn
+#  All rights reserved.
+#
+#  Licensed under the terms contained in the file 'COPYING'
+#  in the source directory.
+#
+
+set -e
+PAR=all
+
+# check for maintainer param
+[ -n "${DEB_MAINT_PARAMS}" ] &&	PAR="${DEB_MAINT_PARAMS}"
+
+# check for configure|upgrade|remove|purge
+case "$PAR" in
+
+  all|configure*)
+    # Run the boot loader installer
+    if [ -f /sbin/lilo ]; then
+      if [ -f /etc/lilo.conf ]; then
+        lilo  </dev/null  >&2
+      else
+        echo "Warning: Not updating LILO; /etc/lilo.conf not found!"  >&2
+      fi
+    fi
+    ;;
+
+esac
+
+# end of file

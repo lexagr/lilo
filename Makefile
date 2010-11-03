@@ -96,6 +96,7 @@ install:  all
 	make -C man install
 	make -C dos install
 	make -C src insobs
+	make -C hooks install
 
 tidy:
 	make -C src tidy
@@ -116,3 +117,5 @@ distclean: clean
 	make -C dos distclean
 	make -C doc clean
 
+uninstall:
+	make -C hooks uninstall
