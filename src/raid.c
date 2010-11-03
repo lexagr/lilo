@@ -157,10 +157,14 @@ int raid_setup(void)
         if (verbose >= 4) printf("GET_ARRAY_INFO version = %d.%d\n",
                 (int)md_array_info.major_version,
                 (int)md_array_info.minor_version);
-	if ((md_array_info.major_version != md_version_info.major) &&
-		(md_array_info.minor_version != md_version_info.minor)) {
-	    die("Inconsistent Raid version information on %s   (RV=%d.%d GAI=%d.%d)",
-	        boot,
+        if (md_version_info.major != 0 || md_version_info.minor != 90 ||
+            ((md_array_info.major_version != 0 ||
+                md_array_info.minor_version != 90) &&
+             (md_array_info.major_version != 1 ||
+                md_array_info.minor_version != 0))
+            ) {
+            die("Incompatible Raid version information on %s   (RV=%d.%d GAI=%d.%d)",
+                boot,
                 (int)md_version_info.major,
                 (int)md_version_info.minor,
                 (int)md_array_info.major_version,

@@ -13,8 +13,10 @@ Changes for version 23.1 (unreleased) - Joachim Wiedorn
     - Remove patch for inaccessible disks (src/geometry.c)
         and add remarks in README file.
     - Better computing size of uncompressed kernel. (src/boot.c)
-    - Working on degraded RAID device     (src/raid.c)
+    - Working on degraded RAID device.      (src/raid.c)
         (thanks to Christian Schöninger)
+    - Use for MD RAID newer 1.0 specification. (src/geometry.c)
+        (thanks to Robert de Bath)             (src/raid.c)
 
   General
   -------

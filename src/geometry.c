@@ -1119,9 +1119,19 @@ void geo_get(GEOMETRY *geo,int device,int user_device,int all)
 	
 	if (ioctl(md_fd,GET_ARRAY_INFO,&md_array_info) < 0)
 	    die("Unable to get RAID info on %s", mdxxx);
-	if ((md_array_info.major_version != md_version_info.major) &&
-		(md_array_info.minor_version != md_version_info.minor))
-	    die("Inconsistent Raid version information on %s", mdxxx);
+        if (md_version_info.major != 0 || md_version_info.minor != 90 ||
+            ((md_array_info.major_version != 0 ||
+                md_array_info.minor_version != 90) &&
+             (md_array_info.major_version != 1 ||
+                md_array_info.minor_version != 0))
+            ) {
+            die("Incompatible Raid version information on %s   (RV=%d.%d GAI=%d.%d)",
+                mdxxx,
+                (int)md_version_info.major,
+                (int)md_version_info.minor,
+                (int)md_array_info.major_version,
+                (int)md_array_info.minor_version);
+            }
 	if (md_array_info.level != 1)
 	    die("Only RAID1 devices are supported for boot images");
 	raid_limit = md_array_info.raid_disks + md_array_info.spare_disks;
