@@ -21,6 +21,13 @@ file must be compute to decide whether the initrd can be copied
 in the memory <15M. But with the newer 64bit kernels this factor
 changed from nearly "3" to nearly "6". "6" is now default.
 
+Working on degraded RAID device:
+
+If the first physical device of a RAID1 array is faulty or removed, 
+lilo fails to install. It doesn't get valid informations about the 
+device and didn't resume with the next disk. Lilo now loop through
+all devices to get the disk geometry.
+
 
 Versoin 23.0 (release) -- Joachim Wiedorn <ad_debian@joonet.de>
 ---------------------------------------------------------------

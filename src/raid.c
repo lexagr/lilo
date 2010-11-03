@@ -223,7 +223,7 @@ int raid_setup(void)
 	    if (!force_raid) die("Not all RAID-1 disks are active; use '-H' to install to active disks only");
 	    else {
 		warn("Partial RAID-1 install on active disks only; booting is not failsafe\n");
-		raid_limit = md_array_info.active_disks;
+		raid_limit = md_array_info.raid_disks;
 	    }
 	}
 	raid_index = 0;
