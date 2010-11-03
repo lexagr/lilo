@@ -267,29 +267,51 @@ insobs:
 	@echo "$(SBIN_DIR)/lilo must now be run to complete the update."
 
 dep:
-		sed '/\#\#\# Dependencies/q' <Makefile >tmp_make
-		$(CPP) $(CFLAGS) -MM *.c >>tmp_make
-		mv tmp_make Makefile
+	sed '/\#\#\# Dependencies/q' <Makefile >tmp_make
+	$(CPP) $(CFLAGS) -MM *.c >>tmp_make
+	mv tmp_make Makefile
 
 version:	common.c lilo.h common.h
-		$(CC) $(CFLAGS) -DSHS_MAIN -o version common.c
+	$(CC) $(CFLAGS) -DSHS_MAIN -o version common.c
 
 mkloader:	temp.c
-		$(CC) $(CFLAGS) -DLILO_BINARY -o mkloader temp.c
+	$(CC) $(CFLAGS) -DLILO_BINARY -o mkloader temp.c
 
 
 tidy:
-		rm -f core $(LIS) *.shs *.crc $(TMP)*
-		rm -rf sbin boot usr
-		if [ -x lilo ]; then strip lilo; fi
-		if [ -x lilo.static ]; then strip lilo.static; fi
+	rm -f core $(LIS) *.shs *.crc $(TMP)*
+	rm -rf sbin boot usr
+	if [ -x lilo ]; then strip lilo; fi
+	if [ -x lilo.static ]; then strip lilo.static; fi
 
 clean:
-		rm -f *.o *.s *.i *.img *.b tmp_make version
-		rm -f lilo lilo.static edit mkloader
+	rm -f *.o *.s *.i *.img *.b tmp_make version
+	rm -f lilo lilo.static edit mkloader
 
 distclean:
-		rm -f *~ */*~ *.b *.com lilo*tar.gz
+	rm -f *~ */*~ *.b *.com lilo*tar.gz
+
+uninstall:
+	rm -f $$DESTDIR$(SBIN_DIR)/lilo
+	rm -f $$DESTDIR$(USRSBIN_DIR)/mkrescue
+	rm -f $$DESTDIR$(USRSBIN_DIR)/keytab-lilo
+	rm -f $$DESTDIR$(BOOT_DIR)/diag1.img
+	rm -f $$DESTDIR$(BOOT_DIR)/diag2.img
+
+	if [ -f $$DESTDIR$(BOOT_DIR)/boot.b ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/boot.b; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/boot-bmp.b ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/boot-bmp.b; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/boot-menu.b ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/boot-menu.b; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/boot-text.b ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/boot-text.b; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/chain.b ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/chain.b; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/os2_d.b ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/os2_d.b; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/mbr.b ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/mbr.b; fi
 
 
 ### Dependencies

@@ -25,6 +25,7 @@ Changes for version 23.1 (unreleased) - Joachim Wiedorn
     - Remove very old scripts.      (mkbdist, mksdist,QuickInst)
     - Create new makefile-based script QuickInst.
     - Create new hook scripts for kernel and initramfs.
+    - Add new target 'uninstall' for src, man, hooks.
 
 
 Changes for version 23.0 (28-June-2010) - Joachim Wiedorn

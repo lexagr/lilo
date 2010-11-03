@@ -118,5 +118,6 @@ distclean: clean
 	make -C doc clean
 
 uninstall:
+	make -C src uninstall
 	make -C man uninstall
 	make -C hooks uninstall
