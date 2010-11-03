@@ -41,12 +41,12 @@ HFILES=bdata.h bitmap.h boot.h bsect.h cfg.h common.h config.h device.h \
 #
 # everything needed to run, just short of installation
 #
-all:	lilo bootsect.b diag1.img
+all:	lilo bootsect.b
 
 #
 # everything above plus the statically linked version
 #
-alles: all lilo.static
+alles: all diag1.img lilo.static
 
 #
 # make the bootable diagnostic floppies
@@ -66,7 +66,7 @@ floppy2: disk.b
 	@make -C ../diagnose check
 	@make -C ../diagnose floppy
 
-diagnostic: ../test.img diag2.img diag3.img
+diagnostic: ../test.img diag1.img diag2.img diag3.img
 
 manpath:
 	echo $(MAN_DIR)
