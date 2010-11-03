@@ -1,0 +1,72 @@
+#!/bin/sh
+#
+#  QuickInst - script for quick installation of lilo
+#
+#  Copyright 2010 Joachim Wiedorn
+#  All rights reserved.
+#
+#  Licensed under the terms contained in the file 'COPYING'
+#  in the source directory.
+#
+
+set -e
+
+if [ ! -f "./src/lilo.c" ]; then
+  echo "You are not in the main source directory of LILO - Abort!"
+  exit 1
+fi
+
+if [ -z "$1" ]; then
+
+  if [ "$UID" != "0" ]; then
+    echo "For installing LILO you must be ROOT - Abort!"
+    exit 1
+  fi
+
+else
+  ADIR=`pwd`
+
+  # absolute path to directory ?
+  if [ `echo "$1" | sed 's#^\/##g'` = "$1" ]; then
+    # path is relative
+    BDIR=`echo "${ADIR}/${1}" | sed 's#\/\/#\/#g'`
+  else
+    BDIR=`echo "/${1}" | sed 's#\/\/#\/#g'`
+  fi  
+
+  # existing directory ?
+  if [ -e "${BDIR}" ]; then
+    DDIR="${BDIR}"
+  else
+    # try to create directory
+    mkdir -p ${BDIR} 2>/dev/null || true
+    if [ -e "$BDIR" ]; then
+      DDIR=$BDIR
+    else
+      echo "Cannot create directory ${1} - Abort!"
+      exit 1
+    fi
+  fi
+
+  # writeable directory ?
+  if [ ! -w "$DDIR" ]; then
+    echo "Cannot write to directory $DDIR - Abort!"
+    exit 1
+  fi
+
+fi
+
+echo "~~~~~~~~~~~~ make all ~~~~~~~~~~~~"
+make all
+
+echo "~~~~~~~~~~ make install ~~~~~~~~~~"
+if [ -n "$DDIR" ]; then
+  make install DESTDIR="$DDIR"
+  DDTEXT=" to ${DDIR}"
+else
+  make install
+fi
+
+echo
+echo "LILO installed${DDTEXT}."
+echo
