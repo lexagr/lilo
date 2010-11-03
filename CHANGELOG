@@ -19,6 +19,7 @@ Changes for version 23.1 (unreleased) - Joachim Wiedorn
   General
   -------
     - Use better 'checkit' for newer gcc.  (checkit)
+    - Remove very old scripts.      (mkbdist, mksdist,QuickInst)
 
 
 Changes for version 23.0 (28-June-2010) - Joachim Wiedorn
