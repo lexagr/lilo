@@ -4,6 +4,7 @@ Changes for version 23.1 (unreleased) - Joachim Wiedorn
   --------------
     - 'make clean' delete all created documentation files.
     - many small typos in manpages.
+    - Remove obsolete ifpdf definition.
 
   Sources
   -------

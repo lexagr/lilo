@@ -139,14 +139,6 @@
 %:\end{verbatim}
 
 %%beginskip
-% PDFLaTeX stuff
-\newif\ifpdf
-\ifx\pdfoutput\undefined
-  \pdffalse
-\else
-  \pdfoutput=1
-  \pdftrue
-\fi
 
 \documentclass[fullpage]{article}
 \usepackage{ae}
@@ -156,6 +148,7 @@
         pdfkeywords={lilo, boot},%
         pdfauthor={Werner Almesberger, John Coffman}]%
         {hyperref}
+\usepackage{ifpdf}
 
 \parindent=0pt
 \parskip=4pt

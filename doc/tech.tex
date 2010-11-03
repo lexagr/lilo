@@ -5,15 +5,6 @@
 % See file COPYING for details.
 %
 
-% PDFLaTeX stuff
-\newif\ifpdf
-\ifx\pdfoutput\undefined
-  \pdffalse
-\else
-  \pdfoutput=1
-  \pdftrue
-\fi
-
 \documentclass[fullpage]{article}
 \usepackage{ae}
 \usepackage[bookmarks,%
@@ -22,6 +13,7 @@
         pdfkeywords={lilo, boot},%
         pdfauthor={Werner Almesberger <Werner.Almesberger@epfl.ch>}]%
         {hyperref}
+\usepackage{ifpdf}
 
 \parindent=0pt
 \parskip=4pt
