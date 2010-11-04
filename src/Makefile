@@ -248,12 +248,6 @@ install:
 	cp ../mkrescue $$DESTDIR$(USRSBIN_DIR)/mkrescue
 	cp ../keytab-lilo.pl $$DESTDIR$(USRSBIN_DIR)/keytab-lilo
 
-insobs:
-	@if [ -e $$DESTDIR/etc/lilo/install ]; then echo; \
-	  echo "$$DESTDIR/etc/lilo/install is obsolete. LILO is now re-installed";\
-	  echo "by just invoking $(SBIN_DIR)/lilo"; echo; fi
-	@echo "$(SBIN_DIR)/lilo must now be run to complete the update."
-
 dep:
 	sed '/\#\#\# Dependencies/q' <Makefile >tmp_make
 	$(CPP) $(CFLAGS) -MM *.c >>tmp_make

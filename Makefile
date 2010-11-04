@@ -103,7 +103,6 @@ install:  all
 	make -C sample install
 	make -C man install
 	make -C dos install
-	make -C src insobs
 
 tidy:
 	make -C src tidy
