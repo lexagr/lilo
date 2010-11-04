@@ -26,6 +26,8 @@ Changes for version 23.1 (unreleased) - Joachim Wiedorn
     - Create new makefile-based script QuickInst.
     - Create new hook scripts for kernel and initramfs.
     - Add new target 'uninstall' for src, man, hooks.
+    - Recreate and add background images as uuencoded files and
+        move images + config files into new 'image' directory.
 
 
 Changes for version 23.0 (28-June-2010) - Joachim Wiedorn

@@ -1,0 +1,14 @@
+# Lilo boot menu background configuration  (Lilo 23)
+#
+# color palette: 0 black,         3 magenta,       7 pink,
+#                8 middle grey,  10 bright grey,  13 white
+#
+# bmp-table  = <x>,<y>;<ncol>,<nrow>,<xsep>,<spill>
+# bmp-colors = <fg>,<bg>,<sh>;<high-fg>,<high-bg>,<high-sh>
+# bmp-timer  = <x>,<y>;<fg>,<bg>,<sh>
+
+bitmap = debian.bmp
+
+bmp-table  = 16,12;1,12,16
+bmp-colors = 10,0,;7,0,
+bmp-timer  = 34,28;13,0,

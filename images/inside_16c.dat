@@ -1,0 +1,14 @@
+# Lilo boot menu background configuration  (Lilo 23)
+#
+# color palette: 0 black,         3 magenta,       7 pink,
+#                8 middle grey,  10 bright grey,  13 white
+#
+# bmp-table  = <x>,<y>;<ncol>,<nrow>,<xsep>,<spill>
+# bmp-colors = <fg>,<bg>,<sh>;<high-fg>,<high-bg>,<high-sh>
+# bmp-timer  = <x>,<y>;<fg>,<bg>,<sh>
+
+bitmap = inside.bmp
+
+bmp-table  = 21,284p;2,7,175p,4
+bmp-colors = 14,11,;15,9,0
+bmp-timer  = 73,29;12,8,0

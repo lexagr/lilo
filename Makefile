@@ -28,12 +28,14 @@ help:
 #
 all: test
 	make -C src all
+	make -C images all
 
 #
 # everything above plus the statically linked version
 #
 alles: test
 	make -C src alles
+	make -C images all
 
 #
 # documentation files
@@ -93,6 +95,7 @@ ins:
 #
 install:  all
 	make -C src install
+	make -C images install
 	make -C hooks install
 	make -C man install
 	make -C dos install
@@ -107,6 +110,7 @@ tidy:
 clean: tidy
 	rm -f test.img
 	make -C src clean
+	make -C images clean
 	make -C diagnose clean
 	make -C dos clean
 	make -C doc clean
@@ -119,5 +123,6 @@ distclean: clean
 
 uninstall:
 	make -C src uninstall
+	make -C images uninstall
 	make -C hooks uninstall
 	make -C man uninstall

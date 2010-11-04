@@ -1,0 +1,66 @@
+README for project LILO / images
+================================
+
+Picture files for boot menu must be rl-coded bmp files.
+
+Files as distributed have been edited through 'lilo -E XXXX.bmp' to specify
+useful boot table layouts, colors, and timer positions. The companion *.dat
+files contain photo credits, where applicable, as well as the  'lilo -E ...'
+parametric information contained in the LILO-bmp headers in the actual
+picture files.
+
+Naming convention:
+  "16c"  in the name indicates 640 x 480 x 4bit with 16 colors (mode 0x12)
+  "256c" in the name indicates 640 x 480 x 8bit with 256 colors (mode 0x101)
+
+*16c* files will display on any IBM-compatible VGA display adapter.
+*256c* files require a video adapter which supports VESA bios extensions;
+  specifically, mode 0x101 -- 640 x 480 x 256 colors.
+
+If you have booted with LILO, then you may easily inquire of your video
+adapter's capabilities with:
+
+  lilo -T video
+
+The video adapter type, and the video modes supported by its BIOS, will be
+displayed; i.e., those graphic modes of interest to the LILO bitmap
+interface.
+
+Creating image for background
+-----------------------------
+
+With ImageMagick you can use the convert command as follows:
+
+for images with 16 colors:
+
+	convert -verbose "$INFILE" \
+	  -resize 640x480 -density 72x72 -depth 4 -colors 16 \
+	  -colorspace RGB -compress RunlengthEncoded "$OUTFILE"
+
+for images with 256 colors:
+
+	convert -verbose "$INFILE" \
+	  -resize 640x480 -density 72x72 -depth 8 -colors 256 \
+	  -colorspace RGB -compress RunlengthEncoded "$OUTFILE"
+
+Note: the Runlength-Encoding (RLE) will be made better by Gimp.
+
+
+Example for syntax and colors
+-----------------------------
+
+  color palette: 0 black,         3 magenta,       7 pink,
+                 8 middle grey,  10 bright grey,  13 white
+ 
+  bmp-table  = <x>,<y>;<ncol>,<nrow>,<xsep>,<spill>
+  if <ncol> = 1 then there are only one menu column
+                and <spill> will not be defined
+ 
+  bmp-colors = <fg>,<bg>,<sh>;<high-fg>,<high-bg>,<high-sh>
+  if <bg> or <high-bg> not defined, than it is transparent
+  if <sh> or <high-sh> not defined, than it is no color
+ 
+  bmp-timer  = <x>,<y>;<fg>,<bg>,<sh>
+
+Details see lilo.conf(5).
+
