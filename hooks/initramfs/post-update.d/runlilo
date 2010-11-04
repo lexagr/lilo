@@ -10,11 +10,11 @@
 #
 
 set -e
-PAR=all
+PAR=ever
 
 # check for maintainer param
-[ ! -z "${DPKG_MAINTSCRIPT_PACKAGE}" ] && \
-  PAR="${DPKG_MAINTSCRIPT_PACKAGE}"
+if [ ! -z "${DPKG_MAINTSCRIPT_PACKAGE}" ]
+then PAR="${DPKG_MAINTSCRIPT_PACKAGE}"; fi
 
 case "$PAR" in
 

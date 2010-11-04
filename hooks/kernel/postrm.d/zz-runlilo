@@ -10,15 +10,19 @@
 #
 
 set -e
-PAR=all
+PAR=ever
 
 # check for maintainer param
-[ -n "${DEB_MAINT_PARAMS}" ] && PAR="${DEB_MAINT_PARAMS}"
+if [ -n "${DEB_MAINT_PARAMS}" ]; then
+	PAR=none
+	if [ `echo "${DEB_MAINT_PARAMS}" | grep -v abort | grep -c remove` -eq 1 ]
+	then PAR=remove; fi
+fi
 
 # check for configure|upgrade|remove|purge
 case "$PAR" in
 
-  all|remove*)
+  ever|remove)
     # Run the boot loader installer
     if [ -f /sbin/lilo ]; then
       if [ -f /etc/lilo.conf ]; then

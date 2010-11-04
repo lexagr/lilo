@@ -93,10 +93,10 @@ ins:
 #
 install:  all
 	make -C src install
+	make -C hooks install
 	make -C man install
 	make -C dos install
 	make -C src insobs
-	make -C hooks install
 
 tidy:
 	make -C src tidy
@@ -109,15 +109,15 @@ clean: tidy
 	make -C src clean
 	make -C diagnose clean
 	make -C dos clean
+	make -C doc clean
 
 spotless: distclean
 distclean: clean
 	make -C src distclean
 	make -C diagnose distclean
 	make -C dos distclean
-	make -C doc clean
 
 uninstall:
 	make -C src uninstall
-	make -C man uninstall
 	make -C hooks uninstall
+	make -C man uninstall
