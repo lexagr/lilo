@@ -13,8 +13,11 @@ help:
 	@echo "  make docs        # doc/[user,tech].[ps,dvi] docs"
 	@echo "  make floppy      # 2 standalone bootable diagnostic floppies"
 	@echo ""
-	@echo "  make install     # install binaries into root directory"
-	@echo "  make install DESTDIR=<dir>  # install binaries into directory"
+	@echo "  make install     # install binaries++ into root directory"
+	@echo "  make install DESTDIR=<dir>  # install binaries++ into directory"
+	@echo ""
+	@echo "  make uninstall     # remove binaries++ from root directory"
+	@echo "  make uninstall DESTDIR=<dir>  # rmove binaries++ from directory"
 	@echo ""
 	@echo "Maintenance:"
 	@echo "  make test        # test for all needed utilities (as86, ld86, etc.)"
@@ -97,6 +100,7 @@ install:  all
 	make -C src install
 	make -C images install
 	make -C hooks install
+	make -C sample install
 	make -C man install
 	make -C dos install
 	make -C src insobs
@@ -125,4 +129,5 @@ uninstall:
 	make -C src uninstall
 	make -C images uninstall
 	make -C hooks uninstall
+	make -C sample uninstall
 	make -C man uninstall
