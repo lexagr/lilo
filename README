@@ -7,26 +7,58 @@ Versoin 23.1 (release) -- Joachim Wiedorn <ad_debian@joonet.de>
 
 Option 'inaccessible':
 
-The patch in 23.0 for better support for inaccessible disks based
-on problems with usb sticks. But this option 'inaccessible' is only 
-usable, if hard disks can not be accessed by the BIOS, but always 
-by linux. This option does not concern usb sticks, which will always
-bring failures if they are named in the lilo.conf. So I have removed
-this patch from the new version.
+  The patch in 23.0 for better support for inaccessible disks based
+  on problems with usb sticks. But this option 'inaccessible' is only 
+  usable, if hard disks can not be accessed by the BIOS, but always 
+  by linux. This option does not concern usb sticks, which will always
+  bring failures if they are named in the lilo.conf. So I have removed
+  this patch from the new version.
 
 Computing vmlinux size:
 
-From the compressed kernel vmlinuz the size of the uncompressed
-file must be compute to decide whether the initrd can be copied
-in the memory <15M. But with the newer 64bit kernels this factor
-changed from nearly "3" to nearly "6". "6" is now default.
+  From the compressed kernel vmlinuz the size of the uncompressed
+  file must be compute to decide whether the initrd can be copied
+  in the memory <15M. But with the newer 64bit kernels this factor
+  changed from nearly "3" to nearly "6". "6" is now default.
 
 Working on degraded RAID device:
 
-If the first physical device of a RAID1 array is faulty or removed, 
-lilo fails to install. It doesn't get valid informations about the 
-device and didn't resume with the next disk. Lilo now loop through
-all devices to get the disk geometry.
+  If the first physical device of a RAID1 array is faulty or removed, 
+  lilo fails to install. It doesn't get valid informations about the 
+  device and didn't resume with the next disk. Lilo now loop through
+  all devices to get the disk geometry.
+
+Working with MD RAID 1.0 standard:
+
+  Turned off the error "Inconsistent Raid version information" for 
+  Version 1.0 MD RAID mirror pairs. It also corrects the error message,
+  as the version information is just incompatible not inconsistent.
+
+  No other charges are required as 1.0 devices have the same layout
+  as v0.90 devices except that they work with drives in excess of 2TB.
+  It does not update for version 1.2 raid superblocks, this would 
+  require a much more complex patch.
+
+  With the following lilo.conf the standard debian initrd and kernel 
+  boot off of an LVM logical drive on an MD RAID-1 array consisting of
+  two whole disk devices (e.g. /dev/sda & /dev/sdb). Now the array can
+  use version 1.0 superblocks, so these devices can be e.g. the new 
+  3 TByte Seagate drives.
+
+  Configuration example:
+
+       | boot=/dev/md0
+       | raid-extra-boot=mbr-only
+       | map=/boot/map
+       | delay=20
+       |
+       | default=Linux
+       | append="quiet root=/dev/mapper/vg0-root"
+       |
+       | image=/vmlinuz
+       |         label=Linux
+       |         read-only
+       |         initrd=/initrd.img
 
 
 Versoin 23.0 (release) -- Joachim Wiedorn <ad_debian@joonet.de>
