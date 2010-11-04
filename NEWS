@@ -3,6 +3,20 @@ NEWS about project LILO
 (For details see file 'CHANGELOG' in the source directory)
 
 
+Version 23.1  (major and bugfix update of 23.0)
+
+ o Many fixes of typos in sources and documentation.
+ o LVM volumes can now be used as root device.
+ o Better computing of (uncompressed) vmlinux size.
+ o Better working on degraded RAID devices.
+ o Update to newer MD RAID 1.0 specification.
+ o Substituted QuickInst script (mkbdist, mksdist removed).
+ o Added new hook scripts for newer kernel support.
+ o Updated and added new menu background images.
+ o Added new TOOLS file for overview of needed tools / packages.
+ o Added new example of lilo.conf with many comments.
+
+
 Version 23.0  (major and bugfix update of 22.8)
 
  o Major code reorganisation and code cleaning.
