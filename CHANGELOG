@@ -29,6 +29,7 @@ Changes for version 23.1 (unreleased) - Joachim Wiedorn
     - Recreate and add background images as uuencoded files and
         move images + config files into new 'image' directory.
     - Add new file TOOLS listing needed tools / packages.
+    - Remove all unneeded stuff with old /boot/boot-* files.
 
 
 Changes for version 23.0 (28-June-2010) - Joachim Wiedorn

@@ -175,15 +175,6 @@ lilo:		$(OBJS)
 lilo.static:	$(OBJS)
 		$(CC) -o lilo.static -static $(LDFLAGS) $(OBJS) $(LIBS)
 
-boot-text.b:	first.b second.b
-		(dd if=first.b bs=512 conv=sync; dd if=second.b) >boot-text.b
-
-boot-menu.b:	first.b third.b
-		(dd if=first.b bs=512 conv=sync; dd if=third.b) >boot-menu.b
-
-boot-bmp.b:	first.b bitmap.b
-		(dd if=first.b bs=512 conv=sync; dd if=bitmap.b) >boot-bmp.b
-
 common.s:	common.h
 		$(CPP) -C -traditional -DLILO_ASM -o common.s common.h
 
@@ -228,33 +219,30 @@ ins:	diag install
 #  normal install, but doesn't make the diagnostic binaries
 #
 install:
-	mkdir -p $$DESTDIR$(SBIN_DIR) $$DESTDIR$(CFG_DIR) $$DESTDIR$(BOOT_DIR) $$DESTDIR$(USRSBIN_DIR)
-	if [ -f diag1.img ]; then \
-	  cp -f diag1.img $$DESTDIR$(BOOT_DIR); fi
-	if [ -f diag2.img ]; then \
-	  cp -f diag2.img $$DESTDIR$(BOOT_DIR); fi
-	if [ ! -L $$DESTDIR$(BOOT_DIR)/boot.b -a -f $$DESTDIR$(BOOT_DIR)/boot.b ]; then \
-	  mv $$DESTDIR$(BOOT_DIR)/boot.b $$DESTDIR$(BOOT_DIR)/boot.old; fi
-	if [ -f $$DESTDIR$(BOOT_DIR)/boot-bmp.b ]; then \
-	  mv $$DESTDIR$(BOOT_DIR)/boot-bmp.b $$DESTDIR$(BOOT_DIR)/boot-bmp.old; fi
-	if [ -f $$DESTDIR$(BOOT_DIR)/boot-menu.b ]; then \
-	  mv $$DESTDIR$(BOOT_DIR)/boot-menu.b $$DESTDIR$(BOOT_DIR)/boot-menu.old; fi
-	if [ -f $$DESTDIR$(BOOT_DIR)/boot-text.b ]; then \
-	  mv $$DESTDIR$(BOOT_DIR)/boot-text.b $$DESTDIR$(BOOT_DIR)/boot-text.old; fi
-	if [ -f $$DESTDIR$(BOOT_DIR)/chain.b ]; then \
+	mkdir -p $$DESTDIR$(SBIN_DIR) $$DESTDIR$(CFG_DIR) 
+	mkdir -p $$DESTDIR$(BOOT_DIR) $$DESTDIR$(USRSBIN_DIR)
+
+	@if [ -e $$DESTDIR$(BOOT_DIR)/boot.b -o -e $$DESTDIR$(BOOT_DIR)/boot.old ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/boot.b; rm -f $$DESTDIR$(BOOT_DIR)/boot.old; fi
+	@if [ -f $$DESTDIR$(BOOT_DIR)/boot-bmp.b -o -f $$DESTDIR$(BOOT_DIR)/boot-bmp.old ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/boot-bmp.b; rm -f $$DESTDIR$(BOOT_DIR)/boot-bmp.old; fi
+	@if [ -f $$DESTDIR$(BOOT_DIR)/boot-menu.b -o -f $$DESTDIR$(BOOT_DIR)/boot-menu.old ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/boot-menu.b; rm -f $$DESTDIR$(BOOT_DIR)/boot-menu.old; fi
+	@if [ -f $$DESTDIR$(BOOT_DIR)/boot-text.b -o -f $$DESTDIR$(BOOT_DIR)/boot-text.old ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/boot-text.b; rm -f $$DESTDIR$(BOOT_DIR)/boot-text.old; fi
+	@if [ -f $$DESTDIR$(BOOT_DIR)/chain.b ]; then \
 	  mv $$DESTDIR$(BOOT_DIR)/chain.b $$DESTDIR$(BOOT_DIR)/chain.old; fi
-	if [ -f $$DESTDIR$(BOOT_DIR)/os2_d.b ]; then \
+	@if [ -f $$DESTDIR$(BOOT_DIR)/os2_d.b ]; then \
 	  mv $$DESTDIR$(BOOT_DIR)/os2_d.b $$DESTDIR$(BOOT_DIR)/os2_d.old; fi
-	if [ -f $$DESTDIR$(BOOT_DIR)/mbr.b ]; then \
+	@if [ -f $$DESTDIR$(BOOT_DIR)/mbr.b ]; then \
 	  mv $$DESTDIR$(BOOT_DIR)/mbr.b $$DESTDIR$(BOOT_DIR)/mbr.old; fi
-	if [ -f os2_d.b  -a  $(BUILTIN) = 0 ]; then \
-	  cp os2_d.b $$DESTDIR$(BOOT_DIR); fi
-	if [ $(BUILTIN) = 0 ]; then \
-	  cp boot-text.b boot-menu.b boot-bmp.b chain.b mbr.b $$DESTDIR$(BOOT_DIR); fi
-	if [ ! -L $$DESTDIR$(BOOT_DIR)/boot.b  -a  $(BUILTIN) = 0 ]; then \
-	  ln -s boot-menu.b $$DESTDIR$(BOOT_DIR)/boot.b; fi
-	if [ $(BUILTIN) = 1 ]; then \
-	  rm -f $$DESTDIR$(BOOT_DIR)/boot.b; fi
+
+	if [ -f os2_d.b -a  $(BUILTIN) -eq 0 ]; then cp os2_d.b $$DESTDIR$(BOOT_DIR); fi
+	if [ -f chain.b -a  $(BUILTIN) -eq 0 ]; then cp chain.b $$DESTDIR$(BOOT_DIR); fi
+	if [ -f mbr.b   -a  $(BUILTIN) -eq 0 ]; then cp mbr.b   $$DESTDIR$(BOOT_DIR); fi
+	if [ -f diag1.img ]; then cp -f diag1.img $$DESTDIR$(BOOT_DIR); fi
+	if [ -f diag2.img ]; then cp -f diag2.img $$DESTDIR$(BOOT_DIR); fi
+
 	cp lilo $$DESTDIR$(SBIN_DIR)/lilo
 	strip $$DESTDIR$(SBIN_DIR)/lilo
 	cp ../mkrescue $$DESTDIR$(USRSBIN_DIR)/mkrescue
@@ -298,18 +286,10 @@ uninstall:
 	rm -f $$DESTDIR$(BOOT_DIR)/diag1.img
 	rm -f $$DESTDIR$(BOOT_DIR)/diag2.img
 
-	if [ -f $$DESTDIR$(BOOT_DIR)/boot.b ]; then \
-	  rm -f $$DESTDIR$(BOOT_DIR)/boot.b; fi
-	if [ -f $$DESTDIR$(BOOT_DIR)/boot-bmp.b ]; then \
-	  rm -f $$DESTDIR$(BOOT_DIR)/boot-bmp.b; fi
-	if [ -f $$DESTDIR$(BOOT_DIR)/boot-menu.b ]; then \
-	  rm -f $$DESTDIR$(BOOT_DIR)/boot-menu.b; fi
-	if [ -f $$DESTDIR$(BOOT_DIR)/boot-text.b ]; then \
-	  rm -f $$DESTDIR$(BOOT_DIR)/boot-text.b; fi
-	if [ -f $$DESTDIR$(BOOT_DIR)/chain.b ]; then \
-	  rm -f $$DESTDIR$(BOOT_DIR)/chain.b; fi
 	if [ -f $$DESTDIR$(BOOT_DIR)/os2_d.b ]; then \
 	  rm -f $$DESTDIR$(BOOT_DIR)/os2_d.b; fi
+	if [ -f $$DESTDIR$(BOOT_DIR)/chain.b ]; then \
+	  rm -f $$DESTDIR$(BOOT_DIR)/chain.b; fi
 	if [ -f $$DESTDIR$(BOOT_DIR)/mbr.b ]; then \
 	  rm -f $$DESTDIR$(BOOT_DIR)/mbr.b; fi
 
