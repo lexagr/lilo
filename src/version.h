@@ -4,8 +4,8 @@
 #define VERSION_H
 
 #define VERSION_MAJOR 23
-#define VERSION_MINOR 1
+#define VERSION_MINOR 2
 #define VERSION_EDIT  ""
-#define VERSION_DATE "04-Nov-2010"
+#define VERSION_DATE "unreleased"
 
 #endif
