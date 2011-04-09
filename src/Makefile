@@ -22,7 +22,7 @@ LD86=ld86 -0
 NASM=nasm
 G=`cat foo1 foo2 | grep version | cut -d " " -f 3`
 
-CFLAGS=$(OPT) -Wall -g $(PCONFIG)
+CFLAGS=$(OPT) -Wall $(PCONFIG)
 LDFLAGS=#-Xlinker -qmagic
 LIBS=$(DEVMAPPER)
 
@@ -70,8 +70,8 @@ floppy1: disk.com bootsect.b
 floppy2: disk.b
 	@echo
 	@echo Creating Diagnostic Floppy 2.4
-	@make -C ../diagnose check
-	@make -C ../diagnose floppy
+	@$(MAKE) -C ../diagnose check
+	@$(MAKE) -C ../diagnose floppy
 
 diagnostic: ../test.img diag1.img diag2.img diag3.img
 
@@ -91,7 +91,7 @@ manpath:
 		dd if=$*.img of=$*.b bs=32 skip=1
 
 edit:		$(EDIT)
-		$(CC) -Wall -s -O -DSTANDALONE -o edit $(EDIT) $(LDFLAGS)
+		$(CC) $(CFLAGS) -DSTANDALONE -o edit $(EDIT) $(LDFLAGS)
 
 loader.i:	mkloader first.b second.b third.b bitmap.b mbr.b chain.b mbr2.b
 		./mkloader >loader.i
@@ -129,7 +129,7 @@ pseudo1.s: bootsect.S pseudo.S disk.com
 	rm -f $(TMP).S
 
 pseudo2.s: bootsect.S pseudo.S
-	make -C ../diagnose all
+	$(MAKE) -C ../diagnose all
 	cat bootsect.S pseudo.S >$(TMP).S
 	$(CPP) -traditional $(PCONFIG) \
 		-DSIZEKRNL=`wc -c <../diagnose/test4.com | sed "s/ //g"` \
@@ -137,7 +137,7 @@ pseudo2.s: bootsect.S pseudo.S
 	rm -f $(TMP).S
 
 pseudo3.s: bootsect.S pseudo.S
-	make -C ../diagnose all
+	$(MAKE) -C ../diagnose all
 	cat bootsect.S pseudo.S >$(TMP).S
 	$(CPP) -traditional $(PCONFIG) \
 		-DSIZEKRNL=`wc -c <../diagnose/test5.com | sed "s/ //g"` \
@@ -153,11 +153,11 @@ diag1.img:	disk.com pseudo1.b
 	cat pseudo1.b disk.com >diag1.img
 
 diag2.img: pseudo2.b
-	make -C ../diagnose all
+	$(MAKE) -C ../diagnose all
 	cat pseudo2.b ../diagnose/test4.com >diag2.img
 
 diag3.img: pseudo3.b
-	make -C ../diagnose all
+	$(MAKE) -C ../diagnose all
 	cat pseudo3.b ../diagnose/test5.com >diag3.img
 
 flags.i:	../test.img Makefile version $(CFILES) $(HFILES)

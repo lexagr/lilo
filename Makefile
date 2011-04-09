@@ -1,4 +1,11 @@
 # -*- makefile -*-
+#
+# Copyright 2009-2011 Joachim Wiedorn
+# All rights reserved.
+# 
+# Licensed under the terms contained in the file 'COPYING'
+# in the source directory.
+#
 
 #
 #  make help
@@ -30,21 +37,21 @@ help:
 # everything needed to run, just short of installation
 #
 all: test
-	make -C src all
-	make -C images all
+	$(MAKE) -C src all
+	$(MAKE) -C images all
 
 #
 # everything above plus the statically linked version
 #
 alles: test
-	make -C src alles
-	make -C images all
+	$(MAKE) -C src alles
+	$(MAKE) -C images all
 
 #
 # documentation files
 #
 docs:
-	make -C doc all
+	$(MAKE) -C doc all
 
 #
 # if you have the 'bcc' compiler, then you can make the diagnostics, too
@@ -61,23 +68,23 @@ floppy: test
 	@echo before you proceed from this point.
 	@echo "Press <Enter> to continue, <^C> to abort ..."
 	@read
-	@make -C src floppy1
+	@$(MAKE) -C src floppy1
 	@echo Done.
 	@echo
 	@echo Remove the floppy from the drive.  Label it "\"1.6\""
 	@echo "Press <Enter> to continue, <^C> to abort ..."
 	@read
-	@make -C src floppy2
+	@$(MAKE) -C src floppy2
 	@echo Done.
 	@echo
 	@echo Remove the floppy from the drive.  Label it "\"2.4\""
 	@echo
 
 diagnostic: test
-	make -C src diagnostic
+	$(MAKE) -C src diagnostic
 
 dosexe: test
-	make -C dos lilo
+	$(MAKE) -C dos lilo
 
 #
 # test for compilers & utilities
@@ -91,42 +98,42 @@ test.img:
 # shorthand install, if one knows that one has the 'bcc' compiler
 #
 ins:
-	make -C src ins
+	$(MAKE) -C src ins
 
 #
 #  normal install, but doesn't make the diagnostic binaries
 #
 install:  all
-	make -C src install
-	make -C images install
-	make -C hooks install
-	make -C sample install
-	make -C man install
-	make -C dos install
+	$(MAKE) -C src install
+	$(MAKE) -C images install
+	$(MAKE) -C hooks install
+	$(MAKE) -C sample install
+	$(MAKE) -C man install
+	$(MAKE) -C dos install
 
 tidy:
-	make -C src tidy
-	make -C diagnose tidy
-	make -C dos tidy
-	make -C doc tidy
+	$(MAKE) -C src tidy
+	$(MAKE) -C diagnose tidy
+	$(MAKE) -C dos tidy
+	$(MAKE) -C doc tidy
 
 clean: tidy
 	rm -f test.img
-	make -C src clean
-	make -C images clean
-	make -C diagnose clean
-	make -C dos clean
-	make -C doc clean
+	$(MAKE) -C src clean
+	$(MAKE) -C images clean
+	$(MAKE) -C diagnose clean
+	$(MAKE) -C dos clean
+	$(MAKE) -C doc clean
 
 spotless: distclean
 distclean: clean
-	make -C src distclean
-	make -C diagnose distclean
-	make -C dos distclean
+	$(MAKE) -C src distclean
+	$(MAKE) -C diagnose distclean
+	$(MAKE) -C dos distclean
 
 uninstall:
-	make -C src uninstall
-	make -C images uninstall
-	make -C hooks uninstall
-	make -C sample uninstall
-	make -C man uninstall
+	$(MAKE) -C src uninstall
+	$(MAKE) -C images uninstall
+	$(MAKE) -C hooks uninstall
+	$(MAKE) -C sample uninstall
+	$(MAKE) -C man uninstall
