@@ -3,6 +3,16 @@ NEWS about project LILO
 (For details see file 'CHANGELOG' in the source directory)
 
 
+Version 23.2  (major and bugfix update of 23.1)
+
+ o Many fixes in source code and fixes for some error messages.
+ o Remove all obsolete OS/2 code and information.
+ o Fix for larger kernel setup code (needed for kernel >= 2.6.36)
+ o Update of script 'mkrescue'.
+ o Update of manpages (mkrescue.8, lilo.conf.5).
+ o Add new scripts 'liloconfig' and 'lilo-uuid-diskid'.
+
+
 Version 23.1  (major and bugfix update of 23.0)
 
  o Many fixes of typos in sources and documentation.
