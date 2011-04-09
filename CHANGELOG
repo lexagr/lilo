@@ -3,6 +3,7 @@ Changes for version 23.2 (unreleased) - Joachim Wiedorn
   Documentations
   --------------
     - Optimize documentation generation and information.
+    - Reformatting mkrescue.8 manpage. (thanks to Martin E. Schauer)
 
   Sources
   -------
