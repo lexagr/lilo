@@ -816,34 +816,37 @@ fprintf(errstd,"REBOOT=\"%s\"\n", reboot_arg);
     if (version+activate+instmbr+(tell_param!=NULL) > 1) usage(name);
     if (activate) do_activate(act1, act2);
 #endif /* !__MSDOS__ */
+
     if (verbose > 0 || version) {
-       printf("LILO version %d.%d%s%s", VERSION_MAJOR, VERSION_MINOR,
-	      VERSION_EDIT, test ? " (test mode)" : "");
-	if (version && verbose<=0) {
-	    printf("\n");
-	    return 0;
-	}
-	printf("\n * Copyright (C) 1992-1998 Werner Almesberger  (until v20)\n"
-			" * Copyright (C) 1999-2007 John Coffman  (until v22)\n"
-			" * Copyright (C) 2009-2011 Joachim Wiedorn  (since v23)\n"
-			"This program comes with ABSOLUTELY NO WARRANTY. This is free software \n"
-			"distributed under the BSD License (3-clause). Details can be found in \n"
-			"the file COPYING, which is distributed with this software.\n"
-	       );
+        printf("LILO version %d.%d%s", VERSION_MAJOR, VERSION_MINOR, VERSION_EDIT);
+        if (test)
+          printf(" (test mode)\n");
+        else
+          printf(" (released %s)\n", VERSION_DATE);
+        if (version && verbose<=0) {
+          /* exit if user asks for version and no verbose */
+          return 0;
+        }
+        printf("  * Copyright (C) 1992-1998 Werner Almesberger  (until v20)\n"
+               "  * Copyright (C) 1999-2007 John Coffman  (until v22)\n"
+               "  * Copyright (C) 2009-2011 Joachim Wiedorn  (since v23)\n"
+               "This program comes with ABSOLUTELY NO WARRANTY. This is free software \n"
+               "distributed under the BSD License (3-clause). Details can be found in \n"
+               "the file COPYING, which is distributed with this software.\n"
+        );
         if (verbose>0) {
 #if !__MSDOS__
 #include <sys/utsname.h>
-	    struct utsname buf;
+          struct utsname buf;
 #endif
-            printf("Released %s%s and compiled at %s on %s%s\n",
-		VERSION_DATE, comma ? "," : "", __TIME__, __DATE__, semi);
+          printf("Compiled at %s on %s%s\n", __TIME__, __DATE__, semi);
 #if !__MSDOS__
-	    if (verbose>=2 && uname(&buf)==0) {
-		printf("Running %s kernel %s on %s\n",
-		        buf.sysname, buf.release, buf.machine);
-	    }
+          if (verbose>=2 && uname(&buf)==0) {
+            printf("Running %s kernel %s on %s\n",
+              buf.sysname, buf.release, buf.machine);
+          }
 #endif
-	}
+        }
         printf("\n");
         if (version) {
             if (verbose>=2) configuration();
