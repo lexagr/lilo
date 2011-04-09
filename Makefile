@@ -10,7 +10,7 @@ help:
 	@echo "  make dosexe      # DOS lilo.com utility"
 	@echo "  make diagnostic  # standalone diagnostics"
 	@echo "  make alles       # all above + static binary"
-	@echo "  make docs        # doc/[user,tech].[ps,dvi] docs"
+	@echo "  make docs        # doc/[user,tech].[pdf,dvi] docs"
 	@echo "  make floppy      # 2 standalone bootable diagnostic floppies"
 	@echo ""
 	@echo "  make install     # install binaries++ into root directory"

@@ -36,9 +36,6 @@ tech.pdf:	tech.dvi
 		$(PDFLATEX) tech
 		$(PDFLATEX) tech
 
-../doc/README:	user.tex
-		perl t2a.pl <user.tex >../doc/README || { rm -f ../doc/README; exit 1; }
-
 html:		user.ps tech.ps
 		latex2html -split 2 -link 2 -toc_depth 2 user
 		latex2html -split 1 -link 1 -toc_depth 1 tech

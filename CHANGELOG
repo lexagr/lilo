@@ -1,5 +1,9 @@
 Changes for version 23.2 (unreleased) - Joachim Wiedorn
 
+  Documentations
+  --------------
+    - Optimize documentation generation and information.
+
   Sources
   -------
     - Remove obsolete BIOS workaround from 2002 (src/second.S)

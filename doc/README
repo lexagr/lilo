@@ -1,16 +1,3 @@
-Generating the README
-=====================
-
-In order to (re)generate the plain ASCII documentation that is found in
-lilo/README, Perl 4 or 5 must be installed on your system.
-Just type
-
-make ../README
-
-to perform the conversion. Note that fairly large amounts of virtual memory
-(16 MB or more) are allocated during the process.
-
-
 Printing the documentation
 ==========================
 
@@ -29,28 +16,34 @@ are only necessary when processing the technical overview document.
 
 To run LaTeX just type
 
-make
+  make
 
 LaTeX issues many "Overfull \hbox" warnings. They can be safely ignored.
 LaTeX will be run repeatedly until it stops issuing the message
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references 
+right.
 
-Finally, you have to convert the device-independent file doc.dvi to
-something your printer understands. The actual command to perform this
-depends on your local installation. Example:
+At the end you should get the very old documentation in user.pdf and 
+tech.pdf.
 
-dvips user | lpr
+Generating user.README
+======================
 
-(Another way is to use GhostScript. To generate HP DeskJet output by
-converting the DVI file to PostScript as an intermediate step, use this
-command
+Use the simple tool t2a.pl for converting to ASCII formatted (old) user
+documentation:
 
-dvips -r1 -f1 user | gs -q -sDEVICE=deskjet -sOutputFile=/dev/lp1 -
+  perl t2a.pl  <user.tex  >user.README
 
-gs -h  lists all configured drivers.)
+Online documentation
+====================
 
-If you don't have access to LaTeX but if you can print PostScript, you
-should get the file(s) lilo.<part>.<version>.ps.gz from the same place
-where you've obtained lilo.<version>.tar.gz  That file contains the
-document user.tex (<part> = u) or tech.tex (<part> = t) already translated
-to PostScript.
+The (old) documentation can also be found in the web:
+
+http://lilo.alioth.debian.org/olddoc/html/user_21-5.html
+http://lilo.alioth.debian.org/olddoc/pdf/user_21-5.pdf
+
+http://lilo.alioth.debian.org/olddoc/html/tech_21-5.html
+http://lilo.alioth.debian.org/olddoc/pdf/tech_21-5.pdf
+
+
+-- Joachim Wiedorn (2011)
