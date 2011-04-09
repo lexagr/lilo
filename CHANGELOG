@@ -10,6 +10,11 @@ Changes for version 23.2 (unreleased) - Joachim Wiedorn
     - Add information about -H option.   (src/lilo.c)
     - Save errno for second command.     (src/device.c)
     - Fix missleading error message.     (src/geometry.c)
+    - Remove obsolete OS/2 code.   (src/boot.c, src/temp.c)
+
+  General
+  -------
+    - Remove obsolete OS/2 code.   (make.vars, src/Makefile)
 
 
 Changes for version 23.1 (04-Nov-2010) - Joachim Wiedorn

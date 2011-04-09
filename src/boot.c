@@ -2,7 +2,7 @@
  * 
  * Copyright 1992-1998 Werner Almesberger
  * Copyright 1999-2007 John Coffman
- * Copyright 2009-2010 Joachim Wiedorn
+ * Copyright 2009-2011 Joachim Wiedorn
  * All rights reserved.
  * 
  * Licensed under the terms contained in the file 'COPYING'
@@ -334,13 +334,6 @@ void boot_other(char *loader,char *boot,char *part,IMAGE_DESCR *descr)
 
     if (!loader) loader = DFL_CHAIN;
 #ifdef LCF_BUILTIN
-#ifndef LCF_SOLO_CHAIN
-    if (strstr(loader,"os2")) {
-	chain = &Os2_d;
-	cname = "OS/2";
-    }
-    else
-#endif
     {
 	chain = &Chain;
 	cname = "CHAIN";

@@ -1,4 +1,11 @@
 # -*- makefile -*-
+#
+# Copyright 2009-2011 Joachim Wiedorn
+# All rights reserved.
+# 
+# Licensed under the terms contained in the file 'COPYING'
+# in the source directory.
+#
 
 # adding variables
 include ../make.vars
@@ -24,7 +31,7 @@ OBJS=lilo.o raid.o map.o geometry.o boot.o device.o common.o bsect.o cfg.o \
 
 EDIT=edit.c common.o
 
-LIS=chain.lis disk.lis dparam.lis os2_d.lis first.lis second.lis \
+LIS=chain.lis disk.lis dparam.lis first.lis second.lis \
   bootsect.lis third.lis mbr.lis bitmap.lis pseudo.lis mbr2.lis \
   pseudo1.lis loader.lis pseudo3.lis
 BFILES=first.b second.b third.b bitmap.b chain.b mbr.b mbr2.b \
@@ -86,8 +93,7 @@ manpath:
 edit:		$(EDIT)
 		$(CC) -Wall -s -O -DSTANDALONE -o edit $(EDIT) $(LDFLAGS)
 
-loader.i:	mkloader first.b second.b third.b bitmap.b mbr.b \
-			chain.b os2_d.b mbr2.b
+loader.i:	mkloader first.b second.b third.b bitmap.b mbr.b chain.b mbr2.b
 		./mkloader >loader.i
 
 disk.com:	disk.b
@@ -202,9 +208,6 @@ bitmap.s:	second.S read.S volume.S mapper.S biosdata.S shs3.S bdata.h lilo.h ver
 chain.s:	chain.S lilo.h version.h first.b Makefile
 		$(CPP) $(PCONFIG) -DCHAIN=0x536a7646 chain.S -o chain.s
 
-os2_d.s:	chain.S lilo.h version.h first.b Makefile
-		$(CPP) $(PCONFIG) chain.S -DDOS_D -o os2_d.s
-
 xxx.s:		chain.S lilo.h Makefile
 		$(CPP) chain.S -DXXX -o xxx.s
 
@@ -232,12 +235,9 @@ install:
 	  rm -f $$DESTDIR$(BOOT_DIR)/boot-text.b; rm -f $$DESTDIR$(BOOT_DIR)/boot-text.old; fi
 	@if [ -f $$DESTDIR$(BOOT_DIR)/chain.b ]; then \
 	  mv $$DESTDIR$(BOOT_DIR)/chain.b $$DESTDIR$(BOOT_DIR)/chain.old; fi
-	@if [ -f $$DESTDIR$(BOOT_DIR)/os2_d.b ]; then \
-	  mv $$DESTDIR$(BOOT_DIR)/os2_d.b $$DESTDIR$(BOOT_DIR)/os2_d.old; fi
 	@if [ -f $$DESTDIR$(BOOT_DIR)/mbr.b ]; then \
 	  mv $$DESTDIR$(BOOT_DIR)/mbr.b $$DESTDIR$(BOOT_DIR)/mbr.old; fi
 
-	if [ -f os2_d.b -a  $(BUILTIN) -eq 0 ]; then cp os2_d.b $$DESTDIR$(BOOT_DIR); fi
 	if [ -f chain.b -a  $(BUILTIN) -eq 0 ]; then cp chain.b $$DESTDIR$(BOOT_DIR); fi
 	if [ -f mbr.b   -a  $(BUILTIN) -eq 0 ]; then cp mbr.b   $$DESTDIR$(BOOT_DIR); fi
 	if [ -f diag1.img ]; then cp -f diag1.img $$DESTDIR$(BOOT_DIR); fi
@@ -280,8 +280,6 @@ uninstall:
 	rm -f $$DESTDIR$(BOOT_DIR)/diag1.img
 	rm -f $$DESTDIR$(BOOT_DIR)/diag2.img
 
-	if [ -f $$DESTDIR$(BOOT_DIR)/os2_d.b ]; then \
-	  rm -f $$DESTDIR$(BOOT_DIR)/os2_d.b; fi
 	if [ -f $$DESTDIR$(BOOT_DIR)/chain.b ]; then \
 	  rm -f $$DESTDIR$(BOOT_DIR)/chain.b; fi
 	if [ -f $$DESTDIR$(BOOT_DIR)/mbr.b ]; then \

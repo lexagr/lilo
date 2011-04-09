@@ -1,14 +1,13 @@
-/* temp.c  -  Temporary file registry */
-/* 
-Copyright 1992-1998 Werner Almesberger.
-Copyright 1999-2006 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
-
+/* temp.c  -  Temporary file registry
+ * 
+ * Copyright 1992-1998 Werner Almesberger
+ * Copyright 1999-2006 John Coffman
+ * Copyright 2009-2011 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 #define _GNU_SOURCE
 #include <stdlib.h>
@@ -122,9 +121,6 @@ int main(void)
     process("mbr.b", "Mbr");
     process("mbr2.b", "Mbr2");
     process("chain.b", "Chain");
-#ifndef LCF_SOLO_CHAIN
-    process("os2_d.b", "Os2_d");
-#endif
 #endif
     printf("/*** end loader ***/\n");
     return 0;
