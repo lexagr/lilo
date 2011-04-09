@@ -197,6 +197,7 @@ int dev_open(DEVICE *dev,int number,int flags)
     char name[PATH_MAX];
     ST_BUF st;
     int count;
+    int err;
 
     if (lookup_dev(name,dev,number)) dev->delete = 0;
     else {
@@ -235,11 +236,12 @@ int dev_open(DEVICE *dev,int number,int flags)
 #endif
     if (flags == O_BYPASS) dev->fd = -1;
     else if ((dev->fd = open(name,flags)) < 0) {
-            fprintf (errstd, "Cannot proceed. Maybe you need to add "
+        err = errno;
+        fprintf (errstd, "Cannot proceed. Maybe you need to add "
                         "this to your lilo.conf:\n"
                          "\tdisk=%s inaccessible\n"
                         "(real error shown below)\n", name);
-	    die("open %s: %s",name,strerror(errno));
+	    die("open %s: %s",name,strerror(err));
     }
     dev->name = stralloc(name);
     return dev->fd;
@@ -714,11 +716,11 @@ static int volid_get_set(int device, int vol_in, int option)
 	
     fd = dev_open(&dev, device, option ? O_RDWR : O_RDONLY);
     if (read(fd, &buf, sizeof(buf)) != sizeof(buf)) {
-	fprintf (errstd, "Cannot proceed. Maybe you need to add "
+      fprintf (errstd, "Cannot proceed. Maybe you need to add "
                         "this to your lilo.conf:\n"
                          "\tdisk=%s inaccessible\n"
                         "(real error shown below)\n", dev.name);
-	die("VolumeID read error: sector 0 of %s not readable", dev.name);
+      die("VolumeID read error: sector 0 of %s not readable", dev.name);
     }
     if (option==ID_SET) {
 	make_backup(NULL, 0, &buf, device,
