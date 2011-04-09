@@ -542,6 +542,7 @@ static void usage(char *name)
     fprintf(errstd,"%7s%s [ -C config_file ] -I name [ options ]\n","",name);
     fprintf(errstd,"%7s%s [ -C config_file ] [ -s save_file ] "
       "-u | -U [ boot_device ]\n","",name);
+    fprintf(errstd,"%7s%s -H\t\t\t\tinstall only to active discs (RAID-1)\n", "", name);
     fprintf(errstd,"%7s%s -A /dev/XXX [ N ]\t\tinquire/activate a partition\n","",name);
     fprintf(errstd,"%7s%s -M /dev/XXX [ mbr | ext ]\tinstall master boot record\n","",name);
     fprintf(errstd,"%7s%s -T help \t\t\tlist additional options\n", "", name);

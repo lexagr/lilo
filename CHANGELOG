@@ -3,6 +3,7 @@ Changes for version 23.2 (unreleased) - Joachim Wiedorn
   Sources
   -------
     - Remove obsolete BIOS workaround from 2002 (src/second.S)
+    - Add information about -H option.   (src/lilo.c)
 
 
 Changes for version 23.1 (04-Nov-2010) - Joachim Wiedorn
