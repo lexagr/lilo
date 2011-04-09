@@ -4,6 +4,7 @@ Changes for version 23.2 (unreleased) - Joachim Wiedorn
   --------------
     - Optimize documentation generation and information.
     - Reformatting mkrescue.8 manpage. (thanks to Martin E. Schauer)
+    - Update of lilo.conf.5 manpage and remove of OS/2 information.
 
   Sources
   -------

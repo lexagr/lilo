@@ -16,7 +16,7 @@
 .\" this software without specific prior written permission. This work
 .\" is provided "as is" and without any express or implied warranties.
 .\"
-.TH LILO.CONF 5 "July 2010"
+.TH LILO.CONF 5 "April 2011"
 .SH NAME
 lilo.conf \- configuration file for lilo
 .SH DESCRIPTION
@@ -28,7 +28,7 @@ is read by the boot loader installer 'lilo' (see lilo(8)).
 It might look as follows:
 .IP
 .nf
-# lilo.conf
+# /etc/lilo.conf
 #
 #  global options:
 boot=/dev/hda
@@ -41,28 +41,29 @@ root=/dev/hda1
 read-only
 menu-title=" John's Computer "
 #
-#  bootable kernel images:
-image=/boot/zImage-1.5.99
+### bootable kernel images ###
+image=/boot/vmlinuz-2.6.29-1-i386
      label=try
-image=/boot/zImage-1.0.9
-     label=1.0.9
+     initrd=/boot/initrd.img-2.6.29-1-i386
+image=/boot/vmlinuz-2.4.33-1-i386
+     label=2.4.33
 image=/tamu/vmlinuz
      label=tamu
-     initrd=initramdisk.img
+     initrd=/tamu/initrd.img
      root=/dev/hdb2
      vga=ask
 #
-#  other operating systems:
+### other operating systems ###
 other=/dev/hda3
-     label=dos
+     label=PCDOS
      boot-as=0x80    # must be C:
 other=/dev/hdb1
-     label=Win98
+     label=WinXP
      boot-as=0x80    # must be C:
 other=/dev/hdb5
-     label=os2
-     loader=os2_d
-     table=E:   # os2 sees as E:
+     label=oldDOS
+     loader=chain
+     table=/dev/hdb5
 .fi
 .LP
 This configuration file specifies that lilo uses the Master
@@ -130,17 +131,19 @@ loader, unless overridden with "install=" (see below).
 .sp
 When a bitmap file is specified as a background screen during the boot
 process, the color selection and layout of the text which overlays the
-graphic image must be specified in one of two ways.  One way, is to use
-a bitmap image (*.bmp) file which has had a header written by the
+graphic image must be specified in one of two ways.
+.sp
+One way is the use of header information in the bitmap image (*.bmp) file:
+From a text file with all the information about 'bmp-colors', 'bmp-table' 
+and 'bmp-timer' options together with the 'bitmap' option are stored in 
+the special LILO  header of the bitmap image file by the
 .BI "lilo -E"
-command.  If this command is used, then all of the
-information specified by the 'bmp-colors', 'bmp-table', and 'bmp-timer'
-options is stored in a special LILO header within the bitmap file.
-Without this header, the 'bmp-' option values should be
-specified in the configuration file; if not, default values are used.
-Any use of the 'bmp-' options
-within the configuration file overrides the values stored in the
-bitmap file header.
++command. Another way works without these special header information: All
++the information about 'bmp-colors', 'bmp-table' and 'bmp-timer' options
++together with the 'bitmap' option are stored in the configuration file.
++Any use of the 'bmp-' options within the configuration file overrides
++the options stored in the bitmap file header. If lilo cannot find any of
++the 'bmp-' options, then default values are used.
 .TP
 .BI "bmp-colors=" <fg>,<bg>,<sh>,<hfg>,<hbg>,<hsh>
 Specifies the decimal values of the colors to be used for the menu display
@@ -292,17 +295,17 @@ Other options include the specification of disk geometry; e.g.,
 .fi
 .sp
 probably only useful for floppy disks and loopback devices,
-since for hard disks the
+because for hard disks the
 .BI lba32
-disk addressing option (LILO 21.2) ignores disk geometry.
+disk addressing option ignores disk geometry.
 .sp
-(22.5.8) Developers who have implemented a disk driver for a new block storage
+Developers who have implemented a disk driver for a new block storage
 device will have to indicate to LILO the maximum number of partitions
 on the device.  This is in addition to making all of the necessary
 entries for the device in the "/dev" directory (with 'mknod').  The
-maximum number of partitions must be one of 63 (like an IDE disk), 31 (uncommon), 15
-(like SCSI disks -- most common value), or 7 (like one array controller).
-An example specification would be:
+maximum number of partitions must be one of 63 (like an IDE disk), 
+31 (uncommon), 15 (like SCSI disks -- most common value), or 7 
+(like one array controller). An example specification would be:
 .sp
 .nf
      disk=/dev/userd0
@@ -341,7 +344,7 @@ This allows lilo to adjust 3D addresses in partition tables. Each
 partition entry contains a 3D (cylinder/head/sector) and a linear 
 address of the first and the last sector of the partition. If a 
 partition is not track-aligned and if certain other operating systems 
-(e.g. PC/MS-DOS or OS/2) are using the same disk, they may change the 
+(e.g. PC/MS-DOS) are using the same disk, they may change the 
 3D address. lilo can store its boot sector only on partitions where 
 both address types correspond. lilo re-adjusts incorrect 3D start 
 addresses if `fix-table' is set.
@@ -813,7 +816,8 @@ select 80x50 text mode.
 .BR ask :
 stop and ask for user input (at boot time).
 .sp
-<number>: use the corresponding text mode. A list of available modes 
+<number>: use the corresponding text mode (can specify the number in decimal
+or in hex with the usual '0x' convention).  A list of available modes 
 can be obtained by booting with
 .I vga=ask
 and pressing [Enter]. 
@@ -837,11 +841,7 @@ By default
 .I chain
 is used.  This chain loader passes partition and drive information in the
 boot sector it loads only to DOS on FAT12 or FAT16, Windows on FAT16 or
-FAT32, or OS/2 on FAT16 or HPFS.
-The alternate chain loader,
-.I os2_d
-passes partition and drive information unconditionally, and uses a format
-suitable for OS/2 and DOS (see 
+FAT32. (see also 
 .I table=<letter>
 below).
 .TP
@@ -856,14 +856,9 @@ Note that /sbin/lilo must be re-run if a partition table mapped referenced
 with `table' is modified.
 .TP
 .BI "table=" <drive-letter>
-This is a special case for the
+This option is obsolete. It were used in the special case with the obsolete
 .I os2_d
-chain loader.  It specifies the DOS drive letter for the partition
-that will be booted.  This is
-.I mandatory
-when booting OS/2 installed on
-an extended partition.  The drive letter may be specified with or without a
-trailing colon.
+chain loader.
 .TP
 .BI "change"
 This keyword starts a section which describes how primary partition IDs are
@@ -871,7 +866,7 @@ changed, and how primary partitions are activated and deactivated.  If
 .B change
 is omitted, change rules are generated as though the 
 .I "automatic"
-keyword were specified.  The keyword
+keyword were specified. The keyword
 .B change
 alone, without any rules following, will suppress automatic change-rules.
 For example,
@@ -922,7 +917,7 @@ interfere with floppy disk BIOS device codes; "boot-as=" is then used as a
 local option to override "master-boot" as necessary.
 .TP
 .BI "master-boot"
-This flag (LILO version 22.5) indicates a DOS/Windows/OS2 or other
+This flag (LILO version 22.5) indicates a DOS/Windows or other
 system which will only boot from BIOS device 0x80, the "C:" drive, or BIOS
 device 0, the A: drive. When this
 flag is specified, if this drive is not assigned device code 0x80 or 0 by the
