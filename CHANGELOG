@@ -22,6 +22,9 @@ Changes for version 23.2 (unreleased) - Joachim Wiedorn
   -------
     - Remove obsolete OS/2 code.   (make.vars, src/Makefile)
     - Optimize Makefile and src/Makefile for use of $(MAKE).
+    - Use mktemp utility for floppy image generation in mkrescue.
+        (Many thanks to Solar Designer and Vasiliy Kulikov of the 
+        openwall project).
 
 
 Changes for version 23.1 (04-Nov-2010) - Joachim Wiedorn
