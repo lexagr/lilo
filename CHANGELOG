@@ -25,6 +25,9 @@ Changes for version 23.2 (unreleased) - Joachim Wiedorn
     - Use mktemp utility for floppy image generation in mkrescue.
         (Many thanks to Solar Designer and Vasiliy Kulikov of the 
         openwall project).
+    - Add new scripts with Makefile (already used for Debian):
+        * liloconfig (for creating new lilo.conf)
+        * lilo-uuid-diskid (convert device names to UUID/DiskID)
 
 
 Changes for version 23.1 (04-Nov-2010) - Joachim Wiedorn

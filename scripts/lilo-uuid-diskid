@@ -1,0 +1,467 @@
+#!/usr/bin/perl -w
+
+#       lilo-uuid-diskid - convert boot and root options to diskid
+#                          and uuid in /etc/lilo.conf
+#
+#       Copyright 2010-2011 Joachim Wiedorn <ad_debian at joonet.de>
+#       
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
+#       
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#       
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#       MA 02110-1301, USA.
+
+#---- some modules
+use strict;
+use warnings;
+use Getopt::Std;
+use Pod::Usage;
+use File::Copy;
+
+
+#---- global variables
+my $prog = $0;
+$prog =~ s#.*/##;
+my $version = "0.3";
+
+#---- parameter check
+our $opt_h = 0;
+our $opt_v = 0;
+getopts('hv');
+# define perldoc usage
+pod2usage(1) if $opt_h;
+
+#---- other variables
+our $liloconf = "/etc/lilo.conf";
+our $liloconfold = '';
+our $fstabconf = "/etc/fstab";
+our $idpath = "/dev/disk/by-id";
+our $uuidpath = "/dev/disk/by-uuid";
+our $labpath = "/dev/disk/by-label";
+
+our $bootready = 0;
+our $boot_id = '';
+our $root_id = '';
+our $optboot = 0;     #  -1 = only ^#boot,  0 = nothing,  1 = ^boot  exist
+
+#-------------------- main program --------------------
+
+sub main {
+	
+	my $exit = 0;
+
+	if (@ARGV == 1) {
+		$liloconf = "$ARGV[0]";
+	}
+
+	if (-f $liloconf) {
+		$liloconfold = $liloconf . "_old";
+		$exit = convert_lilo_conf();
+	}
+	else {
+		print "cannot open $liloconf: file not found!\n";
+		$exit = 1;
+	}
+	return $exit;
+}
+
+#-------------------- subroutines --------------------
+
+sub convert_lilo_conf {
+	
+	my @sellines;
+	my $exit = 0;
+	my $line = '';
+	my $bootline = '';
+
+	# at first read lilo.conf and search for 'boot'
+	my $ok = 0;
+	open(MYFH, "<$liloconf") or die ("cannot open $liloconf: $!");
+	@sellines = grep(/^#?boot/, readline(MYFH));
+	close(MYFH);
+
+	# analyse the boot option in config file
+	foreach $line (@sellines) {
+		if ($line =~ /^boot/) {
+			# activated boot option found
+			$bootline = $line;
+			chomp $bootline;
+			$optboot = 1;
+		}
+		if ($optboot == 0) {
+			# commented boot option found
+			if ($line =~ /^#boot/) { $optboot = -1; }
+		}
+	}
+
+	if ($optboot != 0) {
+
+		if($opt_v) { print "++++++++++ write options into $liloconf ++++++++++\n\n"; }
+
+		if ( detect_boot_device($bootline) == 0) {
+			# found diskid or uuid for boot device: $boot_id
+			if (-l $boot_id) {
+				write_boot_option();
+			}
+			else {
+				if($opt_v) { print "cannot open $boot_id: link does not exist!\n"; }
+				$exit = 1;
+			}
+		}
+		else {
+			if($opt_v) { print "\n"; }
+		}
+	}
+	else {
+		print "cannot use $liloconf: uncomplete configuration!\n";
+		$exit = 1;
+	}
+
+	return $exit;
+}
+
+
+sub detect_boot_device {
+	
+	my $boot_line = $_[0];
+	my $boot_disk = '';
+	my $searchpath;
+	my $_part;
+	my $exit = 0;
+
+	if ($optboot == 1) {
+		# the usual case: found ^boot in lilo.conf
+		$boot_disk = ($boot_line =~ /^boot *= *(\/dev\/.*)/) ? ($1) : ();
+
+		# check if the found partition is a raid volume
+		if($boot_disk =~ /\/dev\/md/) {
+			$boot_disk = check_raid($boot_disk);
+		}
+	}
+	elsif ($optboot == -1) {
+		# found only ^#boot in lilo.conf, then /etc/fstab is needed
+		if (-f $fstabconf) {
+			if($opt_v) {
+				print "no boot option in $liloconf: selecting from $fstabconf\n";
+			}
+			$boot_disk = read_fstab($fstabconf);
+		}
+		else {
+			print "no boot option in $liloconf and no file $fstabconf found!\n";
+			$exit = 1;
+		}
+	}
+
+	if (-b $boot_disk) {
+		if($boot_disk =~ /$idpath/ 
+				or $boot_disk =~ /$uuidpath/
+				or $boot_disk =~ /$labpath/) {
+			print "boot option is already updated to $boot_disk\n";
+			$bootready = 1; $exit = 1;
+		}
+		else {
+			if($opt_v) { print "convert boot option $boot_disk into new ID\n"; }
+
+			# is it a block device name ?
+			$_part = $boot_disk;
+			$_part =~ s/\d+$//;
+			$searchpath = ($_part eq $boot_disk) ? $idpath : $uuidpath;
+
+			$boot_id = $searchpath . "/" . find_id_link($boot_disk,$searchpath);
+			if(not -l "$boot_id") { $exit = 1; }
+		}
+	}
+	else {
+		if($opt_v) { print "cannot read $boot_disk: link does not exist!\n"; }
+		$exit = 1;
+	}
+	return $exit;
+}
+
+sub read_fstab {
+	
+	my $ffile = $_[0];
+	my $root_line;
+	my $root_part;
+	my $_item;
+
+	$root_line = `awk '{ if (\$2=="/") print \$1}' <$ffile`;
+
+	# search for the last valid entry in /etc/fstab about root partition
+	foreach $_item (split("\n", $root_line)) {
+		if(not $_item =~ /#/) {
+			$root_part = $_item;
+		}
+	}
+	# check if the found partition is a raid volume
+	if($root_part =~ /\/dev\/md/) {
+	}
+	unless ($root_part =~ /^UUID/) {
+		# now find the right block device name
+		$root_part =~ s/\d+$//;
+	}
+
+	return $root_part;
+}
+
+sub check_raid {
+	
+	my $part = $_[0];
+	my $mdname;
+	my $md;
+	my @devices;
+	
+	# check if the found partition is a raid volume
+	if($part =~ /\/dev\/md/)
+	{
+		$mdname = $part;
+		$mdname =~ s/\/dev\///;
+		$mdname =~ s/\///;
+		$md = `grep $mdname /proc/mdstat`;
+	
+		@devices = split(" ", $md);
+		@devices = sort(@devices[4..$#devices]);
+		$part = "/dev/" . $devices[0];
+		$part =~ s/\[.*$//;
+
+	}
+	return $part;
+}
+
+sub detect_root_device {
+	
+	my $root_line = $_[0];
+	my $root_disk = '';
+	my $root_link = '';
+	my $exit = 0;
+
+	if (not $exit) {
+		# extract the root device name
+		$root_disk = ( $root_line =~ /^\t?root *= *(.*)/ ) ? ($1) : ();
+		chomp $root_disk;
+
+		# check if the found partition is a raid volume
+		if($root_disk =~ /\/dev\/md/) {
+			$root_disk = check_raid($root_disk);
+		}
+	}
+
+	# check if root device exist / also for raid volume
+	if (-b $root_disk) {
+		if($opt_v) { print "convert root option $root_disk into new UUID\n"; }
+		$root_id = find_id_link($root_disk,$uuidpath);
+		if (not -l "$uuidpath/$root_id") { $exit = 1; }
+	}
+	else {
+		# nothing to do but perhaps give a message
+		$exit = 1;
+		$root_link = $root_disk;
+		$root_link =~ s{\"}{}g;
+		$root_link =~ s{^LABEL=}{/dev/disk/by-label/};
+		$root_link =~ s{^UUID=}{/dev/disk/by-uuid/};
+		if (not -l $root_link) {
+			if($opt_v) { print "cannot check $root_link: link does not exist!\n"; }
+		}
+	}
+	return $exit;
+}
+
+sub find_id_link {
+	
+	my $olddev = $_[0];
+	my $path_id = $_[1];
+	my @sellinks;
+	my $_idlink;
+	my $_actlink;
+	my $newdevid = '';
+	my $ok = 0;
+
+	opendir(MYDH, "$path_id") or die("cannot open $path_id: $! \n");
+	@sellinks = grep(!/\-part\d\d?$/, grep(!/^\.\.?$/, readdir(MYDH)));
+	@sellinks = sort(@sellinks);
+	closedir(MYDH);
+
+	foreach $_idlink (@sellinks) {
+		if(not $_idlink =~ /^usb/ and length($_idlink) > 10 and $ok == 0) {
+			$_actlink = readlink("$path_id/$_idlink");
+			$_actlink =~ s/^\.\.\/\.\.\//\/dev\//;
+			if($opt_v) { print "** try: $_actlink => $_idlink \n"; }
+			
+			if($_actlink eq $olddev) {
+				$newdevid = $_idlink;
+				if($opt_v) { print "** convert: $_actlink => $path_id/$_idlink \n"; }
+				# run only one time
+				$ok = 1;
+			}
+		}
+	}
+
+	if($opt_v and not $ok) { print "$olddev not converted: link not useful\n\n"; }
+	
+	return ($newdevid);
+}
+
+sub write_boot_option {
+	
+	my $oldline = '';
+	my $comline = '';
+	my $newline = '';
+	my @status;
+	my $_preold;
+	my $_prenew;
+
+	if (-f $liloconf) {
+		# move old lilo.conf to lilo.conf_old
+		@status = stat($liloconf);
+		move ($liloconf, $liloconfold);
+		utime ($status[9],$status[9],$liloconfold);
+		chmod (0600,$liloconfold);
+
+		# copy all lines from lilo.conf_old into
+		# new lilo.conf and add 'boot=' line
+		my $ok = 0;
+		open(MYFH_NEW, "> $liloconf") or die("cannot open $liloconf: $!");
+		open(MYFH_OLD, "< $liloconfold") or die ("cannot open $liloconfold: $!");
+
+		while (<MYFH_OLD>) {
+			# line read from MYFH_OLD
+			$oldline = $_;
+
+			if (/^boot/ and $ok == 0) {
+				$newline = "boot = $boot_id\n";
+				print MYFH_NEW "#" . $oldline;
+				print MYFH_NEW $newline;
+				if($opt_v) { print "+  #" . $oldline; }
+				print "+  " . $newline;
+				if($opt_v) { print "\n"; }
+				# convert only one time
+				$ok = 1;
+			}
+			elsif (/^#boot/ and $optboot == -1 and $ok == 0) {
+				# found a line with boot option commented out
+				$newline = "boot = $boot_id\n";
+				print MYFH_NEW $oldline;
+				print MYFH_NEW $newline;
+				if($opt_v) { print "+  " . $oldline; }
+				print "+  " . $newline;
+				if($opt_v) { print "\n"; }
+				# convert only one time
+				$ok = 1;
+			}
+			elsif (/^root/ or /^\troot/) {
+				# found a line with root option
+				if (detect_root_device($oldline) == 0) {
+					$comline = comment_root_line($oldline);
+					$newline = modern_root_line($oldline,$root_id);
+					print MYFH_NEW $comline;
+					print MYFH_NEW $newline;
+					if($opt_v) { print '+  ' . $comline; }
+					print '+  ' . $newline;
+					if($opt_v) { print "\n"; }
+				}
+				else {
+					print MYFH_NEW $oldline;
+				}
+			}
+			else {
+				print MYFH_NEW $oldline;
+			}
+		}
+		close(MYFH_OLD);
+		close(MYFH_NEW);
+		chmod (0600,$liloconf);
+	}
+	else {
+		print "file $liloconf does not exist: nothing changed\n";
+	}
+}
+
+sub comment_root_line {
+
+	my $rootline = $_[0];
+
+	if( $rootline =~ /root/) {
+		$rootline =~ s/root/#root/;
+	}
+	return $rootline;
+}
+
+sub modern_root_line {
+	
+	my $oldline = $_[0];
+	my $newline = $_[0];
+	my $rootid  = $_[1];
+	my $indent  = '';
+
+	if($oldline =~ /root/) {
+		$indent = $oldline;
+		chomp $indent;
+		$indent =~ s/^(\t?)root.*/$1/;
+		$newline = $indent . "root = \"UUID=$rootid\"\n";
+	}
+	return $newline;
+}
+
+
+main();
+
+
+__END__
+
+
+=head1 NAME
+
+lilo-uuid-diskid - convert boot / root options to diskid and uuid in lilo.conf
+
+=head1 SYNOPSIS
+
+lilo-uuid-diskid [-h] [-v] [lilo.conf]
+
+=head1 DESCRIPTION
+
+This script looks for the boot block device or boot partition and create the
+right diskid or uuid as boot option. Then it looks for all root partitions
+and create the right uuids as root options.
+
+These conversions are necessary for use with newer kernel (>= 2.6.26) if it
+use the libata module for parallel and serial ATA interfaces of block devices
+(i. e. hard disks with IDE or SATA interface, usbsticks).
+
+=head1 EXAMPLES
+
+Lines in the configuration file /etc/lilo.conf:
+
+  #boot = /dev/sda
+  boot = /dev/disk/by-id/ata-SAMSUNG_SV1604N_S01FJ10X999999
+
+  #root = /dev/sda1
+  root = "UUID=18843936-00f9-4df0-a373-000d05a5dd44"
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-h>
+
+Print a brief help.
+
+=item B<-v>
+
+Print verbose messages.
+
+=back
+
+=head1 AUTHOR
+
+B<lilo-uuid-diskid> was written by Joachim Wiedorn.
+
+=cut

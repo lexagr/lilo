@@ -108,6 +108,7 @@ install:  all
 	$(MAKE) -C images install
 	$(MAKE) -C hooks install
 	$(MAKE) -C sample install
+	$(MAKE) -C scripts install
 	$(MAKE) -C man install
 	$(MAKE) -C dos install
 
@@ -136,4 +137,5 @@ uninstall:
 	$(MAKE) -C images uninstall
 	$(MAKE) -C hooks uninstall
 	$(MAKE) -C sample uninstall
+	$(MAKE) -C scripts uninstall
 	$(MAKE) -C man uninstall
