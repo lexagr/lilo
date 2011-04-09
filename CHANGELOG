@@ -5,6 +5,7 @@ Changes for version 23.2 (unreleased) - Joachim Wiedorn
     - Remove obsolete BIOS workaround from 2002 (src/second.S)
     - Add information about -H option.   (src/lilo.c)
     - Save errno for second command.     (src/device.c)
+    - Fix missleading error message.     (src/geometry.c)
 
 
 Changes for version 23.1 (04-Nov-2010) - Joachim Wiedorn

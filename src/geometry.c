@@ -785,7 +785,7 @@ void geo_query_dev(GEOMETRY *geo,int device,int all)
 	    
 	    if ((MAJOR(device)>=120 && MAJOR(device)<=127)  ||
 	        (MAJOR(device)>=240 && MAJOR(device)<=254) )
-		die("Linux experimental device 0x04x needs to be defined.\n"
+		die("Linux experimental device 0x%04x needs to be defined.\n"
 		    "Check 'man lilo.conf' under 'disk=' and 'max-partitions='", device);
 	    else die("Sorry, don't know how to handle device 0x%04x",device);
     }
