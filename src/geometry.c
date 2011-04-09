@@ -172,7 +172,7 @@ void geo_init(char *name)
 	    if (strspn(line," \t") != strlen(line)) {
 		entry = alloc_t(DT_ENTRY);
 		items = sscanf(line,"0x%x 0x%x %d %d %d %d",&entry->device,
-		  &entry->bios,&entry->sectors,&entry->heads,&entry->cylinders,
+		  (unsigned int*)&entry->bios,&entry->sectors,&entry->heads,&entry->cylinders,
 		  &entry->start);
 		if (items == 5) entry->start = -1;
 		if (items < 5)
@@ -400,7 +400,7 @@ void do_disk(void)
 	if (i!=7 && i!=15 && i!=31 && i!=63) die("disk=%s:  illegal value for max-partitions(%d)", disk, i);
       }
       else {
-        die("Implementation restriction: max-partitions on major device > %d", nelem(max_partno)-1);
+        die("Implementation restriction: max-partitions on major device > %d", (int)nelem(max_partno)-1);
       }
     }
     entry->bios = bios ? to_number(bios) : -1;
@@ -499,14 +499,14 @@ static int last_dev(int major,int increment)
  * only used to count IDE drives anyway, we try now only the first two devices
  * and forget about scan_last_dev.
  */
+    DEVICE dev;
+    int devs;
     static int cached_major=-1, cached_increment=-1, cached_result=-1;
     if(major == cached_major && increment == cached_increment)
         return cached_result;
     cached_major = major;
     cached_increment = increment;
 
-    DEVICE dev;
-    int devs;
 
     for (devs = 0;
 	devs < 2 && dev_open(&dev,MKDEV(major,increment*devs),O_BYPASS);
@@ -547,7 +547,7 @@ void lvm_bmap(struct lv_bmap *lbm)
 
 	lvmfd = dev_open(&dev, lbm->lv_dev, O_RDONLY);
 	if (lvmfd < 0)
-	    die("can't open LVM block device %#x\n", lbm->lv_dev);
+	    die("can't open LVM block device %#x\n", (int)lbm->lv_dev);
 	last_dev = lbm->lv_dev;
     }
     if (ioctl(lvmfd, LV_BMAP, lbm) < 0) {
@@ -1282,7 +1282,7 @@ int pass;
 } /* end of geo_get */
 
 
-int geo_open(GEOMETRY *geo,char *name,int flags)
+int geo_open(GEOMETRY *geo,const char *name,int flags)
 {
     char *here;
     int user_dev,block_size;

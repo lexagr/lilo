@@ -131,7 +131,7 @@ void geo_get(GEOMETRY *geo,int device,int user_device,int all);
    is retrieved and the other geometry information is undefined. */
 
 
-int geo_open(GEOMETRY *geo,char *name,int flags);
+int geo_open(GEOMETRY *geo,const char *name,int flags);
 /* Opens the specified file or block device, obtains the necessary geometry
    information and returns the file descriptor. If the name contains a BIOS
    device specification (xxx:yyy), it is removed and stored in the geometry

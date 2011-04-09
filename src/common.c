@@ -39,7 +39,7 @@ unsigned int prt_map[PRTMAP_SIZE+1];
 int curr_prt_map;
 #endif /* !__MSDOS__ */
 
-/*volatile*/ void pdie(char *msg)
+/*volatile*/ void pdie(const char *msg)
 {
     fflush(stdout);
 #if !__MSDOS__
@@ -51,7 +51,7 @@ int curr_prt_map;
 }
 
 
-/*volatile*/ void die(char *fmt,...)
+/*volatile*/ void __attribute__ ((format (printf, 1, 2))) die(const char *fmt,...)
 {
     va_list ap;
 

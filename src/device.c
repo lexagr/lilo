@@ -641,7 +641,7 @@ unsigned int register_bios(int bios, int device)
 
 		*(int*)&buff.sector[PART_TABLE_OFFSET-6] = serial;
 		if (*(short*)&buff.sector[PART_TABLE_OFFSET - 2] == 0)
-		    *(short*)&buff.sector[PART_TABLE_OFFSET - 2] = MAGIC_SERIAL;
+		    *(unsigned short*)&buff.sector[PART_TABLE_OFFSET - 2] = MAGIC_SERIAL;
 		if (verbose)
 		    printf("Assigning new Volume ID to (%04X) '%s'  ID = %08X\n",
 		    			device, dev.name, (int)serial);
@@ -657,7 +657,7 @@ unsigned int register_bios(int bios, int device)
 		if (device_code[i]==device)
 		    die("register_bios: device code duplicated: %04X", device);
 		if (serial_no[i]==serial)
-		    die("register_bios: volume ID serial no. duplicated: %08lX", serial);
+		    die("register_bios: volume ID serial no. duplicated: %08X", serial);
 	    }
 	    device_code[bios] = device;
 	    serial_no[bios] = serial;

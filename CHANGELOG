@@ -15,6 +15,8 @@ Changes for version 23.2 (unreleased) - Joachim Wiedorn
     - Remove obsolete OS/2 code.   (src/boot.c, src/temp.c)
     - Enlarge maximum number of sectors (MAX_SETUPSECS) for
         kernel setup code to 63.   (src/bootsect.S, src/lilo.h)
+    - Fix for many small flaws in source code. (Many thanks to
+        Solar Designer and Vasiliy Kulikov of the openwall project).
 
   General
   -------

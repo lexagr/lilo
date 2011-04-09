@@ -97,7 +97,7 @@ int get_std_headers(int fd,
     if (fh->magic != 0x4D42 /* "BM" */)  return 1;
     if (read(fd, &size, sizeof(size)) != sizeof(size))   return -1;
     if (size==sizeof(BITMAPHEADER2)) { /* an OS/2 bitmap */
-	if (read(fd, (void*)&bmh2+sizeof(size), sizeof(BITMAPHEADER2)-sizeof(size))
+	if (read(fd, (char*)&bmh2+sizeof(size), sizeof(BITMAPHEADER2)-sizeof(size))
 		!= sizeof(BITMAPHEADER2)-sizeof(size) )   return -1;
 	memset(bmh, 0, sizeof(BITMAPHEADER));
 	bmh->width = bmh2.width;
@@ -110,7 +110,7 @@ int get_std_headers(int fd,
 	n = sizeof(RGB2);
     }
     else if (size==sizeof(BITMAPHEADER)) {
-	if (read(fd, (void*)bmh+sizeof(size), sizeof(BITMAPHEADER)-sizeof(size))
+	if (read(fd, (char*)bmh+sizeof(size), sizeof(BITMAPHEADER)-sizeof(size))
 		!= sizeof(BITMAPHEADER)-sizeof(size) )   return -1;
 	bmh->size = size;
 	n = sizeof(RGB);
@@ -131,7 +131,7 @@ int get_std_headers(int fd,
       /* get probable BITMAPLILOHEADER */
 	if (read(fd, &size, sizeof(size)) != sizeof(size))  return -1;
 	if (size != sizeof(BITMAPLILOHEADER))   return 4;
-	if (read(fd, (void*)lh+sizeof(size), sizeof(*lh)-sizeof(size)) !=
+	if (read(fd, (char*)lh+sizeof(size), sizeof(*lh)-sizeof(size)) !=
 		sizeof(*lh)-sizeof(size))  return -1;
 	*(int*)(lh->size) = size;
 	if (strncmp(lh->magic, "LILO", 4) != 0)   return 5;
@@ -192,8 +192,8 @@ static	union {
 	   BITMAPLILOHEADER bmlh;
 	} tm;
 static	MENUTABLE *menu = &tm.mt;
-static	BITMAPLILOHEADER *lh = (void*)tm.buffer + 
-    			((long)&tm.mt.row - (long)&tm.bmlh.row);
+static	BITMAPLILOHEADER *lh = (void*)(tm.buffer +
+    			((long)&tm.mt.row - (long)&tm.bmlh.row));
 
 /* a convenience definition */
 #define mn tm.mt

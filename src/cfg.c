@@ -264,7 +264,7 @@ int cfg_open(char *name)
 }
 
 
-void cfg_error(char *msg,...)
+void __attribute__ ((format (printf, 1, 2))) cfg_error(char *msg,...)
 {
     va_list ap;
 

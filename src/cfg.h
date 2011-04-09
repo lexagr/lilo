@@ -37,7 +37,7 @@ int cfg_open(char *name);
 /* Opens the configuration file. Returns the file descriptor of the open
    file. */
 
-void cfg_error(char *msg,...);
+void cfg_error(char *msg,...) __attribute__ ((format (printf, 1, 2)));
 
 /* Signals an error while parsing the configuration file and terminates the
    program. */

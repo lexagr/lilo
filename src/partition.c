@@ -56,10 +56,10 @@ source directory.
 #endif
 
 static
-int anywhere(void *buf, char *str)
+int anywhere(unsigned char *buf, char *str)
 {
     int k, n;
-    void *s;
+    char *s;
     
     k = strlen(str);
     n = SECTOR_SIZE-k;
@@ -67,7 +67,7 @@ int anywhere(void *buf, char *str)
     while(s) {
 	if (!strncmp(s, str, k)) return 1;
 	s++;
-	n = SECTOR_SIZE - k - (int)(s-buf);
+	n = SECTOR_SIZE - k - (int)(s-(char*)buf);
 	s = memchr(s, *str, n);
     }
     return 0;
@@ -381,7 +381,7 @@ static void add_rule(unsigned char bios,unsigned char offset,
     int i;
 
     if (curr_prt_map == PRTMAP_SIZE)
-	cfg_error("Too many change rules (more than %s)",PRTMAP_SIZE);
+	cfg_error("Too many change rules (more than %d)",PRTMAP_SIZE);
     if (verbose >= 3)
 	printf("  Adding rule: disk 0x%02x, offset 0x%x, 0x%02x -> 0x%02x\n",
 	    bios,PART_TABLE_OFFSET+offset,expect,set);

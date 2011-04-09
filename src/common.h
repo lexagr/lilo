@@ -396,11 +396,12 @@ extern int dm_major_nr;
 #define comma (cc(First)|cc(Second)|cc(Third)|cc(Bitmap)|cc(Chain)|cc(Mbr)|cc(Mbr2))
 
 
-/*volatile*/ void pdie(char *msg);
+/*volatile*/ void pdie(const char *msg) __attribute__ ((noreturn));
 /* Do a perror and then exit. */
 
 
-/*volatile*/ void die(char *fmt,...);
+/*volatile*/ void __attribute__ ((format (printf, 1, 2)))
+ __attribute__ ((noreturn)) die(const char *fmt,...);
 /* fprintf an error message and then exit. */
 
 

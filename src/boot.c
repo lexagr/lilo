@@ -85,7 +85,7 @@ void boot_image(char *spec,IMAGE_DESCR *descr)
 		check_size(spec,setup,sectors);
 	else {
 		if (hdr.start % PAGE_SIZE)
-			die("Can't load kernel at mis-aligned address 0x%08lx\n",hdr.start);
+			die("Can't load kernel at mis-aligned address 0x%08x\n",hdr.start);
 		descr->flags |= FLAG_LOADHI;	/* load kernel high */
 		hi_sectors = sectors - setup;	/* number of sectors loaded high */
 		hi_sectors *= 6;            	/* account for decompression */

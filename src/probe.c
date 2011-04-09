@@ -204,10 +204,10 @@ int fetch(void)
 	eq = (void*)&buf.b[buf.s5.equipment];
 	v1 = (void*)&buf.b[buf.s5.video];
 	if (buf.s5.vid > 1) {
-	    v2 = (void*)v1 + sizeof(*v1);
-	    v25 = (void*)v2 + sizeof(*v2);
+	    v2 = (void*)(v1 + 1);
+	    v25 = (void*)(v2 + 1);
 	}
-	if (buf.s5.vid > 2) v3 = (void*)v25 + sizeof(*v25);
+	if (buf.s5.vid > 2) v3 = (void*)(v25 + 1);
     }
 #if BETA_TEST
 	if (verbose>=5) printf("fetch: good return\n");
@@ -354,7 +354,7 @@ static int get_geom(unsigned int drive, struct disk_geom *geom)
 
 
     if (drive >= 0x80)
-        hdp[drive-0x80 + 1] = (void*)hd + sizeof(hard_t);		/* simplest increment, but may be wrong */
+        hdp[drive-0x80 + 1] = hd + 1;		/* simplest increment, but may be wrong */
     
     /* regs.eax = 0x1500;           check drive type */
     /* regs.edx = drive;			*/
@@ -405,7 +405,7 @@ static int get_geom(unsigned int drive, struct disk_geom *geom)
 #if 0
    				geom->pt = &pt_base[(drive&15)*4];
 #else
-	void *p = (void*)pt_base;
+	char *p = (char*)pt_base;
 	int i = buf.s5.version >= 4 ? 8 : 0;
 	
 	p += (drive & 15) * (PART_TABLE_SIZE + i) + i;
@@ -439,7 +439,7 @@ static int get_geom(unsigned int drive, struct disk_geom *geom)
 	fflush(stdout);
 #endif
     /* update the pointer to the next drive */
-      hdp[drive-0x80 + 1] = (void*)dp + sizeof(edd_t);
+      hdp[drive-0x80 + 1] = (void*)(dp + 1);
 
       /* regs.eax = 0x4800;		*/
       /* regs.edx = drive;		*/
