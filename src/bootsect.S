@@ -1,9 +1,11 @@
 !
-!	bootsect.s		Copyright (C) 1991, 1992 Linus Torvalds
+!	bootsect.s
+!	Copyright (C) 1991, 1992 Linus Torvalds
+!
 !	modified by Drew Eckhardt
 !	modified by Bruce Evans (bde)
-!	modified by John Coffman for LILO disk.b diagnostic (27-Mar-2000)
-!							    (09-Mar-2001)
+!	modified by John Coffman (2000, 2001)
+!	modified by Joachim Wiedorn (2011)
 !
 !
 ! bootsect.s is loaded at 0x7c00 by the bios-startup routines, and moves
@@ -36,7 +38,7 @@ BOOTSEG   = 0x07C0			! original address of boot-sector
 INITSEG   = 0x9000			! we move boot here - out of the way
 SETUPSEG  = INITSEG+0x20		! setup starts here
 SYSSEG    = 0x1000			! system loaded at 0x10000 (65536).
-MAX_SETUPSECS = 31			! same as  lilo.h
+MAX_SETUPSECS = 63			! same as  lilo.h   (for kernel >= 2.4.0)
 STK_SIZE  = MAX_SETUPSECS*512+512	! 0x4000
 
 #ifndef SIZEKRNL

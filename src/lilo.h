@@ -1,14 +1,13 @@
 /* lilo.h  -  LILO constants
-
-Copyright 1992-1998 Werner Almesberger.
-Copyright 1999-2006 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
-
+ * 
+ * Copyright 1992-1998 Werner Almesberger
+ * Copyright 1999-2006 John Coffman
+ * Copyright 2009-2011 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 /* This file is also included by the boot loader assembler code. Put
    everything that isn't legal C syntax or isn't swallowed by the
@@ -253,12 +252,11 @@ source directory.
 #define STAGE_FLAG_MENU	0x0200	/* boot loader supports menu interface */
 #define STAGE_FLAG_BMP4	0x0400	/* boot loader supports 640x480x4 bitmaps */
 
-#define SETUPSECS	4	/* nr of setup sectors */
-#define VSS_NUM		497	/* address where variable setup size is
-				   stored */
+#define VSS_NUM		497	/* address where variable setup size is stored */
 #define VGA_SET		506	/* address of initial kernel VGA mode */
-#define MAX_SETUPSECS	31	/* maximum number of sectors in kernel
-				   setup code (+ bootsect) */
+#define SETUPSECS	4	/* default number of setup sectors */
+#define MAX_SETUPSECS	63	/* maximum number of sectors in kernel
+				   setup code (+ bootsect)  (for kernel >= 2.4.0) */
 #define MAX_KERNEL_SECS	1024	/* absolute maximum kernel size */
 #define SPECIAL_SECTORS	2	/* special sectors (don't compact) at beginning
 				   of map sections */

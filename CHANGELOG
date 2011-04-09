@@ -12,6 +12,8 @@ Changes for version 23.2 (unreleased) - Joachim Wiedorn
     - Save errno for second command.     (src/device.c)
     - Fix missleading error message.     (src/geometry.c)
     - Remove obsolete OS/2 code.   (src/boot.c, src/temp.c)
+    - Enlarge maximum number of sectors (MAX_SETUPSECS) for
+        kernel setup code to 63.   (src/bootsect.S, src/lilo.h)
 
   General
   -------
