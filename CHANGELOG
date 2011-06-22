@@ -4,6 +4,9 @@ Changes for version 23.3 (unreleased) - Joachim Wiedorn
   --------------
     - Update of lilo.conf.5 manpage with some corrections.
 
+  General
+  -------
+    - Fix abort problem in script mkrescue. (thanks to S. R. Wright)
 
 
 Changes for version 23.2 (09-Apr-2011) - Joachim Wiedorn

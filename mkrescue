@@ -1,39 +1,35 @@
 #!/bin/bash
 #
-# mkrescue
+#       mkrescue - create a boot floppy or cd image with the current kernel
 #
-#	30-Oct-2001	original version 1.0
-#
-# Revision history:
-#	09-Apr-2002	John Coffman	modify for lilo 22.3   1.1
-#	09-Jun-2002	John Coffman	get keyboard translation table 1.2
-#					(suggested by Qing Liu)
-#	07-May-2003	John Coffman	add nowarn for lilo 22.5.2  1.3
-#	13-May-2003	John Coffman	use default image, add append=  1.4
-#	24-May-2003	John Coffman	specify ext2 params for xtra space
-#	26-May-2003	John Coffman	el-torito-bootable-CD   2.1
-#	30-May-2003	   "		add lilo version check  2.1
-#	07-Jul-2003	   "		determine loopback dynamically 2.3
-#	29-Aug-2004	   "		allow --root LABEL=lblname  2.4
-#	01-Sep-2004	   "		fix check for LILO version  2.4
-#	03-Oct-2004	   "		get root= from /etc/fstab   2.5
-#	15-Nov-2004	   "		support --iso --size HD	    3.0
-#	18-Aug-2005	   "		applied temp-file security patch 3.1
-#	25-Sep-2005	   "		log config file on --debug  3.2
-#	04-Oct-2005	   "		new 'master' determination  3.2
-#	07-Oct-2005	   "		add -v0 -w to usages of -I  3.2
-#
+#       Copyright 2001-2005 John Coffman
+#       Copyright 2010-2011 Joachim Wiedorn <ad_debian at joonet.de>
+#       
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
+#       
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#       
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#       MA 02110-1301, USA.
 
 debug=false
 #debug=true
 
 # set the version number on this command
-version=3.2
+version=3.8
 
 # set the version of LILO required to run
 major=22
-minor=6
-revision=1
+minor=8
+revision=0
 
 log=$(pwd)/mkrescue.log
 clog=$(pwd)/mkrescue.conf.log
@@ -50,32 +46,29 @@ usage:	`basename $0` [--help]
 	    [--root <device>] [--nocompact] [--noformat]
 	    [--iso] [--size 1440|1200|2880|HD]
 
-  --device  is the floppy drive; e.g.,  /dev/fd0
-  --fast  specifies creation using a loopback device, which may be faster
-  --fs  is the filesystem to make on the device; e.g.,  ext2
-  --help  prints this helpfile
-  --iso  create a bootable ISO image to burn to a CD-R or CD-RW
-  --keymap  is the keyboard translation table; default to same as lilo.conf
+  --device   is the floppy drive; e.g.,  /dev/fd0
+  --fast     specifies creation using a loopback device, which may be faster
+  --fs       is the filesystem to make on the device; e.g.,  ext2
+  --help     prints this helpfile
+  --iso      create a bootable ISO image to burn to a CD-R or CD-RW
+  --keymap   is the keyboard translation table; default to same as lilo.conf
   --noformat  bypasses creation of a new filesystem on device
   --nocompact  omits lilo map file compaction
-  --size  is assumed to be 1440 (1.44M), unless 1200 or 2880 is specified
-	HD may be specified for ISO images
-  --image  specifies the label of the kernel/initrd if not the default
-  --install  text is the default for floppies, menu for ISO images
-  --initrd and --kernel  are the initial ramdisk & kernel files
-  --append  is a string used to specify kernel options
-  --root  is the root filesystem for the boot floppy; e.g., current
+  --size     is assumed to be 1440 (1.44M), unless 1200 or 2880 is specified
+             HD may be specified for ISO images
+  --image    specifies the label of the kernel/initrd if not the default
+  --install  'text' is the default for floppies, 'menu' for ISO images
+  --initrd   and --kernel  are the initial ramdisk & kernel files
+  --append   is a string used to specify kernel options
+  --root     is the root filesystem for the boot floppy; e.g., current
   --version  prints the version number of `basename $0`
+  --debug    provide verbose output and pausing after defined steps
 
 Used without any arguments, `basename $0` will use the default kernel in
 /etc/lilo.conf, the companion initrd (if any), and the specified root
 filesystem to make a bootable rescue floppy.
 
 EOF
-#
-# --install & --debug are undocumented above
-#
-#
     exit $1
 }
 
@@ -96,11 +89,9 @@ fi
 compact=-c
 device=/dev/fd0
 fs=ext2
-tmpbase="`mktemp -dt $(basename $0).XXXXXXXXXX`" || exit
-if [ "$debug" != true ]; then
-        trap 'rm -rf -- "$tmpbase"' EXIT
-        trap 'trap - EXIT; rm -rf -- "$tmpbase"; exit 1' HUP INT QUIT TERM
-fi
+tmpbase="`mktemp -dt $(basename $0).XXXXXXXXXX`" || {
+    echo "Could not create temporary directory."; exit 1
+}
 mount="$tmpbase/mkrescue-flp"
 mfile="$tmpbase/mkrescue-emu"
 mtemp="$tmpbase/mkrescue-tmp"
@@ -190,11 +181,6 @@ fi
 umount $mount 2>/dev/null
 rm -rf $mount/*
 > $mfile
-
-mkdir $tmpbase || {
-    echo "Could not create temporary directory."
-    exit 1
-}
 
 master=`mount | grep " / " | cut -d " " -f 1`
 master=`echo $master | sed "s/part[0-9]*$/disc/"`
@@ -674,7 +660,8 @@ if [ $fast = error ]; then
 fi
 
 if [ $isoimage = yes ]; then
-	echo MKISOFS
+	echo START MakeISOFS:
+	echo
 	out=$device
 	opt=
 	if [ $size = $hdsize ]; then
@@ -683,18 +670,19 @@ if [ $isoimage = yes ]; then
 	    opt=-hard-disk-boot
 	fi
 	mv $mfile $mount/boot.bin
-	mkisofs $opt -J -R -T \
+	genisoimage $opt -J -R -T \
 		-V LILO_BOOT -A "Linux Boot CD created by LILO mkrescue" \
 		-b boot.bin -c boot.cat -o $out $mount
 	cat <<EOF
 
-END MKISOFS:  output is in  '$device'
+END MakeISOFS:  output is in  '$device'
 
 
-The bootable CD can be burned with the 'cdrecord' utility
+The bootable CD can be burned with the 'cdrecord' or 'wodim' utility
 using a command of the form:
 
 	cdrecord [<options>] [dev=<device>] $device
+	wodim [<options>] [dev=<device>] $device
 
 EOF
 elif [ "$fast" = fast ]; then
