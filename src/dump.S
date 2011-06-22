@@ -1,13 +1,12 @@
-/* dump.S  -  LILO register dumper */
-
- Copyright 1995-1997 Werner Almesberger.
- All rights reserved.
-
- Licensed under the terms contained in the file 'COPYING' in the 
- source directory.
-
-*/
-
+;  dump.S
+;
+;  Copyright 1995-1997 Werner Almesberger
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
+;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
+;
 
 #define LILO_ASM
 #include "lilo.h"

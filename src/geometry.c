@@ -1,14 +1,13 @@
-/* geometry.c  -  Device and file geometry computation */
-/*
-Copyright 1992-1998 Werner Almesberger.
-Copyright 1999-2005 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
-/* Patched for linux-2.4.0 - Glibc-2.2 by Sergey Ostrovsky 11/16/2000 */
+/* geometry.c  -  Device and file geometry computation
+ * 
+ * Copyright 1992-1998 Werner Almesberger
+ * Copyright 1999-2005 John Coffman
+ * Copyright 2009-2011 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 #define _GNU_SOURCE
 #include <unistd.h>
@@ -64,7 +63,7 @@ source directory.
  /* (*(__u32 *)"R4Sb"); */
 #endif
 #ifndef REISER4_IOC_UNPACK
-#define REISER4_IOC_UNPACK              _IOW(0xCD,1,long)
+#define REISER4_IOC_UNPACK      _IOW(0xCD,1,long)
 #endif
 #endif
 
@@ -492,12 +491,8 @@ static int scan_last_dev(ST_BUF *next,char *parent,int major,int increment)
 static int last_dev(int major,int increment)
 {
 /*
- * In version 12 to 18, LILO only relied on scan_last_dev (or last_dev). This
- * obviously didn't work if entries in /dev were missing. Versions 18 and 19
- * added the probe loop, which seems to be okay, but which may probe for
- * invalid minor numbers. The IDE driver objects to that. Since last_dev is
- * only used to count IDE drives anyway, we try now only the first two devices
- * and forget about scan_last_dev.
+ * Since last_dev is only used to count IDE drives anyway, we try 
+ * now only the first two devices and forget about scan_last_dev.
  */
     DEVICE dev;
     int devs;

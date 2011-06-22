@@ -1,13 +1,14 @@
-#if 0
-;  first.S  -  LILO first stage boot loader with LBA32 support */
-Copyright 1992-1998 Werner Almesberger.
-Copyright 1999-2005 John Coffman.
-All rights reserved.
+;  first.S  -  LILO first stage boot loader with LBA32 support
+;
+;  Copyright 1992-1998 Werner Almesberger
+;  Copyright 1999-2005 John Coffman
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
+;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
+;
 
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-#endif
 #define LILO_ASM
 #include "lilo.h"
 get common.s		/* as86 "include" will bypass the CPP */

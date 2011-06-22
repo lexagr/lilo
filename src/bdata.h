@@ -1,7 +1,7 @@
 /* bdata.h
  * 
  * Copyright 2000-2007 John Coffman
- * Copyright 2009-2010 Joachim Wiedorn
+ * Copyright 2009-2011 Joachim Wiedorn
  * All rights reserved.
  * 
  * Licensed under the terms contained in the file 'COPYING'

@@ -1,12 +1,13 @@
-/*  display4.S is
+;  display4.S
+;
+;  Copyright 2001-2005 John Coffman
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
+;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
+;
 
- Copyright 2001-2005 John Coffman.
- All rights reserved.
-
- Licensed under the terms contained in the file 'COPYING' in the 
- source directory.
-
-*/
 ;
 ;	Static Name Aliases
 ;

@@ -1,12 +1,11 @@
-#if 0
-; crt.S  is
-Copyright 2000-2005 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-#endif
+; crt.S
+;
+;  Copyright 2000-2005 John Coffman
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
+;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
 ;
 
 XPITCH  =	MAX_IMAGE_NAME+6

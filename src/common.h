@@ -1,15 +1,13 @@
-#if 0
-  common.h  -  Common data structures and functions.
-
-Copyright 1992-1998 Werner Almesberger.
-Copyright 1999-2005 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-
-#endif
+/* common.h  -  Common data structures and functions
+ * 
+ * Copyright 1992-1998 Werner Almesberger
+ * Copyright 1999-2005 John Coffman
+ * Copyright 2009-2011 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 #ifndef COMMON_H
 #define COMMON_H

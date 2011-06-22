@@ -1,14 +1,13 @@
-/* common.c  -  Common data structures and functions. */
-/*
-Copyright 1992-1998 Werner Almesberger.
-Copyright 1999-2005 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
-
+/* common.c  -  Common data structures and functions
+ * 
+ * Copyright 1992-1998 Werner Almesberger
+ * Copyright 1999-2005 John Coffman
+ * Copyright 2009-2011 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 #define _GNU_SOURCE
 #include <unistd.h>

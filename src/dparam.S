@@ -1,12 +1,12 @@
-#if 0
-;  dparam.S  is
-Copyright 1992 Werner Almesberger */
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-#endif
+;  dparam.S
+;
+;  Copyright 1992 Werner Almesberger
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
+;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
+;
 
 	.text
 

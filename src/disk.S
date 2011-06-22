@@ -1,13 +1,13 @@
-/*
-; disk.S -- inquire of BIOS and display disk parameters
+;  disk.S  -  inquire of BIOS and display disk parameters
 ;
-Copyright 1999-2004 John Coffman.
-All rights reserved.
+;  Copyright 1999-2004 John Coffman
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
+;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
+;
 
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
 #define DEBUG 0
 #define DELL_DIRTY_HACK
 

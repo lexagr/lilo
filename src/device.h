@@ -1,14 +1,13 @@
 /* device.h  -  Device access
-
-Copyright 1992-1996 Werner Almesberger.
-Copyright 1999-2004 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
-
+ * 
+ * Copyright 1992-1996 Werner Almesberger
+ * Copyright 1999-2004 John Coffman
+ * Copyright 2009-2011 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 #ifndef DEVICE_H
 #define DEVICE_H

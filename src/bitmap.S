@@ -1,12 +1,13 @@
 ; bitmap.S
 ;
-; Copyright 2001-2005 John Coffman.
-; All rights reserved.
-; 
-; Licensed under the terms contained in the file 'COPYING' in the 
-; source directory.
+;  Copyright 2001-2005 John Coffman
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
 ;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
 ;
+
 #define ncol KEYTABLE+256+mt_ncol
 
 
