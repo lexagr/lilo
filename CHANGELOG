@@ -4,6 +4,11 @@ Changes for version 23.3 (unreleased) - Joachim Wiedorn
   --------------
     - Update of lilo.conf.5 manpage with some corrections.
 
+  Sources
+  -------
+    - Support for kernel images on GPT hard disks in the first 15
+        partitions, otherwise set comments (src/geometry.c, src/lilo.h)
+
   General
   -------
     - Fix abort problem in script mkrescue. (thanks to S. R. Wright)

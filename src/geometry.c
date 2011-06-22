@@ -297,10 +297,11 @@ int has_partitions_beta(dev_t dev)
       (major >= MAJOR_SMART2 && major <= MAJOR_SMART2+7) ||
       (major >= MAJOR_CISS && major <= MAJOR_CISS+7) ||
       major == MAJOR_FTL || major == MAJOR_NFTL || major == MAJOR_DOC ||
-      (major >= MAJOR_SD9 && major <= MAJOR_SD16)
+      (major >= MAJOR_SD9 && major <= MAJOR_SD16) ||
+      (major >= MAJOR_SATA1 && major <= MAJOR_SATA2)
         ) return 0xFFFFFFF0;	/* 4 bit partition mask */
 
-    if ( major == MAJOR_SATA || major == MAJOR_SATA2
+    if ( major == MAJOR_CARM1 || major == MAJOR_CARM2
         )  return 0xFFFFFFE0;	/* 5 bit partition mask */
 
     if ( major == MAJOR_IBM_iSER ||
@@ -682,6 +683,14 @@ void geo_query_dev(GEOMETRY *geo,int device,int all)
 	    geo->cylinders = hdprm.cylinders;
 	    geo->sectors = hdprm.sectors;
 	    geo->start = hdprm.start;
+	    break;
+	case MAJOR_SATA1:
+	case MAJOR_SATA2:
+		printf("WARNING: SATA partition in the high region (>15):\n");
+		printf("LILO needs the kernel in one of the first 15 SATA partitions. If \n");
+		printf("you need support for kernel in SATA partitions of the high region \n");
+		printf("than try grub2 for this purpose! \n";
+		die("Sorry, cannot handle device 0x%04x",device);
 	    break;
 	MASK31:
 	    geo->device = 0x80 + last_dev(MAJOR_HD,64) + (MINOR(device) >> 5);
@@ -1471,7 +1480,7 @@ int geo_comp_addr(GEOMETRY *geo,int offset,SECTOR_ADDR *addr)
 		    break;
 	    if (!dm_target)
 		die("device-mapper: Sector outside mapped device? (%d: %u/%"PRIu64")",
-		    geo->base_dev, sector, (uint64_t)(dm_table->target ?
+		    (int) geo->base_dev, sector, (uint64_t)(dm_table->target ?
 		      (dm_table->target->start+dm_table->target->length) : 0));
 
 	    dev = dm_target->device;

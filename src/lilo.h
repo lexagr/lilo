@@ -146,10 +146,15 @@
 #define MAJOR_SD16	135 /* SCSI disks    -255 */
 #define MAJOR_DAC960_8	136 /* Ninth Mylex DAC960 PCI RAID controller */
 #define MAJOR_EMD	153 /* Enhanced multi-disk RAID sets */
-#define MAJOR_SATA	160 /* Carmel SATA Disk on first 8-port controller */
-#define MAJOR_SATA2	161 /* Carmel SATA Disk on 2nd 8-port controller */
+#define MAJOR_CARM1	160 /* Carmel SATA Disk on first 8-port controller */
+#define MAJOR_CARM2	161 /* Carmel SATA Disk on 2nd 8-port controller */
+
 /* don't use the following */
 #define MAJOR_MDP	254 /* Enhanced multi-disk RAID sets [experimental?] */
+
+/* high partitions (>15) on SATA hard disks */
+#define MAJOR_SATA1	259 /* high SATA disk partitions */
+#define MAJOR_SATA2	260 /* high SATA disk partitions */
 
 #define MAX_TOKEN	1023 /* max device Token length */
 #define MAX_IMAGE_NAME	15 /* maximum name length (w/o terminating NUL) */
