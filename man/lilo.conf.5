@@ -184,9 +184,9 @@ then the form 'bmp-timer = none' is acceptable.  This will disable the timer
 display entirely.
 .TP
 .BI "boot=" <boot-device>
-Sets the name of the device (e.g. a hard disk partition) that contains
-the boot sector. If this keyword is omitted, the boot sector is read
-from (and possibly written to) the device that is currently mounted as root.
+Sets the name of the device (e.g. hard disk or partition) that contains
+the boot sector and where the new boot sector should be written to. Notice: 
+The boot-device should be the device with the currently mounted root partition.
 .sp
 A raid installation is initiated by specifying a RAID1 device as the boot
 device; e.g., "boot=/dev/md0".
@@ -767,9 +767,8 @@ If the special name
 is used, the root device is set to the device on which the root file
 system is currently mounted. If the root has been changed with  \-r ,
 the respective device is used. If the variable `root' is omitted,
-the root device setting contained in the kernel image is used.
-(And that is set at compile time using the ROOT_DEV variable in
-the kernel Makefile, and can later be changed with the rdev(8) program.)
+the root device setting contained in the running kernel image is used.
+Warning: This can induce to an unbootable system!
 .sp
 The root filesystem may also be specified by a
 .B LABEL=
