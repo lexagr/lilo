@@ -1,5 +1,5 @@
 '\" t
-.\" @(#)lilo.conf.5 1.0 950728 aeb
+.\" @(#)lilo.conf.5
 .\" This page is based on the lilo docs, which carry the following
 .\" COPYING condition:
 .\"
@@ -7,6 +7,9 @@
 .\" Copyright 1992-1998 Werner Almesberger.
 .\" Extensions to LILO, documentation and auxiliary programs are
 .\" Copyright 1999-2005 John Coffman.
+.\" Extensions to LILO, documentation and auxiliary programs are
+.\" Copyright 2009-2011 Joachim Wiedorn.
+.\"
 .\" All rights reserved by the respective copyright holders.
 .\" 
 .\" Redistribution and use in source and binary forms of parts of or the
@@ -16,7 +19,7 @@
 .\" this software without specific prior written permission. This work
 .\" is provided "as is" and without any express or implied warranties.
 .\"
-.TH LILO.CONF 5 "April 2011"
+.TH LILO.CONF 5 "June 2011"
 .SH NAME
 lilo.conf \- configuration file for lilo
 .SH DESCRIPTION
@@ -705,17 +708,26 @@ If the booted image is a Linux kernel, then one may pass
 command line parameters to this kernel.
 .TP
 .BI "addappend=" <string>
-(22.6) The kernel parameters from the specified string, are concatenated to the
+The kernel parameters of this string are concatenated to the
 parameter(s) from an
 .B "append="
-specification (see below).
-The string must be enclosed within double quotes.  Usually, the previous
+option (see below).
+The string of addappend must be enclosed within double quotes. 
+Usually, the previous
 .B "append="
-will specify parameters common to all kernels by appearing in the top,
-or global, section of the configuration file and
+will set parameters common to all kernels by appearing in the global 
+section of the configuration file and
 .B "addappend="
 will be used to add local parameter(s) to an individual image.
-Addappend= may be used only once per "image=" section.
+The addappend option may be used only once per "image=" section.
+.sp
+If the string is a very long line, this line can be divided 
+in more lines using "\\" as last character of a line, e.g.
+.sp
+.nf
+    addappend="noapic acpi=off pci=usepirqmask \\
+            pnpbios=off pnpacpi=off noisapnp"
+.fi
 .TP
 .BI "append=" <string>
 Appends the options specified to the parameter line passed to the kernel.
@@ -724,14 +736,16 @@ entirely auto-detected or for which probing may be dangerous. Multiple
 kernel parameters are separated by a blank space, and the string must be
 enclosed in double quotes.  A local append= appearing withing an image=
 section overrides any
-global append= appearing in the top section of the configuration file.
-Append= may be used only once per "image="
+global append= appearing in the global section of the configuration file.
+The append option may be used only once per "image="
 section. To concatenate parameter strings, use "addappend=". Example:
 .sp
 .nf
      append="mem=96M hd=576,64,32 console=ttyS1,9600"
 .fi
 .sp
+If the string is a very long line, this line can be divided in more lines 
+using "\\" as last character of a line. See example of addappend option.
 .TP
 .BI "initrd=" <name>
 Specifies the initial ramdisk image to be loaded with the kernel.  The
