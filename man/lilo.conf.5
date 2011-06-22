@@ -69,22 +69,22 @@ other=/dev/hdb5
 This configuration file specifies that lilo uses the Master
 Boot Record on /dev/hda. (For a discussion of the various ways
 to use lilo, and the interaction with other operating systems,
-see user.tex from the lilo documentation.)
+see user.pdf from the lilo documentation.)
 .LP
 When booting, the boot loader will issue its 
 .I "boot:"
-prompt and wait for you to enter the label of the kernel (and any options)
-which you wish to boot. At any time you may hit [Tab] to see
-a list of kernel/other labels.
+prompt and wait for you to enter the label of the kernel (and any
+options) which you wish to boot. At any time you may hit [Tab] to
+see a list of kernel/other labels.
 Alternately, if the \fBmenu\fP boot loader is installed,
 a menu of boot options will be presented for your selection.
 The title of this menu is overridden with the menu
 title specification in this configuration file.
-If you enter nothing,
-then the default kernel image, the first mentioned, (/boot/zImage-1.5.99)
-will be booted after a timeout of 15 seconds (150 deciseconds).
-There may be at least 16 images mentioned in lilo.conf. (The exact number depends
-upon compilation options.)
+If you enter nothing, then the default kernel image, the first 
+mentioned, (in the example /boot/vmlinuz-2.6.29-1-i386) will be
+booted after a timeout of 15 seconds (150 deciseconds). There may
+be at least 16 images mentioned in lilo.conf. (The exact number 
+depends upon compilation options.)
 .LP
 As can be seen above, a configuration file starts with a number
 of global options (the top 9 lines in the example),
@@ -95,7 +95,7 @@ Comment lines may appear anywhere, and begin with the "#" character.
 
 .SH "GLOBAL OPTIONS"
 There are many possible keywords. The description below is
-almost literally from user.tex (just slightly abbreviated).
+almost literally from user.pdf (just slightly abbreviated).
 .TP
 .BI "backup=" <backup-file>
 Specifies the location where a copy of any modified boot sector will be
@@ -119,8 +119,8 @@ loader in the DL register.  Its only function at this point is experimental,
 as certain RAID installations may benefit from knowing that the
 BIOS is 100% reliable.  Its use should be considered experimental.
 .sp
-N.B.:  This option may not be retained in releases beyond 22.5.1, and
-may be specified on the command line with the '\-Z' switch:  yes=1, no=0.
+This option may be specified on the command line with the '\-Z' switch:
+yes=1, no=0.
 .TP
 .BI "bitmap=" <bitmap-file>
 Specifies use of a 640x480x16 (VGA BIOS) or 640x480x256 (VGA/VESA BIOS)
@@ -138,12 +138,12 @@ From a text file with all the information about 'bmp-colors', 'bmp-table'
 and 'bmp-timer' options together with the 'bitmap' option are stored in 
 the special LILO  header of the bitmap image file by the
 .BI "lilo -E"
-+command. Another way works without these special header information: All
-+the information about 'bmp-colors', 'bmp-table' and 'bmp-timer' options
-+together with the 'bitmap' option are stored in the configuration file.
-+Any use of the 'bmp-' options within the configuration file overrides
-+the options stored in the bitmap file header. If lilo cannot find any of
-+the 'bmp-' options, then default values are used.
+command. Another way works without these special header information: All
+the information about 'bmp-colors', 'bmp-table' and 'bmp-timer' options
+together with the 'bitmap' option are stored in the configuration file.
+Any use of the 'bmp-' options within the configuration file overrides
+the options stored in the bitmap file header. If lilo cannot find any of
+the 'bmp-' options, then default values are used.
 .TP
 .BI "bmp-colors=" <fg>,<bg>,<sh>,<hfg>,<hbg>,<hsh>
 Specifies the decimal values of the colors to be used for the menu display
@@ -189,9 +189,7 @@ the boot sector. If this keyword is omitted, the boot sector is read
 from (and possibly written to) the device that is currently mounted as root.
 .sp
 A raid installation is initiated by specifying a RAID1 device as the boot
-device; e.g., "boot=/dev/md0".  Note that LILO version 22.0 and later
-operate differently from earlier versions with respect to the actual
-location of the boot records.
+device; e.g., "boot=/dev/md0".
 .sp
 On newer systems you need an unique ID for the boot device. If the boot
 sector should write to a partition you can use its UUID in the same manner
@@ -230,7 +228,7 @@ rules are sufficient.  The strings which define the partition types
 are used in a
 .I change
 section (see below), with the suffixes "_normal" or "_hidden" appended.
-See section "Partition type change rules" of user.tex for more details.
+See section "Partition type change rules" of user.pdf for more details.
 .TP
 .BI "compact"
 Tries to merge read requests for adjacent sectors into a single 
@@ -260,7 +258,7 @@ This action is modified by specifying `prompt' (see below).
 .TP
 .BI "disk=" <device-name>
 Defines non-standard parameters for the specified disk.
-See section "Disk geometry" of user.tex for details.
+See section "Disk geometry" of user.pdf for details.
 For versions of LILO prior to 22.5, the `bios=' parameter
 is quite useful for specifying how the BIOS has assigned
 device codes to your disks.
