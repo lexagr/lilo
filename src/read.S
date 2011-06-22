@@ -1,12 +1,13 @@
-/*
-;  read.S  is
-Copyright 1999-2006 John Coffman.
-All rights reserved.
+;  read.S
+;
+;  Copyright 1999-2006 John Coffman
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
+;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
+;
 
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
 #define NEW_WRITE 1
 ;
 ; lba_read:      read using LBA

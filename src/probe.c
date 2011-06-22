@@ -1,12 +1,12 @@
-/* probe.c -- BIOS probes */
-/*
-Copyright 1999-2006 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
+/* probe.c  -  BIOS probe utility
+ * 
+ * Copyright 1999-2006 John Coffman
+ * Copyright 2009-2011 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 /*#define DEBUG_PROBE*/
 #define BITMAP 0	/* change to 1 when do_bitmap is filled in */

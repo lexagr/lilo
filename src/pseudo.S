@@ -1,13 +1,14 @@
-; pseudo.S -- produce a pseudo kernel header
+;  pseudo.S  -  Produce a pseudo kernel header
 ;
-;	This file is useful for booting arbitrary binary images
-;	at	0x1000:0000
+;               Useful for booting arbitrary
+;               binary images at 0x1000:0000
 ;
-; Copyright 2002-2005 John Coffman.
-; All rights reserved.
-; 
-; Licensed under the terms contained in the file 'COPYING' in the 
-; source directory.
+;  Copyright 2002-2005 John Coffman
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
+;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
 ;
 
 #define DEBUG 0

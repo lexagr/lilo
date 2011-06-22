@@ -1,12 +1,12 @@
-/* vesainfo.h */
-/*
-Copyright 2003-2004 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
+/* vesainfo.c
+ * 
+ * Copyright 2003-2004 John Coffman
+ * Copyright 2009-2011 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 #ifndef _VESAINFO_H
 #define _VESAINFO_H

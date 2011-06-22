@@ -1,13 +1,13 @@
-#if 0
-/* second.S  -  LILO second stage boot loader */
-Copyright 1992-1998 Werner Almesberger.
-Copyright 1999-2006 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-#endif
+;  second.S  -  LILO second stage boot loader
+;
+;  Copyright 1992-1998 Werner Almesberger
+;  Copyright 1999-2006 John Coffman
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
+;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
+;
 
 /*#define DEBUG*/
 #define REG_DUMP 1

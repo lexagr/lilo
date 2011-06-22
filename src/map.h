@@ -1,13 +1,13 @@
-/* map.h  -  Map file creation */
-/*
-Copyright 1992-1998 Werner Almesberger.
-Copyright 1999-2004 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
+/* map.c  -  Map file creation
+ * 
+ * Copyright 1992-1998 Werner Almesberger
+ * Copyright 1999-2004 John Coffman
+ * Copyright 2009-2011 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 #ifndef MAP_H
 #define MAP_H

@@ -1,11 +1,10 @@
-/* shs2.c -- NIST proposed Secure Hash Standard
-*/
-/*
-   Written 2 September 1992, Peter C. Gutmann,
+/* shs2.c  -  NIST proposed Secure Hash Standard
+
+   Written 2 September 1992, Peter C. Gutmann;
    This implementation placed in the public domain.
 
-   Transcribed 2 October 2001, John Coffman.
-   Modified for FIPS PUB 180-1 (supercedes FIPS PUB 180)
+   Transcribed 2 October 2001, John Coffman;
+   Modified for FIPS PUB 180-1 (supercedes FIPS PUB 180).
 
 */
 

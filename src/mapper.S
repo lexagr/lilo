@@ -1,12 +1,15 @@
 ;  mapper.S  -  LILO chain loader subroutine
 ;
-; Copyright 2003-2004 John Coffman.
-; All rights reserved.
+;  Copyright 2003-2004 John Coffman
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
 ;
-; Licensed under the terms contained in the file 'COPYING' in the 
-; source directory.
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
 ;
-; Check for presence of existing drive mapper
+
+
+;  Check for presence of existing drive mapper
 ;
 ;	Enter with  DS == CS,  SS == 0000	  (chain loader)
 ;	Enter with  DS == CS == ES,  SS != 0000   (second stage)

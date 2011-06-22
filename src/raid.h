@@ -1,12 +1,12 @@
-/* raid.h  -  The RAID-1 hooks for LILO */
-/*
-Copyright 2001-2004 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
+/* raid.h  -  The RAID-1 hooks for LILO
+ * 
+ * Copyright 2001-2004 John Coffman
+ * Copyright 2009-2011 Joachim Wiedorn
+ * All rights reserved.
+ * 
+ * Licensed under the terms contained in the file 'COPYING'
+ * in the source directory.
+ */
 
 int do_md_install, ndisk, md_bios;
 

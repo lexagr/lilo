@@ -1,13 +1,14 @@
-; shs3.S
-/*
-Copyright 2000-2004 John Coffman.
-All rights reserved.
-
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-*/
+;  shs3.S
 ;
+;  Copyright 2000-2004 John Coffman
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
+;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
+;
+
+
 ;;;	group   dgroup _data
 
 ;;;	segment _data public align=16 class=data

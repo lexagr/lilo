@@ -1,13 +1,15 @@
-#if 0
-; menu.S  is
-Copyright 2000-2004 John Coffman.
-All rights reserved.
+;  menu.S
+;
+;  Copyright 2000-2004 John Coffman
+;  Copyright 2009-2011 Joachim Wiedorn
+;  All rights reserved.
+;
+;  Licensed under the terms contained in the file 'COPYING'
+;  in the source directory.
+;
 
-Licensed under the terms contained in the file 'COPYING' in the 
-source directory.
-
-#endif
 #define PAGE0
+
 ;
 ; mn_init:
 ;	enter with nothing

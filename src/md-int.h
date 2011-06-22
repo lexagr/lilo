@@ -1,9 +1,8 @@
 /*
    md.h : Multiple Devices driver for Linux
-          Copyright (C) 1994-96 Marc ZYNGIER
-	  <zyngier@ufr-info-p7.ibp.fr> or
-	  <maz@gloups.fdn.fr>
-	  
+          Copyright (C) 1994-1996 Marc ZYNGIER
+          <zyngier@ufr-info-p7.ibp.fr> or <maz@gloups.fdn.fr>
+   
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2, or (at your option)
