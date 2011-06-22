@@ -393,10 +393,10 @@ void do_disk(void)
     maxpart = cfg_get_strg(cf_disk,"max-partitions");
     if (maxpart) {
       if (major<nelem(max_partno)) {
-	int i = to_number(maxpart);
-	if (max_partno[major] && max_partno[major]!=i) die("Cannot alter 'max-partitions' for known disk  %s", disk);
-	max_partno[major] = i;
-	if (i!=7 && i!=15 && i!=31 && i!=63) die("disk=%s:  illegal value for max-partitions(%d)", disk, i);
+        int i = to_number(maxpart);
+          if (max_partno[major] && max_partno[major]!=i) die("Cannot alter 'max-partitions' for known disk  %s", disk);
+          max_partno[major] = i;
+          if (i!=7 && i!=15 && i!=31 && i!=63 && i!=128) die("disk=%s:  illegal value for max-partitions(%d)", disk, i);
       }
       else {
         die("Implementation restriction: max-partitions on major device > %d", (int)nelem(max_partno)-1);
@@ -605,13 +605,9 @@ void geo_query_dev(GEOMETRY *geo,int device,int all)
     struct hd_geometry hdprm;
 
     if (verbose>=5) printf("geo_query_dev: device=%04X\n", device);
-#if 0
-/*  Werner's original */
-    get_all = all || MAJOR(device) != MAJOR_FD; */
-#else
-/* simplify the condition -- JRC 2003-06-04 */
+    /* simplified condition -- JRC 2003-06-04 */
     get_all = all;
-#endif
+
     if (!MAJOR(device))
 	die("Trying to map files from unnamed device 0x%04x (NFS/RAID mirror down ?)",device);
     if (device == MAJMIN_RAM)
