@@ -2,7 +2,7 @@
 
 #       liloconfig -  creating a new lilo.conf file
 #       
-#       Copyright 2011 Joachim Wiedorn <ad_debian@joonet.de>
+#       Copyright 2011-2013 Joachim Wiedorn <ad_debian@joonet.de>
 #       
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ use File::Copy;
 #---- global variables
 my $prog = $0;
 $prog =~ s#.*/##;
-my $version = "0.1";
+my $version = "0.2";
 
 #---- parameter check
 # h: help, v: verbose, f: force
@@ -52,7 +52,7 @@ our $fstabconf = "/etc/fstab";
 our $idpath = "/dev/disk/by-id";
 our $uuidpath = "/dev/disk/by-uuid";
 our $lblpath = "/dev/disk/by-label";
-our $template = "/etc/lilo.conf_example";
+our $template = "/usr/share/doc/lilo/examples/lilo.example.conf.gz";
 
 our $rootpart;    # found root part
 our $root_dev;    # /dev/hdX9, /dev/sdX9, /dev/md/*
@@ -456,7 +456,7 @@ sub write_image_config {
 	my $nr2;
 
 	# search for kernel image files
-	my @vmlinuz = readpipe("/bin/ls -t -1 /boot/vmlinuz-2* 2>/dev/null");
+	my @vmlinuz = readpipe("/bin/ls -t -1 /boot/vmlinuz-* 2>/dev/null");
 
 	# append to new lilo.conf
 	open(MYFH_NEW, ">> $liloconfnew") or die "Cannot open file: $!";
@@ -470,8 +470,9 @@ sub write_image_config {
 		$initrd =~ s/vmlinuz/initrd\.img/;
 		$nr2 = $nr + 1;
 
-			print MYFH_NEW     'image = ' . $image . "\n";
-			if($opt_v) { print 'image = ' . $image . "\n"; }
+		print MYFH_NEW     'image = ' . $image . "\n";
+		if($opt_v) { print 'image = ' . $image . "\n"; }
+
 		if ($nr == 0) {
 			print MYFH_NEW     "\t"  . 'label = "Linux"' . "\n";
 			if($opt_v) { print "\t"  . 'label = "Linux"' . "\n"; }
@@ -480,6 +481,7 @@ sub write_image_config {
 			print MYFH_NEW     "\t"  . 'label = "Linux Old"' . "\n";
 			if($opt_v) { print "\t"  . 'label = "Linux Old"' . "\n"; }
 		}
+
 		if ($root_id) {
 			print MYFH_NEW     "\t"  . '#root = ' . $root_dev . "\n";
 			if($opt_v) { print "\t"  . '#root = ' . $root_dev . "\n"; }
@@ -490,20 +492,26 @@ sub write_image_config {
 			print MYFH_NEW     "\t"  . 'root = ' . $root_dev . "\n";
 			if($opt_v) { print "\t"  . 'root = ' . $root_dev . "\n"; }
 		}
-			print MYFH_NEW     "\t"  . 'read-only' . "\n";
-			if($opt_v) { print "\t"  . 'read-only' . "\n"; }
-			print MYFH_NEW     "#\t" . 'restricted' . "\n";
-			if($opt_v) { print "#\t" . 'restricted' . "\n"; }
-			print MYFH_NEW     "#\t" . 'alias = ' . "$nr2" . "\n";
-			if($opt_v) { print "#\t" . 'alias = ' . "$nr2" . "\n"; }
-			print MYFH_NEW     "#\t" . 'optional' . "\n";
-			if($opt_v) { print "#\t" . 'optional' . "\n"; }
+
+		print MYFH_NEW     "\t"  . 'read-only' . "\n";
+		if($opt_v) { print "\t"  . 'read-only' . "\n"; }
+		print MYFH_NEW     "#\t" . 'restricted' . "\n";
+		if($opt_v) { print "#\t" . 'restricted' . "\n"; }
+		print MYFH_NEW     "#\t" . 'alias = ' . "$nr2" . "\n";
+		if($opt_v) { print "#\t" . 'alias = ' . "$nr2" . "\n"; }
+		print MYFH_NEW     "#\t" . 'optional' . "\n";
+		if($opt_v) { print "#\t" . 'optional' . "\n"; }
+
 		if (-f $initrd) {
 			print MYFH_NEW     "\t"  . 'initrd = ' . $initrd . "\n";
 			if($opt_v) { print "\t"  . 'initrd = ' . $initrd . "\n"; }
 		}
-			print MYFH_NEW     "\n";
-			if($opt_v) { print "\n"; }
+		else {
+			if($opt_v) { print "initrd $initrd could not be found!\n" }
+		}
+
+		print MYFH_NEW     "\n";
+		if($opt_v) { print "\n"; }
 
 		$nr++;
 		last if ($nr > 1);
@@ -556,7 +564,7 @@ Lines in the configuration file /etc/lilo.conf:
   #boot = /dev/sda
   boot = /dev/disk/by-id/ata-SAMSUNG_SV1604N_S01FJ10X999999
 
-  image = /boot/vmlinuz-2.6.32-5book-686
+  image = /boot/vmlinuz-3.5.0-trunk-686
       label = "Linux"
       #root = /dev/sda1
       root = "UUID=18843936-00f9-4df0-a373-000d05a5dd44"
@@ -564,9 +572,9 @@ Lines in the configuration file /etc/lilo.conf:
   #   restricted
   #   alias = 1
   #   optional
-      initrd = /boot/initrd.img-2.6.32-5book-686
+      initrd = /boot/initrd.img-3.5.0-trunk-686
 
-  image = /boot/vmlinuz-2.6.32-5-686
+  image = /boot/vmlinuz-3.2.0-4-686
       label = "Linux Old"
       #root = /dev/sda1
       root = "UUID=18843936-00f9-4df0-a373-000d05a5dd44"
@@ -574,7 +582,7 @@ Lines in the configuration file /etc/lilo.conf:
   #   restricted
   #   alias = 2
   #   optional
-      initrd = /boot/initrd.img-2.6.32-5-686
+      initrd = /boot/initrd.img-3.2.0-4-686
 
 =head1 OPTIONS
 
