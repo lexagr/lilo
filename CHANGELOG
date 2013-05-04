@@ -8,6 +8,7 @@ Changes for version 23.3 (unreleased) - Joachim Wiedorn
   -------
     - Support for kernel images on GPT hard disks in the first 15
         partitions, otherwise set comments (src/geometry.c, src/lilo.h)
+    - Update src/Makefile to always stipping lilo and lilo.static.
 
   General
   -------

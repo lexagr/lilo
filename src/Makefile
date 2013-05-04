@@ -243,8 +243,9 @@ install:
 	if [ -f diag1.img ]; then cp -f diag1.img $$DESTDIR$(BOOT_DIR); fi
 	if [ -f diag2.img ]; then cp -f diag2.img $$DESTDIR$(BOOT_DIR); fi
 
+	strip lilo
 	cp lilo $$DESTDIR$(SBIN_DIR)/lilo
-	strip $$DESTDIR$(SBIN_DIR)/lilo
+	[ -x lilo.static ] && strip lilo.static
 	cp ../mkrescue $$DESTDIR$(USRSBIN_DIR)/mkrescue
 	cp ../keytab-lilo.pl $$DESTDIR$(USRSBIN_DIR)/keytab-lilo
 
@@ -263,8 +264,6 @@ mkloader:	temp.c
 tidy:
 	rm -f core $(LIS) *.shs *.crc $(TMP)*
 	rm -rf sbin boot usr
-	if [ -x lilo ]; then strip lilo; fi
-	if [ -x lilo.static ]; then strip lilo.static; fi
 
 clean:
 	rm -f *.o *.s *.i *.img *.b tmp_make version
