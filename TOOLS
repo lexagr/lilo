@@ -20,6 +20,8 @@ sharutils      4.6.3          4.9            uuencode, uudecode
                      
 texlive-latex-base  2007-01   2009-11        ifpdf.sty
 
+perl           5.8.4          5.10.1         pod2man
+
 
 
 Needed tools for installed LILO

@@ -1,0 +1,80 @@
+#!/bin/bash
+#
+#       pod2manpage  -  convert pod file into manual page
+#       
+#       Copyright 2009-2013 Joachim Wiedorn <ad_debian at joonet.de>
+#       
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
+#       
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#       
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#       MA 02110-1301, USA.
+
+set -e
+
+if ! test /usr/bin/pod2man; then
+	echo "$0: Programm pod2man not found on the system!"
+	echo "$0: Please install perl (>= 5.6.0) on your system."
+	exit 1
+fi
+
+if test -z "$1"; then
+	echo "Usage: $0 <manpage.pod>"
+	echo ""
+	echo "       The file manpage.pod needs a header with six lines:"
+	echo "       =for header"
+	echo "       manpage: <program name>"
+	echo "       section: <manpage section>"
+	echo "       title:   <title string>"
+	echo "       version: <version number>"
+	echo "       datum:   <modification date>"
+	echo ""
+	exit 0
+fi
+
+if ! test -e "$1"; then
+	echo "$0: File $1 not found - Abort!"
+	exit 1
+fi
+
+NAME=`echo "$1" | sed -e 's/\.pod$//g'`
+if ! test -e "${NAME}.pod"; then
+	echo "$0: File $1 is not a podfile - Abort!"
+	exit 1
+fi
+
+# read file header
+SUCH=manpage
+manpage=$(head -n7 "$1" | grep $SUCH | sed -e "s/\.*${SUCH}\:\ *\(.*\)/\1/")
+SUCH=section
+section=$(head -n7 "$1" | grep $SUCH | sed -e "s/\.*${SUCH}\:\ *\(.*\)/\1/")
+SUCH=title
+title=$(head -n7 "$1" | grep $SUCH | sed -e "s/\.*${SUCH}\:\ *\(.*\)/\1/")
+SUCH=version
+version=$(head -n7 "$1" | grep $SUCH | sed -e "s/\.*${SUCH}\:\ *\(.*\)/\1/")
+SUCH=datum
+datum=$(head -n7 "$1" | grep $SUCH | sed -e "s/\.*${SUCH}\:\ *\(.*\)/\1/")
+
+# check for utf8 encoding
+mycoding=""
+if [ `head -n20 $1 | grep ^=encoding | grep -c -i utf` -eq 1 ]; then
+	mycoding="--utf8"
+fi
+
+# convert pod to manpage
+pod2man --section="$section" --center "$title" \
+	--release="$version" --date="$datum" ${mycoding} \
+	${NAME}.pod  ${NAME}.${section}
+
+#man ./${NAME}.${section}
+echo "Manpage ${NAME}.${section} created."
+

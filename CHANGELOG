@@ -7,6 +7,7 @@ Changes for version 23.3 (unreleased) - Joachim Wiedorn
       * liloconfig.pod     (from Debian)
       * lilo-uuid-diskid.pod   (from Debian)
       * lilo.pod  (converted from lilo.8)
+    - Add script man/pod2manpages for converting pod files.
 
   Sources
   -------
