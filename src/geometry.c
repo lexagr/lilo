@@ -689,7 +689,7 @@ void geo_query_dev(GEOMETRY *geo,int device,int all)
 		printf("WARNING: SATA partition in the high region (>15):\n");
 		printf("LILO needs the kernel in one of the first 15 SATA partitions. If \n");
 		printf("you need support for kernel in SATA partitions of the high region \n");
-		printf("than try grub2 for this purpose! \n";
+		printf("than try grub2 for this purpose! \n");
 		die("Sorry, cannot handle device 0x%04x",device);
 	    break;
 	MASK31:
