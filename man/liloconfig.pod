@@ -1,0 +1,105 @@
+=for header
+manpage:  LILOCONFIG
+section:  8
+title:    liloconfig documentation
+version:  23.3
+datum:    2013-05-01
+
+=encoding utf8
+
+=head1 NAME
+
+liloconfig - create new lilo.conf file (with diskid and uuid)
+
+=head1 SYNOPSIS
+
+B<liloconfig> [B<-h>] [B<-v>] [B<-f>] [B<lilo.conf>]
+
+=head1 DESCRIPTION
+
+liloconfig is an simple program for creating a new lilo.conf file.
+After creating the new configuration file you must execute '/sbin/lilo'.
+
+liloconfig use the lilo.example.conf file as template. In the final
+lilo.conf file you find many useful comments for custom changes.
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-h>
+
+Print a brief help.
+
+=item B<-v>
+
+Print verbose messages.
+
+=item B<-f>
+
+Force overriding existing lilo.conf.
+
+=back
+
+=head1 EXAMPLES
+
+Lines in the configuration file /etc/lilo.conf:
+
+  ### LILO global section ###
+
+  #large-memory
+  lba32
+  boot = /dev/sda
+  map = /boot/map
+  install = menu
+  menu-scheme = Wb:Yr:Wb:Wb
+  prompt
+  timeout = 100
+  vga = normal
+  #default = Linux
+
+  ### LILO per-image section ###
+
+  #boot = /dev/sda
+  boot = /dev/disk/by-id/ata-SAMSUNG_SV1604N_S01FJ10X999999
+
+  image = /boot/vmlinuz-3.5.0-trunk-686
+      label = "Linux"
+      #root = /dev/sda1
+      root = "UUID=18843936-00f9-4df0-a373-000d05a5dd44"
+      read-only
+  #   restricted
+  #   alias = 1
+  #   optional
+      initrd = /boot/initrd.img-3.5.0-trunk-686
+
+  image = /boot/vmlinuz-3.2.0-4-686
+      label = "Linux Old"
+      #root = /dev/sda1
+      root = "UUID=18843936-00f9-4df0-a373-000d05a5dd44"
+      read-only
+  #   restricted
+  #   alias = 2
+  #   optional
+      initrd = /boot/initrd.img-3.2.0-4-686
+
+=head1 COPYRIGHT and LICENSE
+
+Copyright (C) 2011-2013 Joachim Wiedorn
+
+This script is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation; either version 2 of the License, or 
+(at your option) any later version.
+
+=head1 AUTHOR
+
+B<lilconfig> was written by Joachim Wiedorn.
+
+This manual page was written by Joachim Wiedorn <ad_debian at joonet.de>.
+
+=head1 SEE ALSO
+
+B<lilo>(8), B<update-lilo>(8), B<lilo-uuid-diskid>(8)
+
+=cut

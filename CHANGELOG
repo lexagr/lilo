@@ -3,6 +3,8 @@ Changes for version 23.3 (unreleased) - Joachim Wiedorn
   Documentations
   --------------
     - Update of lilo.conf.5 manpage with some corrections.
+    - Add new manpages as pod files (sources):
+      * liloconfig.pod     (from Debian)
 
   Sources
   -------
