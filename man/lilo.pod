@@ -2,8 +2,8 @@
 manpage:  LILO
 section:  8
 title:    lilo documentation
-version:  23.3
-datum:    2013-05-01
+version:  24.0
+datum:    2013-05-07
 
 =encoding utf8
 
@@ -49,14 +49,14 @@ the range [1..n]: activate the specified partition and deactivate all others.
 Normally, only primary partitions [1..4] may be activated, but if the 'Extended
 Master Boot Loader' is present on the Master Boot Record (MBR) of the device 
 (see the -M option), any partition may be made active.  Whether the actual OS
-in the partition will boot from an extended partition depends on the characteristics
-of the OS. LILO boot records for Linux may be booted from an extended partition.
+in the partition will boot from a logical partition depends on the characteristics
+of the OS. LILO boot records for Linux may be booted from a logical partition.
 
 =item B<-b> I<bootdev>
 
 Set the boot device where the boot loader will be installed. For example
 I<"-b /dev/sda"> set the Master Boot Record (MBR) on the first disk as boot
-device. I<"-b /dev/sdb5"> set the first extended partition on the second disk
+device. I<"-b /dev/sdb5"> set the first logical partition on the second disk
 as boot device.
 
 =item B<-B> I<bitmap-file>
@@ -157,7 +157,7 @@ table on master-device is undisturbed. If no valid Volume-ID (serial number) is
 present, then generate one and write it to the MBR. If I<mbr> is set, the
 Standard Master Boot Loader will search partitions 1-4 for an active flag, and
 boot the flagged partition. Only one active flag is allowed. If I<ext> is set,
-the search for an active partition will include extended partitions as well.
+the search for an active partition will include logical partitions as well.
 The presence of the Extended Master Boot Loader on the Master Boot Record
 (MBR = sector 0) of a disk affects the operation of the I<-A> option.
 
@@ -294,8 +294,8 @@ generate this version of LILO.
 When used with the '-M' switch, clears the Volume-ID.  Usually used in the 
 following sequence to generate a new Volume-ID:
 
-    lilo -z -M /dev/hda
-    lilo -M /dev/hda
+    lilo -z -M /dev/sda
+    lilo -M /dev/sda
 
 =item B<-Z> I<option>
 

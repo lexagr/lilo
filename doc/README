@@ -16,7 +16,7 @@ are only necessary when processing the technical overview document.
 
 To run LaTeX just type
 
-  make
+  make -f Makefile.old
 
 LaTeX issues many "Overfull \hbox" warnings. They can be safely ignored.
 LaTeX will be run repeatedly until it stops issuing the message

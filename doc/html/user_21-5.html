@@ -3328,11 +3328,11 @@ class="description">Makes image name matching case-insensitive, i.e. &#8220;linu
      </dd><dt class="description">
 <span 
 class="cmtt-10x-x-109">LARGE</span><span 
-class="cmtt-10x-x-109">_EDBA</span> </dt><dd 
+class="cmtt-10x-x-109">_EBDA</span> </dt><dd 
 class="description">Loads LILO&#x00A0;at a lower address in order to leave more space for the EBDA (Extended
      BIOS Data Area). This is necessary on some recent MP systems. Note that enabling <span 
 class="cmtt-10x-x-109">LARGE</span><span 
-class="cmtt-10x-x-109">_EDBA</span>
+class="cmtt-10x-x-109">_EBDA</span>
      reduces the maximum size of &#8220;small&#8221; images (e.g. &#8220;Image&#8221; or &#8220;zImage&#8221;).
      </dd><dt class="description">
 <span 
@@ -3858,7 +3858,7 @@ class="description">&#x00A0;<br
 class="newline" />The kernel image (without the setup code) is bigger than 512 kbytes (or 448 kbytes, if built with
      <span 
 class="cmtt-10x-x-109">LARGE</span><span 
-class="cmtt-10x-x-109">_EDBA</span>). LILO&#x00A0;would overwrite itself when trying to load such a kernel. This limitation
+class="cmtt-10x-x-109">_EBDA</span>). LILO&#x00A0;would overwrite itself when trying to load such a kernel. This limitation
      only applies to old kernels which are loaded below 0x10000 (e.g. &#8220;Image&#8221; or &#8220;zImage&#8221;). Try
      building the kernel with &#8220;bzImage&#8221;. If this is undesirable for some reason, try removing some
      unused drivers and compiling the kernel again. This error may also occur if the kernel image is

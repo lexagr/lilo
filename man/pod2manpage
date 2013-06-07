@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 #       pod2manpage  -  convert pod file into manual page
 #       

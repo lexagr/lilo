@@ -2,8 +2,8 @@
 manpage:  LILOCONFIG
 section:  8
 title:    liloconfig documentation
-version:  23.3
-datum:    2013-05-01
+version:  24.0
+datum:    2013-05-07
 
 =encoding utf8
 
