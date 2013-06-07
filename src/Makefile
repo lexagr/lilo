@@ -16,7 +16,7 @@ include ../make.vars
 
 SHELL=/bin/sh
 CC=gcc
-CPP=$(CC) -E
+CPP=$(CC) -E -P -ffreestanding
 AS86=as86 -0 -a
 LD86=ld86 -0
 NASM=nasm

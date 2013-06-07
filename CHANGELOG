@@ -23,6 +23,7 @@ Changes for version 24.0 (unreleased) - Joachim Wiedorn
     - Fix abort problem in script mkrescue. (thanks to S. R. Wright)
     - Update script liloconf to find kernel versions 3.x, too.
     - Remove some more hints to obsolete OS/2 (source, doc).
+    - Fix to be compatible to gcc 4.8 and higher (use -ffreestanding)
 
 
 Changes for version 23.2 (09-Apr-2011) - Joachim Wiedorn

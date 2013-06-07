@@ -14,7 +14,7 @@ bcc            0.16.14        0.16.17        bcc
                      
 bin86          0.16.14        0.16.17        as86, ld86
                      
-gcc            3.3.5          4.4.5          gcc
+gcc            3.3.5          4.8.0          gcc
                      
 sharutils      4.6.3          4.9            uuencode, uudecode
                      

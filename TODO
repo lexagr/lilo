@@ -5,10 +5,8 @@ TODO for project LILO
   behaviour of 'large-memory'.
 
 * patching sources because of some warnings while compiling
-  with gcc 4.4.x
+  with gcc 4.4.x and higher
 
-* Upgrade of all manpages.
-
-* Upgrade of all documentations.
+* Upgrade of all manpages (move to po files).
 
 * code cleanup.
