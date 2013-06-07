@@ -9,6 +9,8 @@ Changes for version 24.0 (unreleased) - Joachim Wiedorn
       * lilo.pod  (converted from lilo.8)
     - Add script man/pod2manpages for converting pod files.
     - Create manpages from pod files.
+    - Deactivate Makefile for docs. Don't generate html/pdf.
+    - Add complete html documentation for history (v21.5).
 
   Sources
   -------

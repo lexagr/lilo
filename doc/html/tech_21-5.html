@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<!--http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd-->  
+<html xmlns="http://www.w3.org/1999/xhtml"  
+> 
+<head><title>LILO
+Generic boot loader for Linux
+Version 21.5
+Technical overview</title> 
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+<meta name="generator" content="Bluefish 2.2.3" /> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" /> 
+<!-- xhtml,charset=utf-8,html --> 
+<meta name="src" content="tech_21-5.tex" /> 
+<meta name="date" content="2013-06-07T14:17:05+0200" /> 
+<link rel="stylesheet" type="text/css" href="tech_21-5.css" /> 
+</head><body 
+>
+<div class="maketitle">
+
+
+
+<h2 class="titleHead">LILO<br />
+Generic boot loader for Linux<br />
+Version 21.5<br />
+&#x00A0;<br />
+Technical overview</h2>
+        <div class="author" ><span 
+class="cmr-12">Werner Almesberger</span>
+<br />         <span 
+class="cmr-12">John R. Coffman</span>
+<br /><span 
+class="cmti-12">(reconstructed by Joachim Wiedorn)</span></div>
+<br />
+<div class="date" ><span 
+class="cmr-12">July 17, 2000</span></div>
+</div>
+<h3 class="likesectionHead"><a 
+ id="x1-1000"></a>Contents</h3>
+<div class="tableofcontents">
+<span class="sectionToc" >1 <a 
+href="#x1-20001" id="QQ2-1-2">Load sequence</a></span>
+<br /><span class="sectionToc" >2 <a 
+href="#x1-30002" id="QQ2-1-3">File references</a></span>
+<br /><span class="sectionToc" >3 <a 
+href="#x1-40003" id="QQ2-1-4">Configuration parameters</a></span>
+<br /><span class="sectionToc" >4 <a 
+href="#x1-50004" id="QQ2-1-5">Parameter line interface</a></span>
+<br /><span class="sectionToc" >5 <a 
+href="#x1-60005" id="QQ2-1-6">External interface</a></span>
+<br /><span class="sectionToc" >6 <a 
+href="#x1-70006" id="QQ2-1-7">Default command line in map file</a></span>
+</div>
+<!--l. 72--><p class="noindent" >This document describes internals of LILO&#x00A0;and related parts of its environment (kernel, etc.). It is not
+necessary to read or understand this document in order to install or use LILO. A general introduction and
+installation instructions can be found in the user&#8217;s guide.
+</p><!--l. 77--><p class="noindent" ><span 
+class="cmbx-10x-x-109">This document has only been partially updated and does reflect the status of Linux (until</span>
+<span 
+class="cmbx-10x-x-109">2.2.16) and of LILO</span><span 
+class="cmbx-10x-x-109">&#x00A0;(until 21.5) in the year 2000.</span>
+</p><!--l. 80--><p class="noindent" >
+
+</p>
+<h3 class="sectionHead"><span class="titlemark">1   </span> <a 
+ id="x1-20001"></a>Load sequence</h3>
+<!--l. 87--><p class="noindent" >The boot sector is loaded by the ROM-BIOS at address 0x07C00. It moves itself to address 0x96A00, sets
+up the stack (growing downwards from 0x96A00 to 0x96800), loads the secondary boot loader at address
+0x96C00 and transfers control to it. It displays an &#8220;L&#8221; after moving itself and an &#8220;I&#8221; before starting the
+secondary boot loader. If a read error occurs when loading the secondary boot loader, a two-digit hex
+code is displayed after the &#8220;L&#8221;. This results in an endless stream of error codes if the problem
+is permanent. Displaying these error codes is disabled if the build-time option <span 
+class="cmtt-10x-x-109">NO1STDIAG </span>is
+set.
+</p><!--l. 97--><p class="noindent" >The secondary boot loader loads the descriptor table at 0x98800 and the sector containing the
+default command line at 0x98C00. If the default command line is enabled, its magic number is
+invalidated and the sector is written back to disk. This potentially dangerous operation can be
+disabled by defining <span 
+class="cmtt-10x-x-109">LCF</span><span 
+class="cmtt-10x-x-109">_READONLY </span>when passing <span 
+class="cmtt-10x-x-109">second.S </span>through <span 
+class="cmss-10x-x-109">cpp</span>. Next, the secondary
+boot loader checks for user input. If either the default is used or if the user has specified an
+alternate image, the options sector is loaded at 0x98C00 and the parameter line is constructed at
+0x99000. If the resulting line contains the option <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10x-x-109">lock</span></span></span>, the command line as entered by the
+user (it is saved before the final line is constructed) is written to the disk as the new default
+command line. Also, if a fallback command line is set, it is copied to the default command line
+sector.
+</p><!--l. 111--><p class="noindent" >If the user has supplied an initial RAM disk image, this file is loaded below the end of physical memory or
+16 MB, whichever is lower. The start address is lowered to the next page boundary so that the memory area
+occupied by the initial RAM disk can later be easily returned to the system&#8217;s free memory pool. The 16 MB
+limit exists because the BIOS functions used to transfer data in memory are only specified for an 24 bit
+address space.
+</p><!--l. 119--><p class="noindent" >Next, the floppy boot sector of that image is loaded at
+0x90000<span class="footnote-mark"><a 
+href="tech_21-52.html#fn1x0"><sup class="textsuperscript">1</sup></a></span><a 
+ id="x1-2001f1"></a>,
+the setup part is loaded at 0x90200 and the kernel part is loaded at 0x10000, or, if the kernel has been
+compiled for being loaded &#8220;high&#8221; (i.e. with <span 
+class="cmtt-10x-x-109">make bzImage</span>), it is loaded at 0x100000 instead. During the
+load operations, the sectors of the map file are loaded at 0x98600.
+</p><!--l. 126--><p class="noindent" >If the loaded image is a kernel image, control is transferred to its setup code. If a different operating system
+is booted, things are a bit more difficult: the chain loader is loaded at 0x90200 and the boot sector of the
+other OS is loaded at 0x90400. The chain loader moves the partition table (loaded at 0x903BE as part of
+the chain loader) to 0x00600 and the boot sector to 0x07C00. After that, it passes control to the boot
+sector.
+</p><!--l. 134--><p class="noindent" >Chain loaders that allow booting from a second drive (either floppy or hard disk) also install a
+small function to intercept BIOS calls and to swap the drive numbers at the top of available
+memory.
+</p><!--l. 138--><p class="noindent" >The secondary boot loader displays an &#8220;L&#8221; after being started and an &#8220;O&#8221; after loading the descriptor table
+and the default command line. Before loading the descriptor table, it checks, whether it has been loaded at
+
+the correct location and displays a question mark if it hasn&#8217;t. If the descriptor table has an incorrect
+checksum, a minus sign is displayed.
+</p><!--l. 144--><p class="noindent" >
+</p>
+<center class="math-display" >
+<img 
+src="tech_21-50x.png" alt="0x00000  |-------------------------------|1982 bytes
+         |-------------------------------|
+0x007BE  |--------Partition-table---------|64 bytes
+0x007FE  |-------------------------------|29 kB
+0x07C00  |--------Boot-load-area---------|512 bytes
+0x07E00  |-------------------------------|32.5 kB
+0x10000  |                               |448 kB
+         |                               |
+         |            Kernel             |
+         |                               |
+         |                               |
+         |-------------------------------|
+0x90000  |------Floppy-boot-sector-------|512 bytes
+0x90200  |---------Setup-(kernel)---------|39.5 kB (2 kB used)
+0x9A000  |------Primary--boot-loader-------|512 bytes
+0x9A200  |             Stack              |3.5 kB
+0x9B000  |-----Secondary-boot-loader------|8 kB (3.5 kB used)
+0x9D000  |--------Map--load-area---------|512 bytes
+         |-------------------------------|
+0x9D200  |--------Descriptor-table---------|1 kB
+0x9D600  |---Default command--line, etc.--|512 bytes
+0x9D800  |---Keyboard-translation-table----|512 bytes
+0x9DA00  |Parameter-line-construction-area-|1 kB
+0x9DC00  |                               |7.5 kB
+         |                               |
+         |--------Drive-swapper----------|1 kB
+         ---------------------------------
+0xA0000
+" class="math-display"  /></center>
+<!--l. 192--><p class="noindent" >The area 0x90020-0x90023 is overlaid by a command-line descriptor while the secondary boot loader is
+running.
+</p><!--l. 195--><p class="noindent" >If the build-time configuration option <span 
+class="cmtt-10x-x-109">LARGE</span><span 
+class="cmtt-10x-x-109">_EBDA </span>is set, all the addresses in the area 0x90000-0x9FFFF are
+changed to 0x80000-0x8FFFF, with the exception of the location of the driver swapper, which automatically
+follows the end of the available memory.
+</p><!--l. 200--><p class="noindent" >
+
+</p>
+<h3 class="sectionHead"><span class="titlemark">2   </span> <a 
+ id="x1-30002"></a>File references</h3>
+<!--l. 206--><p class="noindent" >This section describes the references among files involved in the boot procedures.
+</p><!--l. 209--><p class="noindent" >
+</p>
+<center class="math-display" >
+<img 
+src="tech_21-51x.png" alt="                          --------------|
+                          |  Default    |
+                         /|             |
+                      //  -command--line---
+                     /    |  Image      |
+                   /   // |             |
+                  /  /    |-descriptors-- |
+                 / /      |             |
+              // /        |             |
+-------------/-/          |   map       |
+|Boot sector  /\ |
+|            \\|\
+-------------\\\\  \ \ \   |-------------|
+              \ \\      \ \  Primary    |
+               \ \ \      | boot loader  |
+                \\\  \ \  ---------------
+                  \\    \ |             |
+                   \ \\   |             |
+                    \  \  |- --- --- -- |
+                     \   \| Secondary   |
+                      \\  | boot loader  |
+                        \ |- --- --- -- |
+                         \\|             |
+                          |             |
+                          ---------------
+                            boot.b
+" class="math-display"  /></center>
+<!--l. 213--><p class="noindent" >The boot sector contains the primary boot loader, the address of the default command line sector, the
+address of both descriptor table sectors and the addresses of the sectors of the secondary boot loader. The
+generic boot sector is copied from <span 
+class="cmtt-10x-x-109">boot.b</span>.
+</p><!--l. 218--><p class="noindent" >The primary boot loader can store up to eight sector addresses of the secondary boot loader.
+</p><!--l. 221--><p class="noindent" >
+
+</p>
+<center class="math-display" >
+<img 
+src="tech_21-52x.png" alt="|-------------|
+|   Default   |
+|             |
+--command--line-|
+|             |
+|    Image    |
+- --- --- --- -
+|             |
+|  descriptors  |
+--------------|
+|             |
+|  Zero sector  |
+--------------|
+|  Keyboard   |
+|             |
+--trans. table-|
+|    First    |
+|             |
+----section----|
+|             |
+|   Second    |
+- --- --/ --- -
+|    //       |
+|   section    |
+--------------|
+|    Third    |
+|             |
+----section----|
+" class="math-display"  /></center>
+<!--l. 225--><p class="noindent" >The map file consists of so-called sections and of special data sectors. Each section spans an integral number
+of disk sectors and contains addresses of sectors of other files.
+</p><!--l. 230--><p class="noindent" >There are three exceptions: 1. If a &#8220;hole&#8221; is being covered or if the floppy boot sector of an unstripped
+kernel has been omitted, the address of the zero sector is used. This sector is part of the map file. 2. When
+booting a different operating system, the first sector is the merged chain loader that has been written to the
+map file before that section. 3. Each map section describing an image is followed by a sector containing the
+options line of that image.
+</p><!--l. 238--><p class="noindent" >The last address slot of each map sector is either unused (if the map section ends in this sector) or contains
+the address of the next map sector in the section.
+</p><!--l. 242--><p class="noindent" >The ifive sectors at the beginning of the map file are special: the first sector contains the default command
+line, the next two sectors contain the boot image descriptor table and the fourth sector is filled with zero
+bytes. This sector is mapped whenever a file contains a &#8220;hole&#8221;. The fifth sector contains the keyboard
+translation table.
+</p><!--l. 248--><p class="noindent" >
+
+</p>
+<center class="math-display" >
+<img 
+src="tech_21-53x.png" alt="|-----------|                       --------------|
+|Descriptor  |                       |             |
+------------                        |             |
+   |    | \    |-------------|     //-- -- --- -- -
+    ||   || \\  |             |    / |             |
+     |    |    |   Fallback    |   /  |             |
+     |    |    |             |  /  /|             |
+      |    |   -- --- -- --- - /  / --- -- --- -- -
+      |     |  |   Options    |////// |             |
+       ||    || |             // /   |             |
+        |    | |- --- -- ---///     --- -- --- --
+        |     |||            //      |             |
+        |      |            /|      |             |
+         |     -- -// /-/--- -
+         ||    |             |      |             |
+          |    |             |      |             |
+           |   -------------\-\     --- -- --- -- -
+           |                   \ \\ |             |
+            |    Map section         |             |
+            ||                      ---------------
+             |
+    optional   |                       Kernel image
+              |
+               |
+               ||----------------------------------|
+               |             |      |             |
+               |             |      |             |
+               -- --/ /-/--- -      --- -- --- -- -
+               |   /         |      |             |
+               |             |      |             |
+               -------------\-
+                             \      |             |
+                 Map section   \     |             |
+                                \   --- -- --- -- -
+                                 \\ |             |
+                                    |             |
+                                    |             |
+                                    ---------------
+                                   Initial RAM  disk
+" class="math-display"  /></center>
+<!--l. 252--><p class="noindent" >A kernel image consists simply of a sequence of sectors being loaded. The map section also contains a sector
+with a fallback command line and a sector with parameter line options. Optionally, a RAM disk image,
+specified by a second map section, can be loaded.
+</p><!--l. 257--><p class="noindent" >
+
+</p>
+<center class="math-display" >
+<img 
+src="tech_21-54x.png" alt="                             |--------------|         |-------------|
+                             |              |         |  Original   |
+                             |  chain.b     |         |  partition   |
+|-----------|                -----/---------|        /----table------
+|           |                    /                 /
+-Descriptor--                    /              / /
+       \                      //           / /
+         \\ |--------------|  /           /
+           |              | /         //
+           |   Fallback    |/        /
+           - --- -- --- --/     / /
+           |            //| / /
+           |   (Options)/  /
+           | --- -- --/// /-|
+           |              \
+           | Chain loader  |\ |
+           | --- -- --- --cccccccccccmmmmmmmmmmmcmcmcmcmcmcmcmccccrmrmrmrmrmrrrrrrrrrrrrrmmmmnnnnnmmmmmmmmmmmmmrmrmrmrm.....n.nnnnnnnnnnnnnnnn................
+           |            cccccccmmcmcmcmcccccc/mmmmmcmcmcmcmcmcmcmcrrrrrmmmmmmcmcmcmccccccrrrrrrrrrrrrmmmmmmrmrmrmrrrrrrmmmmmmcmcmcmcmccmmmmmmmmmmmmrmnnnnnnnnmmmmmmrmrmrmrrrrrrrmmnnnnnnnnnnnnn........n.nnnnnnnnmmmmmmmrmrm.....................n.nnnnnnnn........     |-------------|
+           |            /-|----------|Boot sector   |
+           ---------------|          |             |
+                                     ---------------
+             Map  section
+" class="math-display"  /></center>
+<!--l. 261--><p class="noindent" >When booting another operating system, the chain loader (<span 
+class="cmtt-10x-x-109">chain.b</span>) is merged with the patched partition
+table<span class="footnote-mark"><a 
+href="tech_21-53.html#fn2x0"><sup class="textsuperscript">2</sup></a></span><a 
+ id="x1-3001f2"></a>
+and written into the map file. The map section of this boot image starts after that sector and contains only
+the address of a dummy floppy boot sector (the zero sector, but its contents are irrelevant), the loader
+sector and the boot sector of the other operating system. Not that the map section also contains the
+fallback sector and a (useless) sector for options.
+</p>
+<h3 class="sectionHead"><span class="titlemark">3   </span> <a 
+ id="x1-40003"></a>Configuration parameters</h3>
+<!--l. 275--><p class="noindent" >The boot sector of each kernel contains a set of configuration parameters that have to be available at boot
+time before the kernel can access file systems. These parameters can be set when the kernel is
+compiled and later be changed with programs like <span 
+class="cmss-10x-x-109">rdev</span>. LILO&#x00A0;can supersede the parameters (in
+memory) at boot time by placing the corresponding items on the parameter line passed to the
+kernel.
+
+</p><!--l. 282--><p class="noindent" >The parameters are stored at the following (decimal) offsets:
+</p><!--l. 284--><p class="noindent" >
+     </p><dl class="description"><dt class="description">
+<span 
+class="cmbx-10x-x-109">497</span> </dt><dd 
+class="description">the size of the setup code in sectors (512 bytes). Older kernels may put a zero at this place.
+     </dd><dt class="description">
+<span 
+class="cmbx-10x-x-109">498-499</span> </dt><dd 
+class="description">is a flag specifying whether the root file system should be mounted read-only (if non-zero)
+     or read-write (if zero).
+     </dd><dt class="description">
+<span 
+class="cmbx-10x-x-109">500-501</span> </dt><dd 
+class="description">the size of the kernel, counted in paragraphs (16 bytes).
+     </dd><dt class="description">
+<span 
+class="cmbx-10x-x-109">502-503</span> </dt><dd 
+class="description">this parameter is currently unused.
+     </dd><dt class="description">
+<span 
+class="cmbx-10x-x-109">504-505</span> </dt><dd 
+class="description">the size of the RAM disk in kilobytes. No RAM disk is created if this parameter is set to
+     zero.
+     </dd><dt class="description">
+<span 
+class="cmbx-10x-x-109">506-507</span> </dt><dd 
+class="description">the text mode the VGA is set to.
+          <dl class="description"><dt class="description">
+     <span 
+class="cmbx-10x-x-109">0xFFFD</span> </dt><dd 
+class="description">the user is asked to specify the VGA mode at boot time.
+          </dd><dt class="description">
+     <span 
+class="cmbx-10x-x-109">0xFFFE</span> </dt><dd 
+class="description">uses 80x50 (&#8220;extended&#8221;) mode.
+          </dd><dt class="description">
+     <span 
+class="cmbx-10x-x-109">0xFFFF</span> </dt><dd 
+class="description">uses 80x25 (&#8220;normal&#8221;) mode.</dd></dl>
+     <!--l. 299--><p class="noindent" >Any other value selects the corresponding mode as displayed in the interactive VGA mode selection
+     menu. This is the only option that is set by LILO by patching the boot sector instead of passing it on
+     the parameter line.
+     </p></dd><dt class="description">
+<span 
+class="cmbx-10x-x-109">508</span> </dt><dd 
+class="description">the minor number of the device that should be mounted as root.
+     </dd><dt class="description">
+<span 
+class="cmbx-10x-x-109">509</span> </dt><dd 
+class="description">the major number of the device that should be mounted as root.</dd></dl>
+<!--l. 309--><p class="noindent" >
+</p>
+<h3 class="sectionHead"><span class="titlemark">4   </span> <a 
+ id="x1-50004"></a>Parameter line interface</h3>
+<!--l. 311--><p class="noindent" >The kernel supports processing of parameters that are provided by the boot loader. The parameter string is
+a NUL-terminated ASCII string that contains space-separated words or <span 
+class="cmti-10x-x-109">variable</span><span 
+class="cmtt-10x-x-109">=</span><span 
+class="cmti-10x-x-109">value </span>pairs. A description
+of how they are interpreted can be found in the section of the user&#8217;s guide labeled &#8220;The boot
+prompt&#8221;.
+</p><!--l. 318--><p class="noindent" >The following descriptor has to be set up to pass a parameter string to the kernel:
+
+</p><!--l. 321--><p class="noindent" >
+     </p><dl class="description"><dt class="description">
+<span 
+class="cmbx-10x-x-109">0x90020</span> </dt><dd 
+class="description">the magic number 0xA33F.
+     </dd><dt class="description">
+<span 
+class="cmbx-10x-x-109">0x90022</span> </dt><dd 
+class="description">the offset of the first byte of the parameter line relative to 0x90000.</dd></dl>
+<!--l. 327--><p class="noindent" >The boot loader composes the parameter line from the command line, from the options sector and from
+some internally generated prefixes (typically <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10x-x-109">auto</span></span></span> and <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10x-x-109">BOOT_IMAGE=</span></span></span>), as follows:
+</p><!--l. 331--><p class="noindent" >
+</p>
+<center class="math-display" >
+<img 
+src="tech_21-55x.png" alt="                  |---------------------------------------|
+                  |  Image    |                            |
+Command  line      |  name    |    Command  -line options    |
+                  ---------------------------\------------
+                       |                       \ \ \
+                       |                             \ \
+                       |                                 \ \
+                       |                                    \ \ \
+           |-----------|----------------------------------|-------\\-------------------|
+           | Pre- |  Image    |                            |                            |
+           |fixes  |  name    |       Static options         |    Command  -line options    |
+           --------------------------------|--------------------------------------------
+Parameter string                            |
+passed to the kernel                         |
+                                           |
+                                           |
+                             |----------------------------|
+Options sector                |       Static options         |
+                             |                            |
+                             ------------------------------
+" class="math-display"  /></center>
+<!--l. 335--><p class="noindent" >Example: <br 
+class="newline" />Command line: <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10x-x-109">vmlinuz</span><span 
+class="cmtt-10x-x-109">&#x00A0;root=802</span></span></span><br 
+class="newline" />Options sector: <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10x-x-109">root=801</span><span 
+class="cmtt-10x-x-109">&#x00A0;ro</span></span></span>
+</p><!--l. 339--><p class="noindent" >yields <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10x-x-109">BOOT_IMAGE=vmlinuz</span><span 
+class="cmtt-10x-x-109">&#x00A0;root=801</span><span 
+class="cmtt-10x-x-109">&#x00A0;ro</span><span 
+class="cmtt-10x-x-109">&#x00A0;root=802</span></span></span>
+</p><!--l. 341--><p class="noindent" >Because parameter line options can typically be overridden, the first <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10x-x-109">root</span></span></span> option is ignored by the
+kernel.
+
+</p><!--l. 346--><p class="noindent" >
+</p>
+<h3 class="sectionHead"><span class="titlemark">5   </span> <a 
+ id="x1-60005"></a>External interface</h3>
+<!--l. 348--><p class="noindent" >LILO&#x00A0;is able to receive its command line from a program that is booted before it. This externally provided
+command line is only used if the user does not use the normal mechanism to invoke the boot
+prompt.
+</p><!--l. 352--><p class="noindent" >The following register contents are expected:
+</p><!--l. 354--><p class="noindent" >
+     </p><dl class="description"><dt class="description">
+<span 
+class="cmbx-10x-x-109">DL</span> </dt><dd 
+class="description">contains the value 0xFE.
+     </dd><dt class="description">
+<span 
+class="cmbx-10x-x-109">ES:SI</span> </dt><dd 
+class="description">points to the string &#8220;LILO&#8221;. The string must be in upper case and no terminating character
+     is needed. The string must not cross segment boundaries, i.e. <span 
+class="cmbx-10x-x-109">SI </span>must be below 0xFFFD.
+     </dd><dt class="description">
+<span 
+class="cmbx-10x-x-109">ES:BX</span> </dt><dd 
+class="description">points to a NUL-terminated string that is used as the command line. This string has a
+     maximum length of 78 characters (not including the terminating NUL) and must not cross
+     segment boundaries.</dd></dl>
+<!--l. 364--><p class="noindent" >There are two values of the externally provided command line that have a special meaning:
+</p>
+     <ul class="itemize1">
+     <li class="itemize">an empty string (<span 
+class="cmbx-10x-x-109">ES:BX </span>points to a NUL byte) is interpreted as a request to enter the boot
+     prompt and to accept keyboard input.
+     </li>
+     <li class="itemize">a string that consists only of blanks is interpreted as a request to boot the default boot image.</li></ul>
+<!--l. 374--><p class="noindent" >LILO&#x00A0;can also obtain the default command line from the map file. It is only used if no externally provided
+command line is available.
+</p><!--l. 379--><p class="noindent" >
+</p>
+<h3 class="sectionHead"><span class="titlemark">6   </span> <a 
+ id="x1-70006"></a>Default command line in map file</h3>
+<!--l. 381--><p class="noindent" >The first sector of the map file is reserved for a default command line. Unless the user invokes the boot
+prompt by pressing a shift key or unless an externally provided command line is present, the command line
+in the map file is interpreted as if it had been typed on the keyboard.
+</p><!--l. 386--><p class="noindent" >The first two bytes of the first sector of the map file have to contain the magic number <span 
+class="cmtt-10x-x-109">DC</span><span 
+class="cmtt-10x-x-109">_MAGIC </span>(0xF4F2)
+in little-endian byte order. They are followed by a NUL-terminated string with a maximum length of 510
+bytes, including the NUL. Note that the boot loader limits command lines to 78 characters after removing
+duplicate spaces.
+
+</p><!--l. 392--><p class="noindent" >The command line is disabled by either clobbering the magic number or by using an empty string (i.e. only
+a NUL byte) as the command line.
+</p>
+<div class="center" 
+>
+<!--l. 397--><p class="noindent" >
+</p><!--l. 398--><p class="noindent" ><span 
+class="cmti-10x-x-109">Last updated by John R. Coffman on July 17, 2000</span><br />
+<span 
+class="cmti-10x-x-109">reconstructed by Joachim Wiedorn on January 29, 2011</span></p></div>
+ 
+</body></html> 
+
+
+

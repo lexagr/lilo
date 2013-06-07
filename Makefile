@@ -17,7 +17,7 @@ help:
 	@echo "  make dosexe      # DOS lilo.com utility"
 	@echo "  make diagnostic  # standalone diagnostics"
 	@echo "  make alles       # all above + static binary"
-	@echo "  make docs        # doc/[user,tech].[pdf,dvi] docs"
+	@echo "  make docs        # doc/[user,tech].html docs"
 	@echo "  make floppy      # 2 standalone bootable diagnostic floppies"
 	@echo ""
 	@echo "  make install     # install binaries++ into root directory"
@@ -51,7 +51,6 @@ alles: test
 # documentation files
 #
 docs:
-	$(MAKE) -C doc all
 
 #
 # if you have the 'bcc' compiler, then you can make the diagnostics, too
@@ -116,7 +115,6 @@ tidy:
 	$(MAKE) -C src tidy
 	$(MAKE) -C diagnose tidy
 	$(MAKE) -C dos tidy
-	$(MAKE) -C doc tidy
 
 clean: tidy
 	rm -f test.img
@@ -124,7 +122,6 @@ clean: tidy
 	$(MAKE) -C images clean
 	$(MAKE) -C diagnose clean
 	$(MAKE) -C dos clean
-	$(MAKE) -C doc clean
 
 spotless: distclean
 distclean: clean
