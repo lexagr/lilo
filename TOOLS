@@ -8,7 +8,7 @@ they can be found in:
                at least       tested         programs
 package        version        until          inside
 -----------------------------------------------------------------
-coreutils      6.4.10         8.5            (general)
+coreutils      6.4.10         8.13           (general)
                      
 bcc            0.16.14        0.16.17        bcc
                      
@@ -16,11 +16,9 @@ bin86          0.16.14        0.16.17        as86, ld86
                      
 gcc            3.3.5          4.8.0          gcc
                      
-sharutils      4.6.3          4.9            uuencode, uudecode
+sharutils      4.6.3          4.11.1         uuencode, uudecode
                      
-texlive-latex-base  2007-01   2009-11        ifpdf.sty
-
-perl           5.8.4          5.10.1         pod2man
+perl           5.8.4          5.14.2         pod2man
 
 
 
@@ -34,8 +32,8 @@ they can be found in:
                at least       tested         programs
 package        version        until          inside
 -----------------------------------------------------------------
-perl           5.8.8          5.10.1         (general)
+perl           5.8.8          5.14.2         (general)
 
-perl-modules   5.8.8          5.10.1         Getopt::Std,
+perl-modules   5.8.8          5.14.2         Getopt::Std,
                                              Pod::Usage
                                              File::Copy

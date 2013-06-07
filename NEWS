@@ -3,7 +3,16 @@ NEWS about project LILO
 (For details see file 'CHANGELOG' in the source directory)
 
 
-Version 23.2  (major and bugfix update of 23.1)
+Version 24.0  (major and bugfix update of 23.2)
+
+ o Update many manpages and add some from Debian.
+ o Add old documentation as (static) html.
+ o Better support for GPT hard disks.
+ o Support for use with kernel 3.x.
+ o Fix to be compatible with gcc 4.8 and higher.
+
+
+Version 23.2  (minor and bugfix update of 23.1)
 
  o Many fixes in source code and fixes for some error messages.
  o Remove all obsolete OS/2 code and information.
@@ -13,7 +22,7 @@ Version 23.2  (major and bugfix update of 23.1)
  o Add new scripts 'liloconfig' and 'lilo-uuid-diskid'.
 
 
-Version 23.1  (major and bugfix update of 23.0)
+Version 23.1  (minor and bugfix update of 23.0)
 
  o Many fixes of typos in sources and documentation.
  o LVM volumes can now be used as root device.

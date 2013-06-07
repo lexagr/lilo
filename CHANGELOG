@@ -1,4 +1,4 @@
-Changes for version 24.0 (unreleased) - Joachim Wiedorn
+Changes for version 24.0 (07-June-2013) - Joachim Wiedorn
 
   Documentations
   --------------
@@ -16,7 +16,7 @@ Changes for version 24.0 (unreleased) - Joachim Wiedorn
   -------
     - Support for kernel images on GPT hard disks in the first 15
         partitions, otherwise set comments (src/geometry.c, src/lilo.h)
-    - Update src/Makefile to always stipping lilo and lilo.static.
+    - Update src/Makefile to always stripping lilo and lilo.static.
 
   General
   -------
