@@ -2,7 +2,7 @@
  * 
  * Copyright 1992-1998 Werner Almesberger
  * Copyright 1999-2005 John Coffman
- * Copyright 2009-2011 Joachim Wiedorn
+ * Copyright 2009-2013 Joachim Wiedorn
  * All rights reserved.
  * 
  * Licensed under the terms contained in the file 'COPYING'
@@ -101,9 +101,9 @@ if ( !(do_md_install && extra==X_MBR_ONLY) ) {
     else if (	!strncmp("NTFS", bs.par_d.system, 4)
 		|| anywhere(bs.sector,"NTLDR")  ) ret=PTW_NTFS;
 
-/* check for HPFS */
-    else if (	!strncmp("OS2", bs.par_d.system, 3)
-		|| anywhere(bs.sector,"OS2LDR")  ) ret=PTW_OS2;
+/* do not check for obsolete OS2_HPFS */
+/*    else if (	!strncmp("OS2", bs.par_d.system, 3)
+		|| anywhere(bs.sector,"OS2LDR")  ) ret=PTW_OS2; */
 
 /* check for DOS FAT */
     else if (
@@ -115,10 +115,6 @@ if ( !(do_md_install && extra==X_MBR_ONLY) ) {
 	&& (bs.par_d.bpb.sectors_per_cluster & (bs.par_d.bpb.sectors_per_cluster-1))==0
 				) {
 		ret=PTW_DOS;
-#if 0
-/* this, it turns out is from Windows 98, so no caution here on NT */
-    		if (anywhere(bs.sector,"WINBOOT SYS")) ret+=PTW_NTFS;
-#endif
     }
     
 /* check for SWAP -- last check, as 'bs' is overwritten */
@@ -221,14 +217,13 @@ void part_verify(int dev_nr,int type)
 	      i == PART_FAT32 ||
 	      i == PART_FAT32_LBA ||
 	      i == PART_FAT16_LBA ||
-	      i == PART_NTFS ||
-	      i == PART_OS2_BOOTMGR ;
+	      i == PART_NTFS ;
 
     if (type && !Linux) {
 	warn("partition type 0x%02X"" on device 0x%04X is a dangerous place for\n"
              "    a boot sector.%s",
 			part_table[part].sys_ind, dev_nr,
-	dos ? "  A DOS/Windows/OS2 system may be rendered unbootable."
+	dos ? "  A DOS/Windows system may be rendered unbootable."
 		"\n  The backup copy of this boot sector should be retained."
 		: "" );
 #if 0
@@ -557,12 +552,7 @@ void do_change(void)
 
 void preload_types(void)
 {
-#if 0 /* don't know if it makes sense to add these too */
-    add_type("Netware", 0x64, 0x74);
-    add_type("OS2_BM", 0x0a, 0x1a);
-#endif
-    add_type("OS2_HPFS", 0x07, 0x17);
-
+/*  add_type("OS2_HPFS", 0x07, 0x17); */
     add_type("FAT16_lba", PART_FAT16_LBA, -1);
     add_type("FAT32_lba", PART_FAT32_LBA, -1);
     add_type("FAT32", PART_FAT32, -1);

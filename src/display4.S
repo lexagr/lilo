@@ -1,7 +1,7 @@
 ;  display4.S
 ;
 ;  Copyright 2001-2005 John Coffman
-;  Copyright 2009-2011 Joachim Wiedorn
+;  Copyright 2009-2013 Joachim Wiedorn
 ;  All rights reserved.
 ;
 ;  Licensed under the terms contained in the file 'COPYING'
@@ -588,10 +588,10 @@ _display4:
 	  cmp	WORD (bx+14+2),#0	; hi-order part of DWORD
 	jne	d4_I573
 	seg	es
-	  cmp	WORD (bx+14),#40	; Windows/OS2 bitmap header
+	  cmp	WORD (bx+14),#40	; Windows bitmap header
 	je	d4_I574
 	seg	es
-	  cmp	WORD (bx+14),#12	; OS2 bitmap header
+	  cmp	WORD (bx+14),#12	; OS2 bitmap header (obsolete)
 	je	d4_I574
 ; Line 297
 d4_I573:
@@ -617,7 +617,7 @@ d4_I574:
 	  cmp	BYTE (bx),#40		; Windows
 	je	d4_I575
 
-;  OS2 bitmaps
+;  OS2 bitmaps (obselete)
 	seg	es
 	  mov	ax,WORD (bx+8)
         seg	es
@@ -644,7 +644,7 @@ d4_I574:
 	jne	d4_I576
 	jmp	d4_I575a
 
-; Windows/OS2 bitmaps
+; Windows bitmaps
 d4_I575:
 	seg	es
 	  mov	ax,WORD (bx+12)
@@ -892,13 +892,13 @@ d4_F581:
 	les	bx,(bp-22)	;bmh
 ;;	seg	es
 ;;	  mov	ax,WORD (bx+8)		; 480
-	mov	ax,#480			; Windows or OS2
+	mov	ax,#480			; Windows
 ;;	seg	es
 ;;	  mov	dx,WORD (bx+4)		; 640
-	mov	dx,#640			; Windows or OS2
+	mov	dx,#640			; Windows
 	seg	es
-	  cmp	BYTE (bx),#13		; OS2
-	sbb	cx,cx			; OS2 = -1, Win = 0
+	  cmp	BYTE (bx),#13		; OS2 (obsolete)
+	sbb	cx,cx			; Win = 0  OS2 = -1 (obsolete)
 	not	cx
 	seg	es
 	  and	cx,WORD (bx+16)		; compression

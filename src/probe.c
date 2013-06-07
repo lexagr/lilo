@@ -1,7 +1,7 @@
 /* probe.c  -  BIOS probe utility
  * 
  * Copyright 1999-2006 John Coffman
- * Copyright 2009-2011 Joachim Wiedorn
+ * Copyright 2009-2013 Joachim Wiedorn
  * All rights reserved.
  * 
  * Licensed under the terms contained in the file 'COPYING'
@@ -149,12 +149,12 @@ static struct partitions {
     { "DOS12", PART_DOS12, HIDDEN_OFF },
     { "DOS16_small", PART_DOS16_SMALL, HIDDEN_OFF },
     { "DOS16_big", PART_DOS16_BIG, HIDDEN_OFF },
-    { "NTFS or OS2_HPFS", PART_NTFS, HIDDEN_OFF },	/* same as HPFS; keep these two together */
+    { "NTFS", PART_NTFS, HIDDEN_OFF },	/* same as HPFS; keep these two together */
 /*  { "HPFS", PART_HPFS, HIDDEN_OFF },	*/	/* same as NTFS */
     { "FAT32", PART_FAT32, HIDDEN_OFF },
     { "FAT32_lba", PART_FAT32_LBA, HIDDEN_OFF },
     { "FAT16_lba", PART_FAT16_LBA, HIDDEN_OFF },
-    { "OS/2 BootMgr", PART_OS2_BOOTMGR, 0 },
+/*  { "OS/2 BootMgr", PART_OS2_BOOTMGR, 0 }, */  /* obsolete system */
     { "DOS extended", PART_DOS_EXTD, 0 },
     { "WIN extended", PART_WIN_EXTD_LBA, 0 },
     { "Linux ext'd", PART_LINUX_EXTD, 0 },
