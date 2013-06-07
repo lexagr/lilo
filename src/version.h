@@ -1,7 +1,7 @@
 /* version.h
  * 
  * Copyright 2005-2007 John Coffman
- * Copyright 2009-2011 Joachim Wiedorn
+ * Copyright 2009-2013 Joachim Wiedorn
  * All rights reserved.
  * 
  * Licensed under the terms contained in the file 'COPYING'
@@ -11,8 +11,8 @@
 #ifndef VERSION_H
 #define VERSION_H
 
-#define VERSION_MAJOR 23
-#define VERSION_MINOR 3
+#define VERSION_MAJOR 24
+#define VERSION_MINOR 0
 #define VERSION_EDIT  ""
 #define VERSION_DATE "unreleased"
 
