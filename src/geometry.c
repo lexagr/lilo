@@ -670,6 +670,7 @@ void geo_query_dev(GEOMETRY *geo,int device,int all)
 	case MAJOR_SD6:
 	case MAJOR_SD7:
 	case MAJOR_SD8:
+	case MAJOR_XVD:
 	MASK15:
 	    geo->device = 0x80 + last_dev(MAJOR_HD,64) + (MINOR(device) >> 4);
 	    if (!get_all) break;

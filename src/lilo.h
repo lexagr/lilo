@@ -148,6 +148,7 @@
 #define MAJOR_EMD	153 /* Enhanced multi-disk RAID sets */
 #define MAJOR_CARM1	160 /* Carmel SATA Disk on first 8-port controller */
 #define MAJOR_CARM2	161 /* Carmel SATA Disk on 2nd 8-port controller */
+#define MAJOR_XVD	202 /* xen xvd disks */
 
 /* don't use the following */
 #define MAJOR_MDP	254 /* Enhanced multi-disk RAID sets [experimental?] */
